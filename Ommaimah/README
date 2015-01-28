@@ -1,4 +1,36 @@
-The "Final Project Report" is attached. 
+Author: Ommaimah Hussein Mohammed
+
+-----------------------------------------------------------
+Project Coding: 
+-----------------------------------------------------------
+COMPLETE:
+DCA insturction function
+JMS instruction function
+JMP instruction function
+
+
+IN PROGRESS:
+Implement function that outputs PDP-8 summary
+Implement correct clock cycles
+Function that converts integer to octal 
+
+TO DO:
+Implement uInstruction - Group 1
+Output tracefile in correct format
+
+
+
+TO TEST:
+- DCA function
+- JMS function
+- JMP function
+- uInstruction (group 1) function
+
+-----------------------------------------------------------
+Project Report:
+-----------------------------------------------------------
+
+Project Report "Draft 1" is attached. 
 
 It includes the format we can use and some categories we can work on filling in during the project implementation. Feel free to add/write anything on it. Open to all suggestions.
 
@@ -7,6 +39,3 @@ NOTE: The format is weird if you open it in a Linux machine, but don't worry, I 
 IMPORTANT:
 - Please type your tests done as soon as you finish them. It will be harder to remember what was tested later on in the term.
 - Please save all images you make, it will be helpful to add in the report when we discuss our understanding and implementations.
-
-
-
