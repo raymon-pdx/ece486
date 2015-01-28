@@ -29,6 +29,7 @@ implement some IO
 
 to test:
 test if EAddress works in all for cases
+test and
 test if add does nagitive numbers and overflow
 test if add one does nagitive numbers and overflow
 test memory calls
