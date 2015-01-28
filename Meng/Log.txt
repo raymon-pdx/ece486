@@ -1,0 +1,10 @@
+1/27/15
+
+Address passed in: 16 bit - int type
+Erase first 4 bits (don't care) using mask
+Then break down the rest 12 bits into page number + offset
+in order to set up page table
+
+Prompt to confirm delete or overwrite
+
+bitset
