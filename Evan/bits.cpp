@@ -9,6 +9,8 @@ int main(){
 
 BitTwiddle::BitTwiddle(){
     AC=0;
+    PC=0;
+    link=0;
 }
 
 void BitTwiddle::PDP_AND(bool addr_bit,bool mem_page,int offset){
@@ -31,8 +33,7 @@ void BitTwiddle::PDP_ISZ(bool addr_bit,bool mem_page,int offset){
     //TODO: emulate 12 bit rollover
         MEM_STORE(EAddr,C_EAddr+1);
     }else{
-    //TODO: implement PC
-//        MEM_STORE(PC,MEM_LOAD(PC)+1);
+        MEM_STORE(PC,MEM_LOAD(PC)+1);
     }
     return;
 }
@@ -99,7 +100,7 @@ void BitTwiddle::PDP_IO(int device_num,int opcode){
                 //AC4-12 = AC4-12 | keyboard buffer;
 
         }else if(device_num == 4){
-s
+
 
 
 
@@ -120,25 +121,23 @@ PRIVATE FUNCTIONS!
 //*/
 int find_EAddr(bool addr_bit,bool mem_page,int offset){
 //TODO: make into case
-    if(addr_bit){
-        if(mem_page){
-            if(offset>=8 && offset<=15){
-                int auto_index;
-                temp = MEM_LOAD(offset) + 1;
-                MEM_STORE(offset , temp);
-                return temp;
+    if(!addr_bit){
+        if(!mem_page){ //bit3=0 bit4=0
+            if(offset>=8 && offset<=15){ //autoindexing offset=010o-017o
+                int temp = MEM_LOAD(offset)+1; //load C(AutoIndex_Register)+1
+                MEM_STORE(offset , temp); //store it into C(AutoIndex_Register)
+                return temp; //C(AutoIndex_Register) is our EAddr
             }else{
-                return offset;
+                return offset; //00000 cat Offset is our EAddr
             }
-        }else{
-//TODO: need to implement PC variable            
-//            return PC<<7+offset;
+        }else{            
+            return (PC & 3968) + offset; //PC
         }
     }else{
         if(mem_page){
             return MEM_LOAD(offset);
         }else{
-//            return MEM_LOAD(pc<<7+offset);
+            return MEM_LOAD((PC & 3968)+offset);
         }
     }
 }

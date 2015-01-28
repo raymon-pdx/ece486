@@ -29,8 +29,9 @@ void PDP_JMP(bool addr_bit,bool mem_page,int offset);
 
 private:
 
-   //accumulator
-   int AC;
+   int AC;          //accumulator
+   int PC;          //Program Counter
+   bool link;       //link bit
    //function for finding the effective address
    int find_EAddr(bool addr_bit,bool mem_page,int offset);
 

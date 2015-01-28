@@ -11,7 +11,7 @@ EAddr calculation that does not involve PC
 
 to implement:
 PC counter
-mico
+micro instruction 2
 make add and add one rollover at twelve bits.
 make add and add one limit themselves to twelve bits
 find out what compiment link is and implement it.
