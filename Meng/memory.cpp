@@ -12,33 +12,23 @@ pagetable::pagetable(int numberofpages, int capacityofpage)
 	number_of_pages = numberofpages;
 	capacity_of_page = capacityofpage;
 
-	head = new entry *[number_of_pages];
-
-	for (int i = 0; i < number_of_pages; ++i) // contruct an array of "heads"
-	{
-		head[i] = new entry;
-		entry * temp = head[i]; // grab on to each head
-		for (int j = 0; j < capacity_of_page; ++j) // construct linear linked list for PTEs
-		{
-			temp->pagenumber = i;
-			temp->offset = j;
-			temp->word = 0;
-			temp->next = false;
-			temp->next = new entry; // new entry
-			temp = temp->next; // grab the next one
-		}
-		temp = NULL; // Set the last "next" to NULL
-	}
-
+	Table = new entry *[number_of_pages, capacity_of_page];
 }
 
 pagetable::~pagetable()
 {
 	for (int i = 0; i < number_of_pages; ++i)
 	{
-		delete head[i];
-		head[i] = NULL;
+		for (int j = 0; j < capacity_of_page; ++j)
+		{
+			if (Table[i, j])
+			{
+				delete Table[i, j];
+				Table[i, j] = NULL;
+			}
+		}
 	}
+	Table = NULL;
 
 	number_of_pages = 0;
 	capacity_of_page = 0;

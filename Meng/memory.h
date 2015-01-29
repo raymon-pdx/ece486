@@ -29,5 +29,5 @@ private:
 	int retrieve(int pagenumber, int offset, entry & retrieved); // retrieve memory unit from page table
 	int number_of_pages;
 	int capacity_of_page;
-	entry ** head;
+	entry ** Table;
 };
