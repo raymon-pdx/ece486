@@ -13,7 +13,6 @@ struct entry
 	int pagenumber=0; // page number (5 bits by default)
 	int offset=0; // page offset (7 bits by default)
 	int word=0; // data (12 bits by default)
-	bool occupied = false; // When page table consturcted, set unoccupied by default
 };
 
 class pagetable
@@ -23,10 +22,12 @@ public:
 	~pagetable(); // deconstructor
 	int load(int address); // wrapper function interacting with "bits" module
 	int store(int address, int value); // wrapper function interacting with "bits" module
+	int probe(int address);
 private:
 	int add(entry & to_add); // add new memory unit data into page table
 	int clear(int pagenumber, int offset); // clear a certain memory unit
 	int retrieve(int pagenumber, int offset, entry & retrieved); // retrieve memory unit from page table
+	int breakdown(int address, int & result_pagenumber, int & result_offset);// break down addressing format
 	int number_of_pages;
 	int capacity_of_page;
 	entry ** Table;

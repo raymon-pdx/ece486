@@ -8,3 +8,16 @@ in order to set up page table
 Prompt to confirm delete or overwrite
 
 bitset
+
+1/28/15
+
+Create wrapper functions for LOAD and STORE
+prompt user to confirm things (all done in wrapper function):
+i. Read from an address that is NULL
+ii. Delete data at an address which is unoccupied
+iii. Delete existing data
+iv. Overwrite existing data
+
+The occupied is not necessary; as long as there's a check to see if it is NULL.
+Add "probe" public function to display an entry to see if it exists.
+Add separate "breakdown" private function to break down address into pagenumber + offset

@@ -36,58 +36,36 @@ pagetable::~pagetable()
 
 int pagetable::add(entry & to_add)
 {
-	for (int i = 0; i < number_of_pages; ++i)
-	{
-		if (head[i]->pagenumber == to_add.pagenumber)
-		{
-			entry * temp = head[i];
-			for (int j = 0; j < capacity_of_page; ++j)
-			{
-				if (temp->offset == to_add.offset)
-				{
-					temp->word == to_add.word;
-					temp->occupied == true;
-				}
-			}
-		}
-	}
+	// Assume the address does not exist,
+	// or overwrite permission granted
+	Table[to_add.pagenumber, to_add.offset] = new entry; // Create a new PTE
+
+	Table[to_add.pagenumber, to_add.offset]->pagenumber = to_add.pagenumber;
+	Table[to_add.pagenumber, to_add.offset]->offset = to_add.offset;
+	Table[to_add.pagenumber, to_add.offset]->word = to_add.word;
+	// Copy address and data values in to PTE
+
+	return true;
 }
 
 int pagetable::clear(int pagenumber, int offset)
 {
-	for (int i = 0; i < number_of_pages; ++i)
-	{
-		if (head[i]->pagenumber == pagenumber)
-		{
-			entry * temp = head[i];
-			for (int j = 0; j < capacity_of_page; ++j)
-			{
-				if (temp->offset == offset)
-				{
-					temp->word = 0;
-					temp->occupied = false;
-				}
-			}
-		}
-	}
+	// Assume the address is exists
+	// and delete permission granted
+	Table[pagenumber, offset]->pagenumber = 0;
+	Table[pagenumber, offset]->offset = 0;
+	Table[pagenumber, offset]->word = 0;
+	// Delete address and data values
+
+	delete Table[pagenumber, offset]; // Delete PTE
+
+	Table[pagenumber, offset] = NULL;
+
+	return 1;
 }
 
 int pagetable::retrieve(int pagenumber, int offset, entry & retrieved)
 {
-	for (int i = 0; i < number_of_pages; ++i)
-	{
-		if (head[i]->pagenumber == pagenumber)
-		{
-			entry * temp = head[i];
-			for (int j = 0; j < capacity_of_page; ++j)
-			{
-				if (temp->offset == offset)
-				{
-					retrieved.pagenumber = temp->pagenumber;
-					retrieved.offset = temp->offset;
-					retrieved.word = temp->word;
-				}
-			}
-		}
-	}
+	// Assume the address exists
+	
 }
