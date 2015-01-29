@@ -21,3 +21,4 @@ iv. Overwrite existing data
 The occupied is not necessary; as long as there's a check to see if it is NULL.
 Add "probe" public function to display an entry to see if it exists.
 Add separate "breakdown" private function to break down address into pagenumber + offset
+Constructor now takes in a whole address (up to 16 bits) and then use "breakdown" to get correct number of pages and capacity of page

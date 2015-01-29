@@ -6,6 +6,10 @@
 #include <cstring>
 #include <cctype>
 
+#define RegSize = 12;
+#define PageSize= 5; // 5 bits = 32
+#define LineSize = 7; // 7 bits = 128
+
 // Each PTE is handled by a ptr in page table
 // One entry contains:
 struct entry

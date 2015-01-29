@@ -67,5 +67,14 @@ int pagetable::clear(int pagenumber, int offset)
 int pagetable::retrieve(int pagenumber, int offset, entry & retrieved)
 {
 	// Assume the address exists
-	
+	retrieved.pagenumber = Table[pagenumber, offset]->pagenumber;
+	retrieved.offset = Table[pagenumber, offset]->offset;
+	retrieved.word = Table[pagenumber, offset]->word;
+
+	return 1;
+}
+
+int pagetable::breakdown(int address, int & result_pagenumber, int & result_offset)
+{
+	temp_mask = 
 }
