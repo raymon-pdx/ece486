@@ -7,6 +7,8 @@
 #include <cctype>
 #include "memory.h"
 
+using namespace std;
+
 pagetable::pagetable(int numberofpages, int capacityofpage)
 {
 	number_of_pages = numberofpages;
@@ -74,7 +76,17 @@ int pagetable::retrieve(int pagenumber, int offset, entry & retrieved)
 	return 1;
 }
 
+int pagetable::display(int pagenumber, int offset)
+{
+	// Assume the address exists
+	cout << "Page: " << Table[pagenumber, offset]->pagenumber << endl;
+	cout << "Offset: " << Table[pagenumber, offset]->offset << endl;
+	cout << "Data word: " << Table[pagenumber, offset]->word << endl;
+
+}
+
 int pagetable::breakdown(int address, int & result_pagenumber, int & result_offset)
 {
 	temp_mask = 
 }
+

@@ -6,7 +6,7 @@
 #include <cstring>
 #include <cctype>
 
-#define RegSize = 12;
+#define RegSize = 12; // 12 bits = 4096
 #define PageSize= 5; // 5 bits = 32
 #define LineSize = 7; // 7 bits = 128
 
@@ -26,11 +26,12 @@ public:
 	~pagetable(); // deconstructor
 	int load(int address); // wrapper function interacting with "bits" module
 	int store(int address, int value); // wrapper function interacting with "bits" module
-	int probe(int address);
+	int probe(int address); // wrapper function containing "display"
 private:
 	int add(entry & to_add); // add new memory unit data into page table
 	int clear(int pagenumber, int offset); // clear a certain memory unit
 	int retrieve(int pagenumber, int offset, entry & retrieved); // retrieve memory unit from page table
+	int display(int pagenumber, int offset); // quick display of an entry
 	int breakdown(int address, int & result_pagenumber, int & result_offset);// break down addressing format
 	int number_of_pages;
 	int capacity_of_page;
