@@ -83,10 +83,38 @@ int pagetable::display(int pagenumber, int offset)
 	cout << "Offset: " << Table[pagenumber, offset]->offset << endl;
 	cout << "Data word: " << Table[pagenumber, offset]->word << endl;
 
+	return 1;
 }
 
 int pagetable::breakdown(int address, int & result_pagenumber, int & result_offset)
 {
-	temp_mask = 
+	int temp_mask = 0;
+	for (int i = 0; i < PageSize + LineSize; ++i)
+	{
+		temp_mask |= temp_mask | (1 << i);
+	}// Create mask with 1's, same length as EAddr
+
+	int temp_address = address & temp_mask;
+	// Mask EAddr to get rid of garbage bits
+
+	temp_mask = 0; // Reset temp_mask to 0;
+
+	for (int i = 0; i < LineSize; ++i)
+	{
+		temp_mask |= temp_mask | (1 << i);
+	}// Create mask with 1's, same length as offset
+
+	result_offset = temp_address & temp_mask;
+	// Mask temp_address to get rid of page number bits
+	result_pagenumber = temp_address >> LineSize;
+	// Right shift temp_address to get rid of offset bits
+
+	return 1;
+}
+
+int pagetable::load(int address)
+{
+	int pagenumber, offset;
+	
 }
 

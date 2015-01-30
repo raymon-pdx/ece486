@@ -6,9 +6,9 @@
 #include <cstring>
 #include <cctype>
 
-#define RegSize = 12; // 12 bits = 4096
-#define PageSize= 5; // 5 bits = 32
-#define LineSize = 7; // 7 bits = 128
+const int RegSize = 12; // 12 bits = 4096
+const int PageSize = 5; // 5 bits = 32
+const int LineSize = 7; // 7 bits = 128
 
 // Each PTE is handled by a ptr in page table
 // One entry contains:
