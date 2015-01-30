@@ -26,13 +26,14 @@ public:
 	~pagetable(); // deconstructor
 	int load(int address); // wrapper function interacting with "bits" module
 	int store(int address, int value); // wrapper function interacting with "bits" module
-	int probe(int address); // wrapper function containing "display"
+	int probe(int address); // quick probe to see if an address exists
+	int display(int address); // quick display of an entry
 private:
 	int add(entry & to_add); // add new memory unit data into page table
 	int clear(int pagenumber, int offset); // clear a certain memory unit
 	int retrieve(int pagenumber, int offset, entry & retrieved); // retrieve memory unit from page table
-	int display(int pagenumber, int offset); // quick display of an entry
 	int breakdown(int address, int & result_pagenumber, int & result_offset);// break down addressing format
+	int probe(int pagenumber, int offset); // Private probe function to see if an adress exists
 	int number_of_pages;
 	int capacity_of_page;
 	entry ** Table;

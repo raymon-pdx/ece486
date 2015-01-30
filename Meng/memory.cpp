@@ -76,16 +76,6 @@ int pagetable::retrieve(int pagenumber, int offset, entry & retrieved)
 	return 1;
 }
 
-int pagetable::display(int pagenumber, int offset)
-{
-	// Assume the address exists
-	cout << "Page: " << Table[pagenumber, offset]->pagenumber << endl;
-	cout << "Offset: " << Table[pagenumber, offset]->offset << endl;
-	cout << "Data word: " << Table[pagenumber, offset]->word << endl;
-
-	return 1;
-}
-
 int pagetable::breakdown(int address, int & result_pagenumber, int & result_offset)
 {
 	int temp_mask = 0;
@@ -112,9 +102,35 @@ int pagetable::breakdown(int address, int & result_pagenumber, int & result_offs
 	return 1;
 }
 
-int pagetable::load(int address)
+int pagetable::probe(int pagenumber, int offset)
+{
+	if ((pagenumber == 0) && (offset == 0) && (Table[pagenumber, offset] == 0))
+		return 0; // Everything is 0, the address doesn't exist
+	else return 1; // The address exists return true;
+}
+
+int pagetable::probe(int address)
 {
 	int pagenumber, offset;
+	breakdown(address, pagenumber, offset);
+
 	
 }
 
+int pagetable::load(int address)
+{
+	int pagenumber, offset;
+	breakdown(address, pagenumber, offset);
+
+	if ()
+}
+
+int pagetable::display(int address)
+{
+	// Assume the address exists
+	cout << "Page: " << Table[pagenumber, offset]->pagenumber << endl;
+	cout << "Offset: " << Table[pagenumber, offset]->offset << endl;
+	cout << "Data word: " << Table[pagenumber, offset]->word << endl;
+
+	return 1;
+}
