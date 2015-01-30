@@ -1,0 +1,159 @@
+NAME: Sean Hendrickson
+DATE: 1/26/2015
+DESC: Worklog for ECE 486 final project
+
+[ISA Simulator]
+
+My current task is to parse an input file
+I have already started the project so right now
+the worklog will lack in details.
+
+[Test 1]
+Created basic test to see if data is being parsed 
+correctly for a correctly written input file.
+file: test.txt
+
+Result: everything works.
+
+ALGORITHM: more specific parsing
+  Create string to hold id1, id2, address1, address2
+  Create numberCounter = 0
+  Create addressCounter = 0
+  Create lineCounter = 0
+  WHILE(not end of file) 
+    increment lineCounter  
+	WHILE(not end of line)
+	  IF(current character is a number)
+	    IF(number character is an octal number)
+		  IF(numberCounter < 2 AND addressCounter == 0)
+		    add current character to id1
+			increment numberCounter
+		  ELSE IF(numberCounter < 2 AND addressCounter == 1)
+		    add current character to id2
+			increment numberCounter
+		  ELSE IF(numberCounter >= 2 AND addressCounter == 0)
+		    add current character to address1
+			increment numberCounter
+		  ELSE IF(numberCounter >= 2 AND addressCounter == 1)
+		    add current character to address2
+			increment numberCounter
+	    ELSE number not octal
+		  notify line number of error
+		  exit program
+		ENDIF
+		
+		IF(number counter >= 5)
+		  return error and line number since too many numbers
+		  exit program 
+		ENDIF
+		
+	  ELSE character is not a number
+	    ignore the character 
+	END WHILE
+	
+	IF(no numbers in line)
+	  output line number of error
+	  end the program
+	ENDIF
+	
+	set numberCounter to 0
+	IF(addressCounter is 0) THEN
+	  set addressCounter to 1
+	ELSE
+	  set addressCounter to 0
+	
+	use ids and addresses to determine opcode, I, M, and offset
+	for the current line since no errors were found
+  END WHILE	
+END ALGORITHM
+
+There is a problem with this algorithm so it needs to be revised
+
+ALGORITHM: more specific parsing
+  Create string to hold id1, id2, address1, address2
+  Create numberCounter = 0
+  Create addressCounter = 0
+  Create lineCounter = 1
+  create addressComplete bool variable
+  WHILE(not end of file) 
+    since beginning of line and first address
+	set addressCounter to 0
+	set numberCounter to 0
+	set addressComplete to FALSE
+	WHILE(both addresses not obtained)
+	  WHILE(not end of line)
+	    IF(addressCounter == 0)
+		  IF(numberCounter < 1)
+		    add current number to ID1 if valid
+			increment numberCounter
+		  ELSE IF(numberCounter >= 1)
+		    add current number to address1 if valid
+			increment numberCounter
+		  ELSE
+		    must be some other character so do nothing
+		  ENDIF
+	    ENDIF
+	    IF(addressCounter == 1)
+		  IF(numberCounter < 1)
+		    add current number to ID2 if valid
+			increment numberCounter
+		  ELSE IF(numberCounter >= 1)
+		    add current number to address2 if valid
+			increment numberCounter
+		  ELSE
+		    must be some other character so do nothing
+		  ENDIF
+	    ENDIF
+		IF(numberCounter > the maximum allowed numbers)
+		    return an error and exit program
+		ENDIF
+	  ENDWHILE (end of line)
+	 
+	  IF(no characters found in line)
+	    assume line was garbage ex. typo newline character
+		do not change addressCounter
+	    move to next line
+	  ELSE(appropriate number of characters found)
+	    IF(addressCounter == 0)
+		  set addressCounter to 1
+		  increment lineCounter
+		ELSE
+		  set addressCounter to 0
+		  increment lineCounter
+		  indicate address finished
+		  combine addresses
+		ENDIF
+	  ENDIF
+	  set numberCounter to 0
+	ENDWHILE (both addresses obtained)
+	  
+	use ids and addresses to determine opcode, I, M, and offset
+	for the current line since no errors were found
+  END WHILE (end of file)
+	
+END ALGORITHM
+
+[Test 2]
+Need to test that file can handle extra spaces and tabs
+in file.  using test2.txt I found that the new algorithm 
+handles additional spaces but goes into an endless loop 
+after the last line of the file is finished.
+
+after making some changes to the code, it now works
+with any number of tabs, spaces, newlines, and characters
+inserted throughout the text file.  
+current error = newline after last character causes 
+                infinite loop.
+				
+ALL WORKING
+
+input found in test2.txt
+output found in output2
+backing up this code as ~ISASimulator_old2
+created test3.txt for next set of tests
+
+
+[NEXT STEP AFTER STUFF WORKING]
+[LOAD STUFF INTO MEMORY]
+  int MEM_LOAD(int)
+  void MEM_STORE(int addr, int data)

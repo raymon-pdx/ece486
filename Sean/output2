@@ -1,0 +1,173 @@
+file found
+currentChar =
+lineC = 1, addrC = 0, numC = 0
+id1 = , id2 = , addr1 = , addr2 =
+line1, line has no numbers
+currentChar =
+lineC = 2, addrC = 0, numC = 0
+id1 = , id2 = , addr1 = , addr2 =
+currentChar = 1
+lineC = 2, addrC = 0, numC = 1
+id1 = 1, id2 = , addr1 = , addr2 =
+currentChar = 2
+lineC = 2, addrC = 0, numC = 2
+id1 = 1, id2 = , addr1 = 2, addr2 =
+currentChar = f
+lineC = 2, addrC = 0, numC = 2
+id1 = 1, id2 = , addr1 = 2, addr2 =
+currentChar = g
+lineC = 2, addrC = 0, numC = 2
+id1 = 1, id2 = , addr1 = 2, addr2 =
+currentChar = 3
+lineC = 2, addrC = 0, numC = 3
+id1 = 1, id2 = , addr1 = 23, addr2 =
+currentChar =
+lineC = 2, addrC = 0, numC = 3
+id1 = 1, id2 = , addr1 = 23, addr2 =
+currentChar =
+lineC = 2, addrC = 0, numC = 3
+id1 = 1, id2 = , addr1 = 23, addr2 =
+currentChar =
+lineC = 2, addrC = 0, numC = 3
+id1 = 1, id2 = , addr1 = 23, addr2 =
+currentChar = 4
+lineC = 3, addrC = 1, numC = 1
+id1 = 1, id2 = 4, addr1 = 23, addr2 =
+currentChar = #
+lineC = 3, addrC = 1, numC = 1
+id1 = 1, id2 = 4, addr1 = 23, addr2 =
+currentChar = $
+lineC = 3, addrC = 1, numC = 1
+id1 = 1, id2 = 4, addr1 = 23, addr2 =
+currentChar = @
+lineC = 3, addrC = 1, numC = 1
+id1 = 1, id2 = 4, addr1 = 23, addr2 =
+currentChar = %
+lineC = 3, addrC = 1, numC = 1
+id1 = 1, id2 = 4, addr1 = 23, addr2 =
+currentChar = &
+lineC = 3, addrC = 1, numC = 1
+id1 = 1, id2 = 4, addr1 = 23, addr2 =
+currentChar = *
+lineC = 3, addrC = 1, numC = 1
+id1 = 1, id2 = 4, addr1 = 23, addr2 =
+currentChar = 5
+lineC = 3, addrC = 1, numC = 2
+id1 = 1, id2 = 4, addr1 = 23, addr2 = 5
+currentChar = f
+lineC = 3, addrC = 1, numC = 2
+id1 = 1, id2 = 4, addr1 = 23, addr2 = 5
+currentChar = 6
+lineC = 3, addrC = 1, numC = 3
+id1 = 1, id2 = 4, addr1 = 23, addr2 = 56
+***** ADDRESS BREAKDOWN *****
+binary address = 010011101110
+binary opcode = 010
+OP-CODE=2
+I=0
+M=1
+FINAL OFFSET = 110
+ADDRESS [ OPCODE | I | M | OFFSET ]
+ADDRESS [ 2 | 0 | 1 | 110 ]
+
+currentChar =
+lineC = 4, addrC = 0, numC = 0
+id1 = , id2 = , addr1 = , addr2 =
+currentChar = 0
+lineC = 4, addrC = 0, numC = 1
+id1 = 0, id2 = , addr1 = , addr2 =
+currentChar = f
+lineC = 4, addrC = 0, numC = 1
+id1 = 0, id2 = , addr1 = , addr2 =
+currentChar = g
+lineC = 4, addrC = 0, numC = 1
+id1 = 0, id2 = , addr1 = , addr2 =
+currentChar = /
+lineC = 4, addrC = 0, numC = 1
+id1 = 0, id2 = , addr1 = , addr2 =
+currentChar = /
+lineC = 4, addrC = 0, numC = 1
+id1 = 0, id2 = , addr1 = , addr2 =
+currentChar = /
+lineC = 4, addrC = 0, numC = 1
+id1 = 0, id2 = , addr1 = , addr2 =
+currentChar = g
+lineC = 4, addrC = 0, numC = 1
+id1 = 0, id2 = , addr1 = , addr2 =
+currentChar = s
+lineC = 4, addrC = 0, numC = 1
+id1 = 0, id2 = , addr1 = , addr2 =
+currentChar = 2
+lineC = 4, addrC = 0, numC = 2
+id1 = 0, id2 = , addr1 = 2, addr2 =
+currentChar = 3
+lineC = 4, addrC = 0, numC = 3
+id1 = 0, id2 = , addr1 = 23, addr2 =
+currentChar =
+lineC = 4, addrC = 0, numC = 3
+id1 = 0, id2 = , addr1 = 23, addr2 =
+currentChar =
+lineC = 4, addrC = 0, numC = 3
+id1 = 0, id2 = , addr1 = 23, addr2 =
+currentChar =
+lineC = 4, addrC = 0, numC = 3
+id1 = 0, id2 = , addr1 = 23, addr2 =
+currentChar = 0
+lineC = 5, addrC = 1, numC = 1
+id1 = 0, id2 = 0, addr1 = 23, addr2 =
+currentChar = 4
+lineC = 5, addrC = 1, numC = 2
+id1 = 0, id2 = 0, addr1 = 23, addr2 = 4
+currentChar =
+lineC = 5, addrC = 1, numC = 2
+id1 = 0, id2 = 0, addr1 = 23, addr2 = 4
+currentChar = 5
+lineC = 5, addrC = 1, numC = 3
+id1 = 0, id2 = 0, addr1 = 23, addr2 = 45
+***** ADDRESS BREAKDOWN *****
+binary address = 010011100101
+binary opcode = 010
+OP-CODE=2
+I=0
+M=1
+FINAL OFFSET = 101
+ADDRESS [ OPCODE | I | M | OFFSET ]
+ADDRESS [ 2 | 0 | 1 | 101 ]
+
+currentChar = 1
+lineC = 6, addrC = 0, numC = 1
+id1 = 1, id2 = , addr1 = , addr2 =
+currentChar = 6
+lineC = 6, addrC = 0, numC = 2
+id1 = 1, id2 = , addr1 = 6, addr2 =
+currentChar =
+lineC = 6, addrC = 0, numC = 2
+id1 = 1, id2 = , addr1 = 6, addr2 =
+currentChar = 2
+lineC = 6, addrC = 0, numC = 3
+id1 = 1, id2 = , addr1 = 62, addr2 =
+currentChar =
+lineC = 6, addrC = 0, numC = 3
+id1 = 1, id2 = , addr1 = 62, addr2 =
+currentChar = f
+lineC = 6, addrC = 0, numC = 3
+id1 = 1, id2 = , addr1 = 62, addr2 =
+currentChar = s
+lineC = 6, addrC = 0, numC = 3
+id1 = 1, id2 = , addr1 = 62, addr2 =
+currentChar = g
+lineC = 6, addrC = 0, numC = 3
+id1 = 1, id2 = , addr1 = 62, addr2 =
+currentChar =
+lineC = 6, addrC = 0, numC = 3
+id1 = 1, id2 = , addr1 = 62, addr2 =
+line7, line has no numbers
+line8, line has no numbers
+line9, line has no numbers
+
+************************
+* END OF FILE DETECTED *
+************************
+
+ending program since address not complete
+Press ENTER to end program
