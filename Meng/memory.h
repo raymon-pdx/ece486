@@ -23,11 +23,12 @@ class pagetable
 {
 public:
 	pagetable(int numberofpages, int capacityofpage); // constructor
-	~pagetable(); // deconstructor
+	~pagetable(); // destructor
 	int load(int address); // wrapper function interacting with "bits" module
 	int store(int address, int value); // wrapper function interacting with "bits" module
 	int probe(int address); // quick probe to see if an address exists
 	int display(int address); // quick display of an entry
+	int clear(int address); // wrapper function for "clear" in private
 private:
 	int add(entry & to_add); // add new memory unit data into page table
 	int clear(int pagenumber, int offset); // clear a certain memory unit

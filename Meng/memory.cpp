@@ -26,11 +26,11 @@ pagetable::~pagetable()
 			if (Table[i, j])
 			{
 				delete Table[i, j];
-				Table[i, j] = NULL;
+				Table[i, j] = NULL; // Set every ptr in 2d array to NULL
 			}
 		}
 	}
-	Table = NULL;
+	Table = NULL; // Clear entire page table
 
 	number_of_pages = 0;
 	capacity_of_page = 0;
@@ -52,7 +52,7 @@ int pagetable::add(entry & to_add)
 
 int pagetable::clear(int pagenumber, int offset)
 {
-	// Assume the address is exists
+	// Assume the address exists
 	// and delete permission granted
 	Table[pagenumber, offset]->pagenumber = 0;
 	Table[pagenumber, offset]->offset = 0;
@@ -61,7 +61,7 @@ int pagetable::clear(int pagenumber, int offset)
 
 	delete Table[pagenumber, offset]; // Delete PTE
 
-	Table[pagenumber, offset] = NULL;
+	Table[pagenumber, offset] = NULL; // Clear this ptr
 
 	return 1;
 }
@@ -73,7 +73,7 @@ int pagetable::retrieve(int pagenumber, int offset, entry & retrieved)
 	retrieved.offset = Table[pagenumber, offset]->offset;
 	retrieved.word = Table[pagenumber, offset]->word;
 
-	return 1;
+	return 1; // execution successful
 }
 
 int pagetable::breakdown(int address, int & result_pagenumber, int & result_offset)
@@ -114,7 +114,9 @@ int pagetable::probe(int address)
 	int pagenumber, offset;
 	breakdown(address, pagenumber, offset);
 
-	
+	if (probe(pagenumber, offset))
+		return 1; // If address exists return true;
+	else return 0; // Otherwise return 0;	
 }
 
 int pagetable::load(int address)
@@ -122,15 +124,123 @@ int pagetable::load(int address)
 	int pagenumber, offset;
 	breakdown(address, pagenumber, offset);
 
-	if ()
+	if (probe(pagenumber, offset))
+	{
+		// If address exists, start to load memory
+		entry temp;
+		if (retrieve(pagenumber, offset, temp))
+		{
+			return temp.word; // Return data word
+		}
+		else return -1; // Retrieve function failed
+	}
+	else
+	{
+		// Address does not exist
+		cout << "Address non-existent" << endl;
+		return 0;
+	}
+
+}
+
+int pagetable::store(int address, int value)
+{
+	int pagenumber, offset;
+	breakdown(address, pagenumber, offset);
+
+	if (probe(pagenumber, offset))
+	{
+		// If address exists, prompt user
+		char response = 'n';
+		cout << "Address occupied; Overwrite?";
+		cin >> response;
+		cin.ignore(100, '\n');
+		if (toupper(response) == 'Y')
+		{
+			// Overwrite granted
+			entry to_add;
+			to_add.pagenumber = pagenumber;
+			to_add.offset = offset;
+			to_add.word = value;
+			if (add(to_add))
+				return 1; // Execution successful
+			else return -1; // "add" function failed
+		}
+		else
+		{
+			// User chose not to overwrite
+			cout << "Overwrite aborted" << endl;
+			return 1;
+		}
+	}
+	else
+	{
+		// Address does not exist, store entry
+		entry to_add;
+		to_add.pagenumber = pagenumber;
+		to_add.offset = offset;
+		to_add.word = value;
+		if (add(to_add))
+			return 1; // Execution successful
+		else return -1; // "add" function failed
+	}
+	return 0; // For some unknown reason it got to this point
 }
 
 int pagetable::display(int address)
 {
-	// Assume the address exists
-	cout << "Page: " << Table[pagenumber, offset]->pagenumber << endl;
-	cout << "Offset: " << Table[pagenumber, offset]->offset << endl;
-	cout << "Data word: " << Table[pagenumber, offset]->word << endl;
+	int pagenumber, offset;
+	breakdown(address, pagenumber, offset);
 
-	return 1;
+	if (probe(pagenumber, offset))
+	{
+		// If address exists, start to display
+		cout << "Page: " << Table[pagenumber, offset]->pagenumber << endl;
+		cout << "Offset: " << Table[pagenumber, offset]->offset << endl;
+		cout << "Data word: " << Table[pagenumber, offset]->word << endl;
+		return 1;
+	}
+	else
+	{
+		// Address is empty
+		cout << "Address non-existent" << endl;
+		return 0;
+	}
+}
+
+int pagetable::clear(int address)
+{
+	int pagenumber, offset;
+	breakdown(address, pagenumber, offset);
+
+	if (probe(pagenumber, offset))
+	{
+		// If address exists, prompt user
+		char response = 'n';
+		cout << "Address occupied; Delete?";
+		cin >> response;
+		cin.ignore(100, '\n');
+		if (toupper(response) == 'Y')
+		{
+			// Delete granted
+			if (clear(pagenumber, offset))
+				return 1; // Execution successful
+			else
+			{
+				cout << "Delete failed" << endl;
+				return -1;
+			}
+		}
+		else
+		{
+			// User chose not to delete
+			cout << "Delete aborted" << endl;
+			return 1;
+		}
+	}
+	else
+	{
+		cout << "Address non-existent" << endl;
+		return 0;
+	}
 }

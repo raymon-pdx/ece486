@@ -22,3 +22,19 @@ The occupied is not necessary; as long as there's a check to see if it is NULL.
 Add "probe" public function to display an entry to see if it exists.
 Add separate "breakdown" private function to break down address into pagenumber + offset
 Constructor now takes in a whole address (up to 16 bits) and then use "breakdown" to get correct number of pages and capacity of page
+
+1/30/15
+
+Create probe function
+breakdown function done
+
+1/31/15
+
+Added 2nd probe function for convenience (in private);
+Load and Store done
+Display done
+Clear done
+
+To-do:
+Verify reconfigurable settings
+main function to test
