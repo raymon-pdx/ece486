@@ -15,6 +15,7 @@ Implement correct clock cycles
 Function that converts integer to octal 
 
 TO DO:
+~I found out that C() was used ambiguously in our documentation, try to merge with Evan's code when you have the time~ -Evan
 Implement uInstruction - Group 1
 Output tracefile in correct format
 

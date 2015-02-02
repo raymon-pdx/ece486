@@ -31,7 +31,7 @@ void BitTwiddle::PDP_AND(bool addr_bit,bool mem_page,int offset){
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
     increment_PC();
 
-    MEM_STORE(AC,MEM_LOAD(AC) & MEM_LOAD(EAddr));
+    AC=AC & MEM_LOAD(EAddr);
     return;
 }
 
@@ -42,18 +42,20 @@ void BitTwiddle::PDP_TAD(bool addr_bit,bool mem_page,int offset){
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
     increment_PC();
 
-    int adda = MEM_LOAD(AC);
+    int adda = AC;
     int addb = MEM_LOAD(EAddr);    
     int addc = adda + addb;
 
+    /* OVERFLOW LOGIC
     if(adda&(1<<(REGISTERSIZE-1)) == addb&(1<<(REGISTERSIZE-1)) 
     && addb&(1<<(REGISTERSIZE-1)) == addc&(1<<(REGISTERSIZE-1))) { //compare the sign of a b and c, check for overflow
         //overflow=0; //no overflow
     }else{
         //overflow=1; //overflow
     }
+    */
 
-    MEM_STORE(AC,addc);//carry and overflow are removed by the memory module's code
+    AC=addc & ((1<<REGISTERSIZE)-1);//carry and overflow are removed
 
     if((1<<REGISTERSIZE) == addc&(1<<REGISTERSIZE)) link = !link;//compliment link if carry out
 
@@ -67,20 +69,23 @@ void BitTwiddle::PDP_ISZ(bool addr_bit,bool mem_page,int offset){
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
     int C_EAddr = MEM_LOAD(EAddr);
     increment_PC();
-    if(C_EAddr){
-        int adda=MEM_LOAD(AC);   
-        int addc=adda + 1;
 
+    int adda=AC;   
+    int addc=adda + 1;
+
+    /* OVERFLOW LOGIC
         if((adda)&(1<<(REGISTERSIZE-1))==0 
         && (addc)&(1<<(REGISTERSIZE-1))==0) { //compare the sign of a and c, check for overflow
             //overflow=0; //no overflow
         }else{
             //overflow=1; //overflow
         }
+    */
 
-        MEM_STORE(AC,addc);//carry and overflow are removed by the memory module's code
-    }else{
-        MEM_STORE(PC,MEM_LOAD(PC)+1); //skip if zero
+    AC=addc & ((1<<REGISTERSIZE)-1);//carry and overflow are removed
+
+    if(!((C_EAddr + 1) & ((1<<REGISTERSIZE)-1))){
+        increment_PC();; //skip if zero
     }
     return;
 }
@@ -93,10 +98,10 @@ void BitTwiddle::PDP_DCA(bool addr_bit,bool mem_page,int offset)
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
     increment_PC();
     
-    // take contents of AC and place into content of EAddr
-    MEM_STORE(EAddr,MEM_LOAD(AC));
-    // store 0 into the content of AC (clear AC)
-    MEM_STORE(AC, 0);
+    // take AC and place into content of EAddr
+    MEM_STORE(EAddr,AC);
+    // store 0 into AC (clear AC)
+    AC = 0;
 }
 
 
@@ -108,9 +113,9 @@ void BitTwiddle::PDP_JMS(bool addr_bit,bool mem_page,int offset)
     increment_PC();
     
     // take contents of PC and place into content of EAddr
-    MEM_STORE(EAddr,MEM_LOAD(PC));
-    // take EAddr, add 1, and store into content of PC
-    MEM_STORE(PC, EAddr + 1);
+    MEM_STORE(EAddr,PC);
+    // take EAddr, add 1, and store into PC
+    PC = (EAddr + 1) & ((1<<REGISTERSIZE)-1);//carry and overflow are removed
 }
 
 
@@ -121,8 +126,8 @@ void BitTwiddle::PDP_JMP(bool addr_bit,bool mem_page,int offset)
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
     increment_PC();
 
-    // take EAddr and store into content of PC
-    MEM_STORE(PC, EAddr);
+    // take EAddr and store into PC
+    PC= EAddr;
 }
 
 
@@ -207,7 +212,7 @@ int BitTwiddle::find_EAddr(bool addr_bit,bool mem_page,int offset){
 
 
 void BitTwiddle::increment_PC(){
-    PC=(PC++) & ((1<<REGISTERSIZE)-1);
+    PC=(PC + 1) & ((1<<REGISTERSIZE)-1);
     return;
 }
 
