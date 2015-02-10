@@ -15,6 +15,17 @@ pagetable::pagetable(int numberofpages, int capacityofpage)
 	capacity_of_page = capacityofpage;
 
 	Table = new entry *[number_of_pages, capacity_of_page];
+
+	for (int i = 0; i < number_of_pages; ++i)
+	{
+		for (int j = 0; j < capacity_of_page; ++j)
+		{
+			if (Table[i, j])
+			{
+				Table[i, j] = NULL; // Set every ptr in 2d array to NULL
+			}
+		}
+	}
 }
 
 pagetable::~pagetable()
@@ -104,7 +115,7 @@ int pagetable::breakdown(int address, int & result_pagenumber, int & result_offs
 
 int pagetable::probe(int pagenumber, int offset)
 {
-	if ((pagenumber == 0) && (offset == 0) && (Table[pagenumber, offset] == 0))
+	if (Table[pagenumber,offset] == NULL)
 		return 0; // Everything is 0, the address doesn't exist
 	else return 1; // The address exists return true;
 }

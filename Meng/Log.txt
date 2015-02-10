@@ -38,3 +38,12 @@ Clear done
 To-do:
 Verify reconfigurable settings
 main function to test
+
+2/9/15
+Main test function in the works, temporarily ignore reconfigurable settings
+Try to display page 1 offset 1 (which is 129 when nothing actually exists), probe function seems to have failed
+The problem comes from the way pagetable was constructed.
+Modified the constructor so that each ptr in 2d array would be set to NULL when constructed
+Display works now (whether existing memory or not)
+Store without overwrite works now
+Load an existing memory works now

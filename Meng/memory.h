@@ -14,9 +14,9 @@ const int LineSize = 7; // 7 bits = 128
 // One entry contains:
 struct entry
 {
-	int pagenumber=0; // page number (5 bits by default)
-	int offset=0; // page offset (7 bits by default)
-	int word=0; // data (12 bits by default)
+	int pagenumber; // page number (5 bits by default)
+	int offset; // page offset (7 bits by default)
+	int word; // data (12 bits by default)
 };
 
 class pagetable
