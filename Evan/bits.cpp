@@ -46,15 +46,6 @@ void BitTwiddle::PDP_TAD(bool addr_bit,bool mem_page,int offset){
     int addb = MEM_LOAD(EAddr);    
     int addc = adda + addb;
 
-    /* OVERFLOW LOGIC
-    if(adda&(1<<(REGISTERSIZE-1)) == addb&(1<<(REGISTERSIZE-1)) 
-    && addb&(1<<(REGISTERSIZE-1)) == addc&(1<<(REGISTERSIZE-1))) { //compare the sign of a b and c, check for overflow
-        //overflow=0; //no overflow
-    }else{
-        //overflow=1; //overflow
-    }
-    */
-
     AC=addc & ((1<<REGISTERSIZE)-1);//carry and overflow are removed
 
     if((1<<REGISTERSIZE) == addc&(1<<REGISTERSIZE)) link = !link;//compliment link if carry out
@@ -72,15 +63,6 @@ void BitTwiddle::PDP_ISZ(bool addr_bit,bool mem_page,int offset){
 
     int adda=AC;   
     int addc=adda + 1;
-
-    /* OVERFLOW LOGIC
-        if((adda)&(1<<(REGISTERSIZE-1))==0 
-        && (addc)&(1<<(REGISTERSIZE-1))==0) { //compare the sign of a and c, check for overflow
-            //overflow=0; //no overflow
-        }else{
-            //overflow=1; //overflow
-        }
-    */
 
     AC=addc & ((1<<REGISTERSIZE)-1);//carry and overflow are removed
 
@@ -175,7 +157,69 @@ void BitTwiddle::PDP_IO(int device_num,int opcode){
 }
 
 
+void BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
 
+
+    bool bit5  = read_bit_x(offset, 5);
+    bool bit6  = read_bit_x(offset, 6);
+    bool bit7  = read_bit_x(offset, 7);
+    bool bit8  = read_bit_x(offset, 8);
+    bool bit9  = read_bit_x(offset, 9);
+    bool bit10 = read_bit_x(offset,10);
+    bool bit11 = read_bit_x(offset,11);
+
+    if(!bit3){                          //group 1 uinstructions
+
+
+
+    }else if(!bit11){                   //group 2 uinstructions            
+        if(bit8){                       //AND subgroup and SKP
+            bool cond5=1; //combinations will skip when all conditions are true.
+            bool cond6=1; //so we do not skip if any one condition is false.
+            bool cond7=1; //the idea is that these get flagged false when a bit is asserted and it is conditionally false
+            // cond 5 6 and 7 are then ANDed together at the end and if true, skip.
+            if(bit5){                   //SPA
+                cond5=!read_bit_x(AC, 0);//is the 0th bit of AC a 0?
+            }
+            if(bit6){                   //SNA
+                cond6=(AC!=0)//is AC not 0?
+            }
+            if(bit7){                   //SZL
+                cond7=!link;//is link 0?
+            }
+            if(cond5 && cond6 && cond57){
+                return;                 //the skip for SPA,SNA,SZL, and SKP
+            }
+        }else{                          //OR subgroup
+            if(bit5 && read_bit_x(AC, 0)){//SMA
+                return; //is the 0th bit of AC a 1?
+            }
+            if(bit6 && (AC==0)){            //SZA
+                return; //is AC 0?
+            }
+            if(bit7 && link){           //SNL
+                return; //is link 1?
+            }
+        }
+                                        //CLA OSR and HLT
+        if(bit4){                       //CLA
+            AC=0;
+        }
+        if(bit9){                       //OSR
+        //TODO: What is a switch register?
+        //    SR=SR|AC;
+        }
+        if(bit10){                      //HLT
+        //TODO: halt. What does that mean?
+        //    while(1);
+        }
+    }else{                              //group 3 uinstructions
+
+
+    }
+    return;
+
+}
 
 
 
@@ -217,6 +261,15 @@ void BitTwiddle::increment_PC(){
 }
 
 
+
+bool BitTwiddle::read_bit_x(int input,int x){
+   return 1 & (input>>(REGISTERSIZE - (x + 1)));
+}
+
+
+
+
+//temp functions
 int BitTwiddle::MEM_LOAD(int dummy){
 return 0;
 }

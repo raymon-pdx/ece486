@@ -30,7 +30,8 @@ BitTwiddle();
 
     //TODO IO and uinstructions have specal inputs, not the normal ones.
     void PDP_IO(int device_num,int opcode);
-    //void PDP_uintructions(bool addr_bit,bool mem_page,int offset);
+  
+    void PDP_uintructions(bool group, bool cla, int offset);
 
 private:
 
@@ -50,6 +51,8 @@ private:
    //function for finding the effective address
    int find_EAddr(bool addr_bit,bool mem_page,int offset);
    void increment_PC();
+   bool read_bit_x(int input,int x);
+
 
    int MEM_LOAD(int dummy);
    void MEM_STORE(int dummy1,int dummy2);
