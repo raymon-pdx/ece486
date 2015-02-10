@@ -9,11 +9,11 @@ Functions achieved:
 5. Changed LLL to 2d array of ptrs
 6. prompt user when deleting and overwriting
 7. Display a memory entry
+8. Main test function (assuming no gibberish input)
 
 Things to work on:
-1. Consider extremely large page table (using long instead of int)
-2. Main test function
-3. What if any of the arguments passed into main are gibberish?
+1. Extremely large page table with reconfigurable settings
+2. Main test function with gibberish inputs (Idiot-proof)
 
 Things to test:
 1. Load an entry

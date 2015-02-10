@@ -149,7 +149,7 @@ int pagetable::load(int address)
 	{
 		// Address does not exist
 		cout << "Address non-existent" << endl;
-		return 0;
+		return -1;
 	}
 
 }

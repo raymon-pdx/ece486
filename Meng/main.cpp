@@ -39,6 +39,30 @@ int main()
 	cout << "Load value from memory address " << address << ";\n";
 	cout << "Temp value: " << temp << "\n";
 
+	// Now try to load a memory that does not exist, temp value should be -1
+	temp = test.load(address + 1);
+	cout << "Load value from memory address " << address + 1 << ";\n";
+	cout << "Temp value: " << temp << "\n";
+
+	// Now try to overwrite a memory address
+	if (test.store(address, 999))
+		cout << "Overwrite works;\n";
+	cout << "Display address again\n";
+	test.display(address);
+
+	// Now try to delete an entry that does not exist
+	cout << "Deleting from address " << address + 1 << ";\n";
+	if (test.clear(address + 1))
+		cout << "Something non-existent got deleted\n";
+	else cout << "Test successful\n";
+
+	// Now try to delete an entry that does exist
+	cout << "Deleting from address " << address << ";\n";
+	if (test.clear(address))
+		cout << "Delete successful\n";
+	cout << "Display address again\n";
+	test.display(address);
+
 	cin.get();
 	
 }

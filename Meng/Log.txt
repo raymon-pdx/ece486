@@ -47,3 +47,11 @@ Modified the constructor so that each ptr in 2d array would be set to NULL when 
 Display works now (whether existing memory or not)
 Store without overwrite works now
 Load an existing memory works now
+Loading a non-existent memory works now
+Overwrite (user granted) works now
+Overwrite (user aborted) works now
+Deleting a non-existent entry works now
+Deleting an existing entry (user granted) works now
+Deleting an existing entry (user aborted) works now
+
+Next step if reconfigurable settings and idiot-proof.
