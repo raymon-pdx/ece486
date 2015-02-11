@@ -5,14 +5,18 @@
 #include <iostream>
 #include <cstring>
 #include <cctype>
+#include <cmath>
 #include "memory.h"
 
 using namespace std;
 
 int main()
 {
+	// Test register size, number of pages and page capacity
+
 	// Construct a pagetable with 32 pages, and 128 entries for each page
-	pagetable test(32, 128);
+	pagetable test(int(pow(2,PageSize)), int(pow(2,LineSize)));
+	// NOTICE: type conversion works in Visual Studio
 	// so pagenumber goes as high as 32 and offset goes as high as 128
 
 	// Try to display an address when nothing actually exists
@@ -26,11 +30,16 @@ int main()
 	test.display(address);
 	// page 1 offset 1 should return a "non-exist".
 
-	if (test.store(address, 1001))
+	cout << "Value to store: ";
+	int test_value;
+	cin >> test_value;
+	cin.ignore(100, '\n');
+	cout << "Storing test value " << test_value << endl;
+	if (test.store(address, test_value))
 		cout << "Value stored;\n";
 	// Store a value of 1001 into address 129 which is page 1 offset 1
 
-	cout << "Display address again";
+	cout << "Display address again\n";
 	test.display(address);
 
 	// Now try to load an address
@@ -40,18 +49,27 @@ int main()
 	cout << "Temp value: " << temp << "\n";
 
 	// Now try to load a memory that does not exist, temp value should be -1
+	cout << "Loading from empty entry at address " << address + 1 << endl;
 	temp = test.load(address + 1);
-	cout << "Load value from memory address " << address + 1 << ";\n";
-	cout << "Temp value: " << temp << "\n";
-
+	if (temp != -1)
+	{
+		cout << "Load value from memory address " << address + 1 << ";\n";
+		cout << "Temp value: " << temp << "\n";
+	}
+	
 	// Now try to overwrite a memory address
-	if (test.store(address, 999))
+	cout << "Value to store: ";
+	cin >> test_value;
+	cin.ignore(100, '\n');
+	cout << "Storing test value " << test_value << endl;
+
+	if (test.store(address, test_value))
 		cout << "Overwrite works;\n";
 	cout << "Display address again\n";
 	test.display(address);
 
 	// Now try to delete an entry that does not exist
-	cout << "Deleting from address " << address + 1 << ";\n";
+	cout << "Deleting from empty address " << address + 1 << ";\n";
 	if (test.clear(address + 1))
 		cout << "Something non-existent got deleted\n";
 	else cout << "Test successful\n";

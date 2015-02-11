@@ -13,7 +13,7 @@ Functions achieved:
 
 Things to work on:
 1. Extremely large page table with reconfigurable settings
-2. Main test function with gibberish inputs (Idiot-proof)
+2. Test reconfigurable settings
 
 Things to test:
 1. Load an entry
@@ -28,4 +28,8 @@ Things to test:
 	2.4 What is address or value is completely wrong?
 	2.5 What if address exceeds page table capacity?
 	2.6 What if value exceeds PTE capacity?
-3. Is page table completely deleted / unallocated after execution? (May need the display function here)
+3. Reconfigure
+	3.1 Correct register size?
+	3.2 Correct page number?
+	3.3 Correct page capacity?
+	3.4 Does every function works properly under the new setup?
