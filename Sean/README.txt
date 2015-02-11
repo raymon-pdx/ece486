@@ -10,16 +10,16 @@ Test for octal numbers
 Handle random characters, (\t,\n, space, A)
 Fixed bug with endless loop if empty line at end of input file
 Detect odd number of valid address lines
+parseAddress placed in function
+get 1 address from text file 
 
 
 IN PROGRESS:
-...Thinking 
+Ussing parser functions to place input in memory
 
 
 TO DO:
-Pass I, M, OFFSET to PDP8 commands
-Memory Operations (I need to discuss what needs to be done here...)
-Make the code better
+Fix documentation in parser.h and parser.cpp
 
 
 Code and Tests
