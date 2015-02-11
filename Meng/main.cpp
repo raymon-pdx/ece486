@@ -15,7 +15,7 @@ int main()
 	// Test register size, number of pages and page capacity
 
 	// Construct a pagetable with 32 pages, and 128 entries for each page
-	pagetable test(int(pow(2,PageSize)), int(pow(2,LineSize)));
+	pagetable test(int(pow(2, PageSize)), int(pow(2, LineSize)));
 	// NOTICE: type conversion works in Visual Studio
 	// so pagenumber goes as high as 32 and offset goes as high as 128
 
@@ -56,7 +56,7 @@ int main()
 		cout << "Load value from memory address " << address + 1 << ";\n";
 		cout << "Temp value: " << temp << "\n";
 	}
-	
+
 	// Now try to overwrite a memory address
 	cout << "Value to store: ";
 	cin >> test_value;
@@ -82,5 +82,5 @@ int main()
 	test.display(address);
 
 	cin.get();
-	
+
 }

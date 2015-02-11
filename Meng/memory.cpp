@@ -116,7 +116,7 @@ int pagetable::breakdown(int address, int & result_pagenumber, int & result_offs
 
 int pagetable::probe(int pagenumber, int offset)
 {
-	if (Table[pagenumber,offset] == NULL)
+	if (Table[pagenumber, offset] == NULL)
 		return 0; // Everything is 0, the address doesn't exist
 	else return 1; // The address exists return true;
 }
@@ -174,7 +174,7 @@ int pagetable::store(int address, int value)
 		// Trim value down to register size
 		cout << "Trimmed down to: " << value << endl;
 	}
-	
+
 	if (probe(pagenumber, offset))
 	{
 		// If address exists, prompt user

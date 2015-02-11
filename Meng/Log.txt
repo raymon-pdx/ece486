@@ -60,4 +60,4 @@ Next step if reconfigurable settings and idiot-proof.
 Evan confirmed that all inputs and outputs would be integers, so no gibberish sent in or out, there's no need to do idiot-proof.
 Reconfigure: register size, number of pages and page capacity.
 Another thing to keep in mind is that if RegSize is smaller than 16 while the value to be stored is larger than RegSize, prompt user and then trim it down.
-One more thing: do a double check to see if address exceeds maximum
+One more thing: do a double check to see if address exceeds maximum. It's achieved last month, so no extra code needed.
