@@ -10,7 +10,8 @@ EAddr calculation
 micro instruction 2
 
 
-to implement:
+to do:
+redo eaddr test
 add comments
 add in verbose print statements.
 
@@ -18,10 +19,10 @@ optional:
 implement some IO
 
 to test:
-test if EAddress works in all for cases
+test if EAddress works in all four cases
 test and
-test if add does nagitive numbers and overflow
-test if add one does nagitive numbers and overflow
+test if add does negative numbers and overflow
+test if add one does negative numbers and overflow
 test memory calls
 test output calls
 test input

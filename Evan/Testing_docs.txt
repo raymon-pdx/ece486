@@ -1,0 +1,81 @@
+TEST1:
+Effective Address Testing:
+
+Testing Zero Page Addressing:
+Bit3=0 Bit4=0 offset=0177o
+EAddress expected: 0177o
+EAddress result:   0177o
+Bit3=0 Bit4=0 offset=0000o
+EAddress expected: 0000o
+EAddress result:   0000o
+
+
+Testing Current Page Addressing:
+Bit3=0 Bit4=1 offset=0177o oldpc=0177o
+EAddress expected: 7777o
+EAddress result:   7777o
+Bit3=0 Bit4=1 offset=0177o oldpc=0176o
+EAddress expected: 7577o
+EAddress result:   7577o
+Bit3=0 Bit4=1 offset=0000o oldpc=0177o
+EAddress expected: 3968
+EAddress result:   3968
+Bit3=0 Bit4=1 offset=0000o oldpc=176o
+EAddress expected: 3840
+EAddress result:   3840
+Bit3=0 Bit4=1 offset=0000o oldpc=0001o
+EAddress expected: 0200o
+EAddress result:   0200o
+Bit3=0 Bit4=1 offset=0000o oldpc=0000o
+EAddress expected: 0000o
+EAddress result:   0000o
+Bit3=0 Bit4=1 offset=0177o oldpc=0001o
+EAddress expected: 255
+EAddress result:   255
+Bit3=0 Bit4=1 offset=0177o oldpc=0000o
+EAddress expected: 0177o
+EAddress result:   0177o
+
+
+Testing Indirect Addressing:
+Bit3=1 Bit4=0 offset=0177o
+EAddress expected: C(0177o)
+EAddress result:   C(0177o)
+Bit3=1 Bit4=0 offset=0000o
+EAddress expected: C(0000o)
+EAddress result:   C(0000o)
+Bit3=1 Bit4=1 offset=0000o oldpc=0177o
+EAddress expected: C(3968)
+EAddress result:   C(3968)
+Bit3=1 Bit4=1 offset=0000o oldpc=0176o
+EAddress expected: C(3840)
+EAddress result:   C(3840)
+Bit3=1 Bit4=1 offset=0000o oldpc=0001o
+EAddress expected: C(0200o)
+EAddress result:   C(0200o)
+Bit3=1 Bit4=1 offset=0000o oldpc=0000o
+EAddress expected: C(0000o)
+EAddress result:   C(0000o)
+Bit3=1 Bit4=1 offset=0177o oldpc=0001o
+EAddress expected: C(255)
+EAddress result:   C(255)
+Bit3=1 Bit4=1 offset=0177o oldpc=0000o
+EAddress expected: C(0177o)
+EAddress result:   C(0177o)
+
+
+Testing Autoindexing:
+Bit3=0 Bit4=0 offset=0007o
+EAddress expected: 0007o
+EAddress result:   0007o
+Bit3=0 Bit4=0 offset=0010o
+EAddress expected: C(0010o)+1
+EAddress result:   C(0010o)+1
+Bit3=0 Bit4=0 offset=0017o
+EAddress expected: C(0017o)+1
+EAddress result:   C(0017o)+1
+Bit3=0 Bit4=0 offset=0020o
+EAddress expected: 0020o
+EAddress result:   0020o
+
+

@@ -33,7 +33,7 @@ BitTwiddle();
   
     void PDP_uintructions(bool group, bool cla, int offset);
 
-private:
+//private:
 
    int AC;          //accumulator
    int PC;          //Program Counter
@@ -56,5 +56,6 @@ private:
 
    int MEM_LOAD(int dummy);
    void MEM_STORE(int dummy1,int dummy2);
+private: //temp here, for testing
 
 };
