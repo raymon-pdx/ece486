@@ -7,18 +7,18 @@ COMPLETE:
 DCA insturction function
 JMS instruction function
 JMP instruction function
-
+Function that converts integer to octal
+   + change to own function outside main
 
 IN PROGRESS:
 Implement function that outputs PDP-8 summary
 Implement correct clock cycles
-Function that converts integer to octal 
+Function for outputting tracefile
+Implement uInstruction - Group 1
 
 TO DO:
 ~I found out that C() was used ambiguously in our documentation, try to merge with Evan's code when you have the time~ -Evan
-Implement uInstruction - Group 1
-Output tracefile in correct format
-
+Add into summary the sub-instructions in micro-instructions
 
 
 TO TEST:
@@ -26,6 +26,11 @@ TO TEST:
 - JMS function
 - JMP function
 - uInstruction (group 1) function
+- ConvertToOctal Function:
+- Test if wrong size value was put in
+
+- double check that 4 values of octal gets printed, including 0000
+
 
 -----------------------------------------------------------
 Project Report:
