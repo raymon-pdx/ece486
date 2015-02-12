@@ -56,6 +56,7 @@ BitTwiddle();
 
    int MEM_LOAD(int dummy);
    void MEM_STORE(int dummy1,int dummy2);
+   int temp;
 private: //temp here, for testing
 
 };

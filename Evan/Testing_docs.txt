@@ -1,4 +1,4 @@
-TEST1:
+TEST 1:
 Effective Address Testing:
 
 Testing Zero Page Addressing:
@@ -11,27 +11,27 @@ EAddress result:   0000o
 
 
 Testing Current Page Addressing:
-Bit3=0 Bit4=1 offset=0177o oldpc=0177o
+Bit3=0 Bit4=1 offset=0177o oldpc=7600o
 EAddress expected: 7777o
 EAddress result:   7777o
-Bit3=0 Bit4=1 offset=0177o oldpc=0176o
+Bit3=0 Bit4=1 offset=0177o oldpc=7400o
 EAddress expected: 7577o
 EAddress result:   7577o
-Bit3=0 Bit4=1 offset=0000o oldpc=0177o
-EAddress expected: 3968
-EAddress result:   3968
-Bit3=0 Bit4=1 offset=0000o oldpc=176o
-EAddress expected: 3840
-EAddress result:   3840
-Bit3=0 Bit4=1 offset=0000o oldpc=0001o
+Bit3=0 Bit4=1 offset=0000o oldpc=7600o
+EAddress expected: 3968o
+EAddress result:   3968o
+Bit3=0 Bit4=1 offset=0000o oldpc=7400o
+EAddress expected: 3840o
+EAddress result:   3840o
+Bit3=0 Bit4=1 offset=0000o oldpc=0200o
 EAddress expected: 0200o
 EAddress result:   0200o
 Bit3=0 Bit4=1 offset=0000o oldpc=0000o
 EAddress expected: 0000o
 EAddress result:   0000o
-Bit3=0 Bit4=1 offset=0177o oldpc=0001o
-EAddress expected: 255
-EAddress result:   255
+Bit3=0 Bit4=1 offset=0177o oldpc=0200o
+EAddress expected: 0377o
+EAddress result:   0377o
 Bit3=0 Bit4=1 offset=0177o oldpc=0000o
 EAddress expected: 0177o
 EAddress result:   0177o
@@ -44,21 +44,21 @@ EAddress result:   C(0177o)
 Bit3=1 Bit4=0 offset=0000o
 EAddress expected: C(0000o)
 EAddress result:   C(0000o)
-Bit3=1 Bit4=1 offset=0000o oldpc=0177o
-EAddress expected: C(3968)
-EAddress result:   C(3968)
-Bit3=1 Bit4=1 offset=0000o oldpc=0176o
-EAddress expected: C(3840)
-EAddress result:   C(3840)
-Bit3=1 Bit4=1 offset=0000o oldpc=0001o
+Bit3=1 Bit4=1 offset=0000o oldpc=7600o
+EAddress expected: C(3968o)
+EAddress result:   C(3968o)
+Bit3=1 Bit4=1 offset=0000o oldpc=7400o
+EAddress expected: C(3840o)
+EAddress result:   C(3840o)
+Bit3=1 Bit4=1 offset=0000o oldpc=0200o
 EAddress expected: C(0200o)
 EAddress result:   C(0200o)
 Bit3=1 Bit4=1 offset=0000o oldpc=0000o
 EAddress expected: C(0000o)
 EAddress result:   C(0000o)
-Bit3=1 Bit4=1 offset=0177o oldpc=0001o
-EAddress expected: C(255)
-EAddress result:   C(255)
+Bit3=1 Bit4=1 offset=0177o oldpc=0200o
+EAddress expected: C(0377o)
+EAddress result:   C(0377o)
 Bit3=1 Bit4=1 offset=0177o oldpc=0000o
 EAddress expected: C(0177o)
 EAddress result:   C(0177o)
@@ -77,5 +77,94 @@ EAddress result:   C(0017o)+1
 Bit3=0 Bit4=0 offset=0020o
 EAddress expected: 0020o
 EAddress result:   0020o
+
+
+
+
+
+TEST 2: 
+Testing the first 6 instuctions:
+
+AND testing:
+C(EAddr)=0000o AC=0000o
+AC Expected: 0000o
+AC result:   0000o
+C(EAddr)=0000o AC=7777o
+AC Expected: 0000o
+AC result:   0000o
+C(EAddr)=7777o AC=0000o
+AC Expected: 0000o
+AC result:   0000o
+C(EAddr)=7777o AC=7777o
+AC Expected: 7777o
+AC result:   7777o
+C(EAddr)=0707o AC=0077o
+AC Expected: 0007o
+AC result:   0007o
+
+TAD testing:
+C(EAddr)=0000o AC=0000o link=0b
+AC Expected: 0000o link: 0b
+AC result:   0000o link: 0b
+C(EAddr)=0001o AC=0000o link=0b
+AC Expected: 0001o link: 0b
+AC result:   0001o link: 0b
+C(EAddr)=0000o AC=0001o link=0b
+AC Expected: 0001o link: 0b
+AC result:   0001o link: 0b
+C(EAddr)=7777o AC=0001o link=0b
+AC Expected: 0000o link: 1b
+AC result:   0000o link: 1b
+C(EAddr)=0001o AC=7777o link=0b
+AC Expected: 0000o link: 1b
+AC result:   0000o link: 1b
+C(EAddr)=0001o AC=7777o link=1b
+AC Expected: 0000o link: 1b
+AC result:   0000o link: 1b
+C(EAddr)=0030o AC=0057o link=0b  //24+47
+AC Expected: 0107o link: 0b      //71
+AC result:   0107o link: 0b
+C(EAddr)=7750o AC=0057o link=0b  //-24+47
+AC Expected: 0027o link: 1b      //23
+AC result:   0027o link: 1b
+C(EAddr)=0030o AC=7721o link=0b  //24+-47
+AC Expected: 7751o link: 0b      //-23
+AC result:   7751o link: 0b
+C(EAddr)=7750o AC=7721o link=0b  //-24+-47
+AC Expected: 7671o link: 1b      //-71
+AC result:   7671o link: 1b
+C(EAddr)=3671o AC=3701o link=0b  //1977+1985
+AC Expected: 7572o link: 0b      //-134
+AC result:   7572o link: 0b
+C(EAddr)=4107o AC=4077o link=0b  //-1977+-1985
+AC Expected: 206o link: 1b       //134
+AC result:   206o link: 1b
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

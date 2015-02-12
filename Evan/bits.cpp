@@ -15,101 +15,24 @@ int main(){
 BitTwiddle bits;
 
 
-    cout<<"\nEffective Address Testing:\n\n";
+    cout<<"\nTesting the first 6 instuctions:\n\n";
 
 
-    cout<<"Testing Zero Page Addressing:\n";
-    cout<<"Bit3=0 Bit4=0 offset=127\n";
-    cout<<"EAddress expected: 127\n";
-    cout<<"EAddress result:   "<<bits.find_EAddr(0,0,127)<<"\n\n";
-    cout<<"Bit3=0 Bit4=0 offset=0\n";
-    cout<<"EAddress expected: 0\n";
-    cout<<"EAddress result:   "<<bits.find_EAddr(0,0,0)<<"\n\n\n";
+    cout<<"C(EAddr)=3671o AC=3701o link=0b  //1977+1985\n";
+    cout<<"AC Expected: 7572o link: 0b      //-134\n";
+    bits.temp=1977;
+    bits.AC=1985;
+    bits.link=0;
+    bits.PDP_TAD(1,0,123);
+    cout<<"AC result:   "<<bits.AC<<" link: "<<bits.link<<"\n\n";
 
-
-    cout<<"Testing Current Page Addressing:\n";
-    cout<<"Bit3=0 Bit4=1 offset=127 oldpc=127\n";
-    cout<<"EAddress expected: 4095\n";
-    bits.PC=127;
-    cout<<"EAddress result:   "<<bits.find_EAddr(0,1,127)<<"\n\n";
-    cout<<"Bit3=0 Bit4=1 offset=127 oldpc=126\n";
-    cout<<"EAddress expected: 3967\n";
-    bits.PC=126;
-    cout<<"EAddress result:   "<<bits.find_EAddr(0,1,127)<<"\n\n";
-    cout<<"Bit3=0 Bit4=1 offset=0 oldpc=127\n";
-    cout<<"EAddress expected: 3968\n";
-    bits.PC=127;
-    cout<<"EAddress result:   "<<bits.find_EAddr(0,1,0)<<"\n\n";
-    cout<<"Bit3=0 Bit4=1 offset=0 oldpc=126\n";
-    cout<<"EAddress expected: 3840\n";
-    bits.PC=126;
-    cout<<"EAddress result:   "<<bits.find_EAddr(0,1,0)<<"\n\n";
-    cout<<"Bit3=0 Bit4=1 offset=0 oldpc=1\n";
-    cout<<"EAddress expected: 128\n";
-    bits.PC=1;
-    cout<<"EAddress result:   "<<bits.find_EAddr(0,1,0)<<"\n\n";
-    cout<<"Bit3=0 Bit4=1 offset=0 oldpc=0\n";
-    cout<<"EAddress expected: 0\n";
-    bits.PC=0;
-    cout<<"EAddress result:   "<<bits.find_EAddr(0,1,0)<<"\n\n";
-    cout<<"Bit3=0 Bit4=1 offset=127 oldpc=1\n";
-    cout<<"EAddress expected: 255\n";
-    bits.PC=1;
-    cout<<"EAddress result:   "<<bits.find_EAddr(0,1,127)<<"\n\n";
-    cout<<"Bit3=0 Bit4=1 offset=127 oldpc=0\n";
-    cout<<"EAddress expected: 127\n";
-    bits.PC=0;
-    cout<<"EAddress result:   "<<bits.find_EAddr(0,1,127)<<"\n\n\n";
-
-
-    cout<<"Testing Indirect Addressing:\n";
-    cout<<"Bit3=1 Bit4=0 offset=127\n";
-    cout<<"EAddress expected: C(127)\n";
-    cout<<"EAddress result:   ";bits.find_EAddr(1,0,127);cout<<"\n\n";
-    cout<<"Bit3=1 Bit4=0 offset=0\n";
-    cout<<"EAddress expected: C(0)\n";
-    cout<<"EAddress result:   ";bits.find_EAddr(1,0,0);cout<<"\n\n";
-    cout<<"Bit3=1 Bit4=1 offset=0 oldpc=127\n";
-    cout<<"EAddress expected: C(3968)\n";
-    bits.PC=127;
-    cout<<"EAddress result:   ";bits.find_EAddr(1,1,0);cout<<"\n\n";
-    cout<<"Bit3=1 Bit4=1 offset=0 oldpc=126\n";
-    cout<<"EAddress expected: C(3840)\n";
-    bits.PC=126;
-    cout<<"EAddress result:   ";bits.find_EAddr(1,1,0);cout<<"\n\n";
-    cout<<"Bit3=1 Bit4=1 offset=0 oldpc=1\n";
-    cout<<"EAddress expected: C(128)\n";
-    bits.PC=1;
-    cout<<"EAddress result:   ";bits.find_EAddr(1,1,0);cout<<"\n\n";
-    cout<<"Bit3=1 Bit4=1 offset=0 oldpc=0\n";
-    cout<<"EAddress expected: C(0)\n";
-    bits.PC=0;
-    cout<<"EAddress result:   ";bits.find_EAddr(1,1,0);cout<<"\n\n";
-    cout<<"Bit3=1 Bit4=1 offset=127 oldpc=1\n";
-    cout<<"EAddress expected: C(255)\n";
-    bits.PC=1;
-    cout<<"EAddress result:   ";bits.find_EAddr(1,1,127);cout<<"\n\n";
-    cout<<"Bit3=1 Bit4=1 offset=127 oldpc=0\n";
-    cout<<"EAddress expected: C(127)\n";
-    bits.PC=0;
-    cout<<"EAddress result:   ";bits.find_EAddr(1,1,127);cout<<"\n\n\n";
-
-
-    cout<<"Testing Autoindexing:\n";
-    cout<<"Bit3=0 Bit4=0 offset=7\n";
-    cout<<"EAddress expected: 7\n";
-    cout<<"EAddress result:   "<<bits.find_EAddr(0,0,7)<<"\n\n";
-    cout<<"Bit3=0 Bit4=0 offset=8\n";
-    cout<<"EAddress expected: C(8)+1\n";
-    cout<<"EAddress result:   ";bits.find_EAddr(0,0,8);cout<<"+1\n\n";
-    cout<<"Bit3=0 Bit4=0 offset=15\n";
-    cout<<"EAddress expected: C(15)+1\n";
-    cout<<"EAddress result:   ";bits.find_EAddr(0,0,15);cout<<"+1\n\n";
-    cout<<"Bit3=0 Bit4=0 offset=16\n";
-    cout<<"EAddress expected: 16\n";
-    cout<<"EAddress result:   "<<bits.find_EAddr(0,0,16)<<"\n\n";
-
-
+    cout<<"C(EAddr)=4107o AC=4077o link=0b  //-1977+-1985\n";
+    cout<<"AC Expected: 206o link: 1b      //134\n";
+    bits.temp=2119;
+    bits.AC=2111;
+    bits.link=0;
+    bits.PDP_TAD(1,0,123);
+    cout<<"AC result:   "<<bits.AC<<" link: "<<bits.link<<"\n\n";
 
 
 }
@@ -117,17 +40,17 @@ BitTwiddle bits;
 
 BitTwiddle::BitTwiddle(){
     AC=0;
-    PC=0;
+    PC=128;         //PC starts at 0200o
     link=0;
 
-   AND_Count=0;        //number of AND instruction
-   TAD_Count=0;    //number of TAD instruction
-   ISZ_Count=0;    //number of ISZ instruction 
-   DCA_Count=0;    //number of DCA instruction
-   JMS_Count=0;    //number of JMS instruction 
-   JMP_Count=0;    //number of JMP instruction 
-   IO_Count=0;     //number of IO instruction 
-   uInstr_Count=0; //number of micro instruction 
+   AND_Count=0;     //number of AND instruction
+   TAD_Count=0;     //number of TAD instruction
+   ISZ_Count=0;     //number of ISZ instruction 
+   DCA_Count=0;     //number of DCA instruction
+   JMS_Count=0;     //number of JMS instruction 
+   JMP_Count=0;     //number of JMP instruction 
+   IO_Count=0;      //number of IO instruction 
+   uInstr_Count=0;  //number of micro instruction 
 }
 
 BitTwiddle::~BitTwiddle(){
@@ -156,7 +79,7 @@ void BitTwiddle::PDP_TAD(bool addr_bit,bool mem_page,int offset){
 
     AC=addc & ((1<<REGISTERSIZE)-1);//carry and overflow are removed
 
-    if((1<<REGISTERSIZE) == addc&(1<<REGISTERSIZE)) link = !link;//compliment link if carry out
+    if((1<<REGISTERSIZE) == (addc&(1<<REGISTERSIZE))) link = !link;//compliment link if carry out
 
     return;
 }
@@ -351,13 +274,13 @@ int BitTwiddle::find_EAddr(bool addr_bit,bool mem_page,int offset){
                 return offset; //00000 cat Offset is our EAddr
             }
         }else{       //bit3=0 bit4=1            
-            return (PC & (((1<<5)-1)<<7) + offset; //PC
+            return ((PC & (((1<<5)-1)<<7)) + offset); //PC
         }
     }else{          
         if(!mem_page){//bit3=1 bit4=0
             return MEM_LOAD(offset);
         }else{        //bit3=1 bit4=1
-            return MEM_LOAD((PC & (((1<<5)-1)<<7) + offset);
+            return MEM_LOAD((PC & (((1<<5)-1)<<7)) + offset);
         }
     }
 }
@@ -379,8 +302,8 @@ bool BitTwiddle::read_bit_x(int input,int x){
 
 //temp functions
 int BitTwiddle::MEM_LOAD(int dummy){
-cout<<"C("<<dummy<<")";
-return 0;
+//return 0;
+  return temp;
 }
 
 void BitTwiddle::MEM_STORE(int dummy1,int dummy2){
