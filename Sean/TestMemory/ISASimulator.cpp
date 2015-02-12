@@ -34,6 +34,7 @@ int main(int argc, char *argv[])
 	
 	// test intToOctal()
 	testIntToOctal();
+	cout << endl;
 
 	
 	// INITIALIZATION
@@ -85,12 +86,16 @@ int main(int argc, char *argv[])
 			goto EXIT;
 		}
 
-		if (ret = Memory.load(STARTING_ADDRESS + loadOffset) != address)
+
+		// display what is in the address
+		Memory.display(STARTING_ADDRESS + loadOffset);
+
+		if ((ret = Memory.load(STARTING_ADDRESS + loadOffset)) != address)
 		{
 			cout << "ERROR - memory does not match passed data\n";
 			goto EXIT;
 		}
-		cout << "Data retrieved = " << ret << endl << endl;
+		cout << "Data retrieved = " << ret << endl << endl << endl;
 
 		++loadOffset;
 	}

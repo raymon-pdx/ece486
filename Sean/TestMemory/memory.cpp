@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cstring>
 #include <cctype>
+#include <cmath>
 #include "memory.h"
 
 using namespace std;
@@ -115,7 +116,7 @@ int pagetable::breakdown(int address, int & result_pagenumber, int & result_offs
 
 int pagetable::probe(int pagenumber, int offset)
 {
-	if (Table[pagenumber,offset] == NULL)
+	if (Table[pagenumber, offset] == NULL)
 		return 0; // Everything is 0, the address doesn't exist
 	else return 1; // The address exists return true;
 }
@@ -158,6 +159,21 @@ int pagetable::store(int address, int value)
 {
 	int pagenumber, offset;
 	breakdown(address, pagenumber, offset);
+
+	if (value >= int(pow(2, RegSize))) // See if value to be stored exceeded max value
+	{
+		cout << "Value larger than register size; Will be trimmed down to "
+			<< RegSize << " bits!\n";
+		int temp_mask = 0;
+		for (int i = 0; i < RegSize; ++i)
+		{
+			temp_mask |= temp_mask | (1 << i);
+		}// Create mask with 1's, length of register size
+		cout << "Original value: " << value << endl;
+		value = value & temp_mask;
+		// Trim value down to register size
+		cout << "Trimmed down to: " << value << endl;
+	}
 
 	if (probe(pagenumber, offset))
 	{

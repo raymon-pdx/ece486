@@ -1,0 +1,35 @@
+1350 in octal is 2506
+0 in octal is 0000
+4095 in octal is 7777
+
+DATA 1
+Address before = 0
+id before = 0
+Address after = 1262
+id after = 33
+Address = 128, Data passed = 1262
+Page: 1
+Offset: 0
+Data word: 1262
+Data retrieved = 1262
+
+
+DATA 2
+Address before = 1262
+id before = 33
+Address after = 1253
+id after = 0
+Address = 129, Data passed = 1253
+Page: 1
+Offset: 1
+Data word: 1253
+Data retrieved = 1253
+
+
+DATA 3
+Address before = 1253
+id before = 0
+Address after = 1253
+id after = 0
+ERROR found on line10
+Press ENTER to end program
