@@ -22,7 +22,21 @@ TO DO:
 Fix documentation in parser.h and parser.cpp
 
 
-Code and Tests
+DEPENDENCY LIST: parser.h
+1. getAddress()
+     isOctal()
+     exitMessage()
+     octalToInt() 
+2. parseAddress()
+     createBinaryString()
+	 findOpcode()
+	   genOpcodeString()
+	 getOffset()
+3. findOpcode()
+     genOpcodeString()
+
+
+CODE AND TESTS:
 -test1.txt: contains ideal data
 -test2.txt: contains jumbled up data
 
