@@ -14,6 +14,9 @@ using namespace std;
 #define PAGE_CAPACITY 128 // number of addresses per page
 #define STARTING_ADDRESS 128 // where program is stored
 
+// FUNCTION PROTOTYPES
+void testIntToOctal();
+
 int main(int argc, char *argv[])
 {
 	ifstream myFile;    // hold trace file
@@ -29,12 +32,11 @@ int main(int argc, char *argv[])
 	int ret = 0;
 	int count = 0;
 	
-	// check for program error
-	if (argc < 1)
-	{
-		std::cout << "ERROR - program execution\n";
-	}
+	// test intToOctal()
+	testIntToOctal();
 
+	
+	// INITIALIZATION
 	myFile.open(TEST_FILE);
 	outputFile.open(OUTPUT_FILE);
 	pagetable Memory(NUM_PAGES, PAGE_CAPACITY);  // initialize memory
@@ -101,3 +103,54 @@ EXIT:
 	exitMessage();
 	return 0;
 }	
+
+
+// FUNCTION DECLARATIONS
+
+// this function assumes ADDRESS_LENGTH = 12
+void testIntToOctal()
+{
+	int number = 0;
+	string octalString = "";
+
+	// create test values and check results
+	number = 1350;  // octal: 2506
+	octalString = intToOctal(number);
+	if (octalString.compare("2506") != 0)
+	{
+		cout << "ERROR - did not convert int to octal\n";
+	}
+	else
+	{
+		cout << number << " in octal is " << octalString << endl;
+	}
+
+	// test another value
+	// create test values and check results
+	number = 0;  // octal: 0000
+	octalString = intToOctal(number);
+	if (octalString.compare("0000") != 0)
+	{
+		cout << "ERROR - did not convert int to octal\n";
+	}
+	else
+	{
+		cout << number << " in octal is " << octalString << endl;
+	}
+
+	// test another value
+	// create test values and check results
+	number = 4095;  // octal: 7777
+	octalString = intToOctal(number);
+	if (octalString.compare("7777") != 0)
+	{
+		cout << "ERROR - did not convert int to octal\n";
+	}
+	else
+	{
+		cout << number << " in octal is " << octalString << endl;
+	}
+	
+}
+
+

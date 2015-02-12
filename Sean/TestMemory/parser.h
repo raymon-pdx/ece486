@@ -55,6 +55,16 @@ std::string octalToBinary(std::string octal);
 int octalToInt(std::string octal);
 
 
+// this function generates an octal string from
+// a passed integer
+// PRE-COND: address size must be decided before
+//           compile time
+// param: value - binary value of string
+// return: string of ADDRESS_SIZE/3 in length
+//         empty string if error
+std::string intToOctal(int value);
+
+
 // this function generates a binary string based
 // on the number of opcode bits
 // PRE-COND: can only be used to compare opcode

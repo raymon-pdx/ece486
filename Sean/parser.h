@@ -13,7 +13,7 @@
 #include <cctype>
 #include <cmath>
 
-#define DEBUG 1   // 1 for on, 0 for off
+#define DEBUG 0   // 1 for on, 0 for off
 #define ADDRESS_SIZE 12  // number of bits in address
 #define OFFSET_SIZE 7  // size of offset used for bitset
 #define MAX_NUMBERS 3  // number of numbers to find per line
@@ -53,6 +53,16 @@ std::string octalToBinary(std::string octal);
 //           characters must be octal
 // return: -1 if error occured
 int octalToInt(std::string octal);
+
+
+// this function generates an octal string from
+// a passed integer
+// PRE-COND: address size must be decided before
+//           compile time
+// param: value - binary value of string
+// return: string of ADDRESS_SIZE/3 in length
+//         empty string if error
+std::string intToOctal(int value);
 
 
 // this function generates a binary string based

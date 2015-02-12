@@ -384,6 +384,66 @@ int octalToInt(std::string octal)
 }
 
 
+// this function generates an octal string from
+// a passed integer
+// PRE-COND: address size must be decided before
+//           compile time
+// param: value - binary value of string
+// return: string of ADDRESS_SIZE/3 in length
+//         empty string if error
+std::string intToOctal(int value)
+{
+	std::string octalString = "";
+	std::bitset<ADDRESS_SIZE> aString(value);
+	std::string binaryString = aString.to_string();
+
+	// step through entire string to get octal value
+	for (int i = 0; i < ADDRESS_SIZE; i += 3)
+	{
+		// find matching string
+		if (binaryString.compare(i, 3, "000") == 0)
+		{
+			octalString += "0";
+		}
+		else if (binaryString.compare(i, 3, "001") == 0)
+		{
+			octalString += "1";
+		}
+		else if (binaryString.compare(i, 3, "010") == 0)
+		{
+			octalString += "2";
+		}
+		else if (binaryString.compare(i, 3, "011") == 0)
+		{
+			octalString += "3";
+		}
+		else if (binaryString.compare(i, 3, "100") == 0)
+		{
+			octalString += "4";
+		}
+		else if (binaryString.compare(i, 3, "101") == 0)
+		{
+			octalString += "5";
+		}
+		else if (binaryString.compare(i, 3, "110") == 0)
+		{
+			octalString += "6";
+		}
+		else if (binaryString.compare(i, 3, "111") == 0)
+		{
+			octalString += "7";
+		}
+		else
+		{   // some error occured
+			octalString = "";
+			return octalString;
+		}
+	}
+
+	return octalString;
+}
+
+
 // this function generates a binary string based
 // on the pre-determined address size 
 // PRE-COND: size of string must be decided before
@@ -395,6 +455,7 @@ std::string createBinaryString(int value)
 	std::bitset<ADDRESS_SIZE> aString(value);
 	return aString.to_string();
 }
+
 
 // this function generates a binary string based
 // on the number of opcode bits
