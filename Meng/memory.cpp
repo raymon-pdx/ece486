@@ -23,10 +23,10 @@ pagetable::pagetable(int numberofpages, int capacityofpage)
 	{
 		for (int j = 0; j < capacity_of_page; j++)
 		{
-			if (Table[i, j])
-			{
+			//if (Table[i, j])
+			//{
 				Table[i, j] = NULL; // Set every ptr in 2d array to NULL
-			}
+			//}
 		}
 	}
 }
@@ -59,7 +59,11 @@ int pagetable::add(entry & to_add)
 	Table[to_add.pagenumber, to_add.offset]->pagenumber = to_add.pagenumber;
 	Table[to_add.pagenumber, to_add.offset]->offset = to_add.offset;
 	Table[to_add.pagenumber, to_add.offset]->word = to_add.word;
+
 	// Copy address and data values in to PTE
+	cout << "\t Table[" << to_add.pagenumber << ", " << to_add.pagenumber << "]\n";
+	cout << "\t address:  " << Table[to_add.pagenumber, to_add.offset] << "\n";
+	cout << "\t offset+1:" << Table[to_add.pagenumber, to_add.offset+1] << "\n";
 
 	return true;
 }
@@ -92,21 +96,14 @@ int pagetable::retrieve(int pagenumber, int offset, entry & retrieved)
 
 int pagetable::breakdown(int address, int & result_pagenumber, int & result_offset)
 {
-	int temp_mask = 0;
-	for (int i = 0; i < PageSize + LineSize; ++i)
-	{
-		temp_mask |= temp_mask | (1 << i);
-	}// Create mask with 1's, same length as EAddr
+	int temp_mask = (1 << (PageSize + LineSize + 1)) - 1;
+	// Create mask with 1's, same length as EAddr
 
 	int temp_address = address & temp_mask;
 	// Mask EAddr to get rid of garbage bits
 
-	temp_mask = 0; // Reset temp_mask to 0;
-
-	for (int i = 0; i < LineSize; ++i)
-	{
-		temp_mask |= temp_mask | (1 << i);
-	}// Create mask with 1's, same length as offset
+	temp_mask = (1 << (LineSize + 1)) - 1;
+	// Create mask with 1's, same length as offset
 
 	result_offset = temp_address & temp_mask;
 	// Mask temp_address to get rid of page number bits
@@ -265,26 +262,28 @@ int pagetable::display_all()
 {
 	int previous_pagenumber = -1; // Specify starting pagenumber, so when it starts, pagenumber changes from -1 to 0
 	
-	for (int i = 0; i < int(pow(2, PageSize)); ++i) // Loop vertically
+	for (int i = 0; i < int(pow(2, PageSize)); i++) // Loop vertically
 	{
 		// Here i is the pagenumber
 		int previous_offset = -2; // Specify starting offset, reset to -2 every page
 
-		for (int j = 0; j < int(pow(2, LineSize)); ++j) // Loop horizontally
+		for (int j = 0; j < int(pow(2, LineSize)); j++) // Loop horizontally
 		{
 			if (probe(i, j)) // We encountered valid data
 			{
-				if (i != previous_pagenumber) // Now we are on a different page
-				{
-					cout << "Page Number: " << intToOctal(i) << endl;
-					previous_pagenumber = i; // Change previous_pagenumber to current page number
-				}
-				if (j != (previous_offset + 1)) // If the valid addresses are not continuous
-				{
-					cout << "\tOffset: " << intToOctal(j) << endl;
-				}
-				cout << "\t" << Table[i, j]->word << endl;
-				previous_offset = j; // Store the previous valid address
+				//if (i != previous_pagenumber) // Now we are on a different page
+				//{
+				//	cout << "Page Number: " << i << endl;
+				//	previous_pagenumber = i; // Change previous_pagenumber to current page number
+				//}
+				//if (j != (previous_offset + 1)) // If the valid addresses are not continuous
+				//{
+				//	cout << "\tOffset: " << j << endl;
+				//}
+				cout << "\t" << Table[i, j] << " i: " << i << " " << j
+					<< " data \t" << Table[i, j]->pagenumber << " " << Table[i, j]->offset
+					<< " " << Table[i, j]->word << endl;
+				//previous_offset = j; // Store the previous valid address
 			}
 
 		}
