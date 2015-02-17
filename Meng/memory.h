@@ -41,5 +41,5 @@ private:
 	std::string intToOctal(int value); // conversion from int to octal
 	int number_of_pages;
 	int capacity_of_page;
-	entry ** Table;
+	entry *** Table;
 };

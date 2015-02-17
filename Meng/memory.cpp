@@ -17,16 +17,18 @@ pagetable::pagetable(int numberofpages, int capacityofpage)
 	number_of_pages = numberofpages;
 	capacity_of_page = capacityofpage;
 
-	Table = new entry *[number_of_pages, capacity_of_page];
+	Table = new entry **[number_of_pages];
+
+	for (int i = 0; i < number_of_pages; i++)
+	{
+		Table[i] = new entry *[capacity_of_page];
+	}
 
 	for (int i = 0; i < number_of_pages; i++)
 	{
 		for (int j = 0; j < capacity_of_page; j++)
 		{
-			//if (Table[i, j])
-			//{
-				Table[i, j] = NULL; // Set every ptr in 2d array to NULL
-			//}
+			Table[i][j] = NULL; // Set every ptr in 2d array to NULL
 		}
 	}
 }
@@ -37,13 +39,16 @@ pagetable::~pagetable()
 	{
 		for (int j = 0; j < capacity_of_page; j++)
 		{
-			if (Table[i, j])
+			if (Table[i][j])
 			{
-				delete Table[i, j];
-				Table[i, j] = NULL; // Set every ptr in 2d array to NULL
+				delete Table[i][j];
+				Table[i][j] = NULL; // Set every ptr in 2d array to NULL
 			}
 		}
+		delete Table[i];
+		Table[i] = NULL;
 	}
+	delete Table;
 	Table = NULL; // Clear entire page table
 
 	number_of_pages = 0;
@@ -54,17 +59,12 @@ int pagetable::add(entry & to_add)
 {
 	// Assume the address does not exist,
 	// or overwrite permission granted
-	Table[to_add.pagenumber, to_add.offset] = new entry; // Create a new PTE
+	Table[to_add.pagenumber][to_add.offset] = new entry; // Create a new PTE
 
-	Table[to_add.pagenumber, to_add.offset]->pagenumber = to_add.pagenumber;
-	Table[to_add.pagenumber, to_add.offset]->offset = to_add.offset;
-	Table[to_add.pagenumber, to_add.offset]->word = to_add.word;
-
+	Table[to_add.pagenumber][to_add.offset]->pagenumber = to_add.pagenumber;
+	Table[to_add.pagenumber][to_add.offset]->offset = to_add.offset;
+	Table[to_add.pagenumber][to_add.offset]->word = to_add.word;
 	// Copy address and data values in to PTE
-	cout << "\t Table[" << to_add.pagenumber << ", " << to_add.pagenumber << "]\n";
-	cout << "\t address:  " << Table[to_add.pagenumber, to_add.offset] << "\n";
-	cout << "\t offset+1:" << Table[to_add.pagenumber, to_add.offset+1] << "\n";
-
 	return true;
 }
 
@@ -72,14 +72,14 @@ int pagetable::clear(int pagenumber, int offset)
 {
 	// Assume the address exists
 	// and delete permission granted
-	Table[pagenumber, offset]->pagenumber = 0;
-	Table[pagenumber, offset]->offset = 0;
-	Table[pagenumber, offset]->word = 0;
+	Table[pagenumber][offset]->pagenumber = 0;
+	Table[pagenumber][offset]->offset = 0;
+	Table[pagenumber][offset]->word = 0;
 	// Delete address and data values
 
-	delete Table[pagenumber, offset]; // Delete PTE
+	delete Table[pagenumber][offset]; // Delete PTE
 
-	Table[pagenumber, offset] = NULL; // Clear this ptr
+	Table[pagenumber][offset] = NULL; // Clear this ptr
 
 	return 1;
 }
@@ -87,9 +87,9 @@ int pagetable::clear(int pagenumber, int offset)
 int pagetable::retrieve(int pagenumber, int offset, entry & retrieved)
 {
 	// Assume the address exists
-	retrieved.pagenumber = Table[pagenumber, offset]->pagenumber;
-	retrieved.offset = Table[pagenumber, offset]->offset;
-	retrieved.word = Table[pagenumber, offset]->word;
+	retrieved.pagenumber = Table[pagenumber][offset]->pagenumber;
+	retrieved.offset = Table[pagenumber][offset]->offset;
+	retrieved.word = Table[pagenumber][offset]->word;
 
 	return 1; // execution successful
 }
@@ -168,7 +168,7 @@ string pagetable::intToOctal(int value)
 
 int pagetable::probe(int pagenumber, int offset)
 {
-	if (Table[pagenumber, offset] == NULL)
+	if (Table[pagenumber][offset] == NULL)
 		return 0; // Everything is 0, the address doesn't exist
 	else return 1; // The address exists return true;
 }
@@ -245,9 +245,9 @@ int pagetable::display(int address)
 	if (probe(pagenumber, offset))
 	{
 		// If address exists, start to display
-		cout << "Page: " << Table[pagenumber, offset]->pagenumber << endl;
-		cout << "Offset: " << Table[pagenumber, offset]->offset << endl;
-		cout << "Data word: " << Table[pagenumber, offset]->word << endl;
+		cout << "Page: " << Table[pagenumber][offset]->pagenumber << endl;
+		cout << "Offset: " << Table[pagenumber][offset]->offset << endl;
+		cout << "Data word: " << Table[pagenumber][offset]->word << endl;
 		return 1;
 	}
 	else
@@ -271,19 +271,19 @@ int pagetable::display_all()
 		{
 			if (probe(i, j)) // We encountered valid data
 			{
-				//if (i != previous_pagenumber) // Now we are on a different page
-				//{
-				//	cout << "Page Number: " << i << endl;
-				//	previous_pagenumber = i; // Change previous_pagenumber to current page number
-				//}
-				//if (j != (previous_offset + 1)) // If the valid addresses are not continuous
-				//{
-				//	cout << "\tOffset: " << j << endl;
-				//}
-				cout << "\t" << Table[i, j] << " i: " << i << " " << j
-					<< " data \t" << Table[i, j]->pagenumber << " " << Table[i, j]->offset
-					<< " " << Table[i, j]->word << endl;
-				//previous_offset = j; // Store the previous valid address
+				if (i != previous_pagenumber) // Now we are on a different page
+				{
+					cout << "Page Number: " << i << endl;
+					previous_pagenumber = i; // Change previous_pagenumber to current page number
+				}
+				if (j != (previous_offset + 1)) // If the valid addresses are not continuous
+				{
+					cout << "\tOffset: " << j << endl;
+				}
+				cout << "\t" << Table[i][j] << " i: " << i << " " << j
+					<< " data \t" << Table[i][j]->pagenumber << " " << Table[i][j]->offset
+					<< " " << Table[i][j]->word << endl;
+				previous_offset = j; // Store the previous valid address
 			}
 
 		}

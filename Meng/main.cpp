@@ -23,7 +23,6 @@ int main()
 	// so pagenumber goes as high as 32 and offset goes as high as 128
 
 	test.store(0, 1);
-	/*
 	test.store(1, 1);
 	test.store(2, 2);
 	test.store(3, 3);
@@ -35,8 +34,7 @@ int main()
 	test.store(258, 9);
 	test.store(259, 10);
 	test.store(261, 11);
-	*/
-	//test.display_all();
+	test.display_all();
 
 
 	// Try to display an address when nothing actually exists
