@@ -10,6 +10,7 @@ Functions achieved:
 6. prompt user when deleting and overwriting
 7. Display a memory entry
 8. Main test function (assuming no gibberish input)
+9. Display entire page table
 
 Things to work on:
 1. Extremely large page table with reconfigurable settings
@@ -21,6 +22,7 @@ Things to test:
 	1.2 Correct EAddr? Correct value?
 	1.3 What if addressing is completely wrong?
 	1.4 What if address exceeds page table capacity?
+	1.5 Any other possible errors?
 2. Store
 	2.1 Empty? Unoccupied?
 	2.2 Correct EAddr? Correct value?
@@ -28,8 +30,10 @@ Things to test:
 	2.4 What is address or value is completely wrong?
 	2.5 What if address exceeds page table capacity?
 	2.6 What if value exceeds PTE capacity?
+	2.7 Any other possible errors?
 3. Reconfigure
 	3.1 Correct register size?
 	3.2 Correct page number?
 	3.3 Correct page capacity?
 	3.4 Does every function works properly under the new setup?
+	3.5 Any other possible errors?

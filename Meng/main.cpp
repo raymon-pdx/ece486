@@ -22,7 +22,8 @@ int main()
 	// NOTICE: type conversion works in Visual Studio
 	// so pagenumber goes as high as 32 and offset goes as high as 128
 
-	test.store(0, 1);
+	// To test display_all, we need to store a bunch of values into page table
+	test.store(0, 0);
 	test.store(1, 1);
 	test.store(2, 2);
 	test.store(3, 3);
@@ -34,6 +35,7 @@ int main()
 	test.store(258, 9);
 	test.store(259, 10);
 	test.store(261, 11);
+
 	test.display_all();
 
 

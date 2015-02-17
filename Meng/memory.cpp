@@ -96,13 +96,13 @@ int pagetable::retrieve(int pagenumber, int offset, entry & retrieved)
 
 int pagetable::breakdown(int address, int & result_pagenumber, int & result_offset)
 {
-	int temp_mask = (1 << (PageSize + LineSize + 1)) - 1;
+	int temp_mask = (1 << (PageSize + LineSize)) - 1;
 	// Create mask with 1's, same length as EAddr
 
 	int temp_address = address & temp_mask;
 	// Mask EAddr to get rid of garbage bits
 
-	temp_mask = (1 << (LineSize + 1)) - 1;
+	temp_mask = (1 << (LineSize)) - 1;
 	// Create mask with 1's, same length as offset
 
 	result_offset = temp_address & temp_mask;
@@ -280,9 +280,7 @@ int pagetable::display_all()
 				{
 					cout << "\tOffset: " << j << endl;
 				}
-				cout << "\t" << Table[i][j] << " i: " << i << " " << j
-					<< " data \t" << Table[i][j]->pagenumber << " " << Table[i][j]->offset
-					<< " " << Table[i][j]->word << endl;
+				cout << "\t\tData: " <<Table[i][j]->word << endl;
 				previous_offset = j; // Store the previous valid address
 			}
 
