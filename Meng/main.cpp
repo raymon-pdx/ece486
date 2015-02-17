@@ -2,22 +2,39 @@
 // PDP-8 memory simulator
 // main.cpp: main functions verification and testing
 
+#include <stdlib.h>
 #include <iostream>
 #include <cstring>
 #include <cctype>
 #include <cmath>
+#include <bitset>
 #include "memory.h"
 
 using namespace std;
 
 int main()
 {
+
 	// Test register size, number of pages and page capacity
 
 	// Construct a pagetable with 32 pages, and 128 entries for each page
 	pagetable test(int(pow(2, PageSize)), int(pow(2, LineSize)));
 	// NOTICE: type conversion works in Visual Studio
 	// so pagenumber goes as high as 32 and offset goes as high as 128
+
+	test.store(1, 1);
+	test.store(2, 2);
+	test.store(3, 3);
+	test.store(5, 4);
+	test.store(6, 5);
+	test.store(7, 6);
+	test.store(129, 7);
+	test.store(130, 8);
+	test.store(258, 9);
+	test.store(259, 10);
+	test.store(261, 11);
+	test.display_all();
+
 
 	// Try to display an address when nothing actually exists
 	cout << "Display an address: ";

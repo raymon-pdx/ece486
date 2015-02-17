@@ -2,9 +2,11 @@
 // PDP-8 memory simulator
 // memory.h: header file for memory implementation
 
+#include <stdlib.h>
 #include <iostream>
 #include <cstring>
 #include <cctype>
+#include <bitset>
 
 const int RegSize = 12; // 12 bits = 4096
 const int PageSize = 5; // 5 bits = 32
@@ -28,6 +30,7 @@ public:
 	int store(int address, int value); // wrapper function interacting with "bits" module
 	int probe(int address); // quick probe to see if an address exists
 	int display(int address); // quick display of an entry
+	int display_all(); // display all memory entries
 	int clear(int address); // wrapper function for "clear" in private
 private:
 	int add(entry & to_add); // add new memory unit data into page table
@@ -35,6 +38,7 @@ private:
 	int retrieve(int pagenumber, int offset, entry & retrieved); // retrieve memory unit from page table
 	int breakdown(int address, int & result_pagenumber, int & result_offset);// break down addressing format
 	int probe(int pagenumber, int offset); // Private probe function to see if an adress exists
+	std::string intToOctal(int value); // conversion from int to octal
 	int number_of_pages;
 	int capacity_of_page;
 	entry ** Table;

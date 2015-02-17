@@ -2,10 +2,12 @@
 // PDP-8 memory simulator
 // memory.cpp: memory implementation
 
+#include <stdlib.h>
 #include <iostream>
 #include <cstring>
 #include <cctype>
 #include <cmath>
+#include <bitset>
 #include "memory.h"
 
 using namespace std;
@@ -17,9 +19,9 @@ pagetable::pagetable(int numberofpages, int capacityofpage)
 
 	Table = new entry *[number_of_pages, capacity_of_page];
 
-	for (int i = 0; i < number_of_pages; ++i)
+	for (int i = 0; i < number_of_pages; i++)
 	{
-		for (int j = 0; j < capacity_of_page; ++j)
+		for (int j = 0; j < capacity_of_page; j++)
 		{
 			if (Table[i, j])
 			{
@@ -31,9 +33,9 @@ pagetable::pagetable(int numberofpages, int capacityofpage)
 
 pagetable::~pagetable()
 {
-	for (int i = 0; i < number_of_pages; ++i)
+	for (int i = 0; i < number_of_pages; i++)
 	{
-		for (int j = 0; j < capacity_of_page; ++j)
+		for (int j = 0; j < capacity_of_page; j++)
 		{
 			if (Table[i, j])
 			{
@@ -114,6 +116,59 @@ int pagetable::breakdown(int address, int & result_pagenumber, int & result_offs
 	return 1;
 }
 
+
+
+string pagetable::intToOctal(int value)
+{
+	std::string octalString = "";
+	std::bitset<(PageSize+LineSize)> aString(value);
+	std::string binaryString = aString.to_string();
+
+	// step through entire string to get octal value
+	for (int i = 0; i < (PageSize+LineSize); i += 3)
+	{
+		// find matching string
+		if (binaryString.compare(i, 3, "000") == 0)
+		{
+			octalString += "0";
+		}
+		else if (binaryString.compare(i, 3, "001") == 0)
+		{
+			octalString += "1";
+		}
+		else if (binaryString.compare(i, 3, "010") == 0)
+		{
+			octalString += "2";
+		}
+		else if (binaryString.compare(i, 3, "011") == 0)
+		{
+			octalString += "3";
+		}
+		else if (binaryString.compare(i, 3, "100") == 0)
+		{
+			octalString += "4";
+		}
+		else if (binaryString.compare(i, 3, "101") == 0)
+		{
+			octalString += "5";
+		}
+		else if (binaryString.compare(i, 3, "110") == 0)
+		{
+			octalString += "6";
+		}
+		else if (binaryString.compare(i, 3, "111") == 0)
+		{
+			octalString += "7";
+		}
+		else
+		{   // some error occured
+			octalString = "";
+			return octalString;
+		}
+	}
+	return octalString;
+}
+
 int pagetable::probe(int pagenumber, int offset)
 {
 	if (Table[pagenumber, offset] == NULL)
@@ -175,43 +230,14 @@ int pagetable::store(int address, int value)
 		cout << "Trimmed down to: " << value << endl;
 	}
 
-	if (probe(pagenumber, offset))
-	{
-		// If address exists, prompt user
-		char response = 'n';
-		cout << "Address occupied; Overwrite?";
-		cin >> response;
-		cin.ignore(100, '\n');
-		if (toupper(response) == 'Y')
-		{
-			// Overwrite granted
-			entry to_add;
-			to_add.pagenumber = pagenumber;
-			to_add.offset = offset;
-			to_add.word = value;
-			if (add(to_add))
-				return 1; // Execution successful
-			else return -1; // "add" function failed
-		}
-		else
-		{
-			// User chose not to overwrite
-			cout << "Overwrite aborted" << endl;
-			return 1;
-		}
-	}
-	else
-	{
-		// Address does not exist, store entry
-		entry to_add;
-		to_add.pagenumber = pagenumber;
-		to_add.offset = offset;
-		to_add.word = value;
-		if (add(to_add))
-			return 1; // Execution successful
-		else return -1; // "add" function failed
-	}
-	return 0; // For some unknown reason it got to this point
+	// Don't check if address exists, overwrite without prompt
+	entry to_add;
+	to_add.pagenumber = pagenumber;
+	to_add.offset = offset;
+	to_add.word = value;
+	if (add(to_add))
+		return 1; // Execution successful
+	else return -1; // "add" function failed
 }
 
 int pagetable::display(int address)
@@ -233,6 +259,38 @@ int pagetable::display(int address)
 		cout << "Address non-existent" << endl;
 		return 0;
 	}
+}
+
+int pagetable::display_all()
+{
+	int previous_pagenumber = -1; // Specify starting pagenumber, so when it starts, pagenumber changes from -1 to 0
+	
+	for (int i = 0; i < int(pow(2, PageSize)); ++i) // Loop vertically
+	{
+		// Here i is the pagenumber
+		int previous_offset = -2; // Specify starting offset, reset to -2 every page
+
+		for (int j = 0; j < int(pow(2, LineSize)); ++j) // Loop horizontally
+		{
+			if (probe(i, j)) // We encountered valid data
+			{
+				if (i != previous_pagenumber) // Now we are on a different page
+				{
+					cout << "Page Number: " << intToOctal(i) << endl;
+					previous_pagenumber = i; // Change previous_pagenumber to current page number
+				}
+				if (j != (previous_offset + 1)) // If the valid addresses are not continuous
+				{
+					cout << "\tOffset: " << intToOctal(j) << endl;
+				}
+				cout << "\t" << Table[i, j]->word << endl;
+				previous_offset = j; // Store the previous valid address
+			}
+
+		}
+	}
+
+	return 1;
 }
 
 int pagetable::clear(int address)
