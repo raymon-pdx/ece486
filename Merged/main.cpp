@@ -1,3 +1,4 @@
+
 /*
 * AUTHORS: Ommaimah Hussein Mohammed,
 *          Even Sprecher,
@@ -23,15 +24,10 @@ int main(int argc, char *argv[])
 	BitTwiddle bits;    // class used for instructions
 	ifstream myFile;    // hold trace file
 	int loadOffset = 0;  // offset used to load data from text file
-	int opcode = 0;
-	bool I = false;
-	bool M = false;
-	int offset = 0;
 	int lineCount = 0;
 	int address = 0;
 	int id = 0;
 	int ret = 0;
-	int count = 0;
 	
 	// INITIALIZATION
 	pagetable Memory(NUM_PAGES, PAGE_CAPACITY);  // initialize memory
@@ -42,13 +38,8 @@ int main(int argc, char *argv[])
 		std::cout << "ERROR - program execution\n";
 	}
 
-	// use test file
-	if(DEBUG)
-	{
-		myFile.open(TEST_FILE);
-	}
 	// check for trace file name
-	else if (argc < 2)
+	if (argc < 2)
 	{
 		std::cout << "Please pass object file as first argument\n";
 	}
@@ -90,15 +81,15 @@ int main(int argc, char *argv[])
 				cout << "ERROR - adding data failed\n";
 				goto EXIT;
 			}
-
-			if(DEBUG)
-			{
-				cout << "Data retrieved = " << ret << endl << endl;
-			}
 		
 			++loadOffset;
 		}  // eof?
 	} // end is_open()
+    else
+    {
+        cout << "ERROR - file not found\n";
+        goto EXIT;
+    }
 	
 EXIT:
 	// close the file
