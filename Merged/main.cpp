@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
 {
 	BitTwiddle bits;    // class used for instructions
 	ifstream myFile;    // hold trace file
+	bool SILENT = true; // silent is set
 	int loadOffset = 0;  // offset used to load data from text file
 	int lineCount = 0;
 	int address = 0;
@@ -49,6 +50,16 @@ int main(int argc, char *argv[])
 		myFile.open(argv[1]);
 	}	
 	
+	// check for silent mode
+	if(argc > 2)
+	{
+		// turn on additional debugging info
+		if(strcmp(argv[2], "1") == 0)
+		{
+			SILENT = false;
+		}
+	}
+	
 	if(myFile.is_open())
 	{	
 	// place all data in file to memory
@@ -70,7 +81,7 @@ int main(int argc, char *argv[])
 				goto EXIT;
 			}
 
-			if(DEBUG)
+			if(DEBUG || !SILENT)
 			{
 				cout << "Address = " << STARTING_ADDRESS + loadOffset << ", Data passed = " << address << endl;
 			}
