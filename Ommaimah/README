@@ -15,11 +15,10 @@ Implement function that outputs PDP-8 summary
 Implement correct clock cycles
 Function for outputting tracefile
 Implement uInstruction - Group 1
+Add into summary the sub-instructions in micro-instructions
 
 TO DO:
 ~I found out that C() was used ambiguously in our documentation, try to merge with Evan's code when you have the time~ -Evan
-Add into summary the sub-instructions in micro-instructions
-
 
 TO TEST:
 - DCA function
