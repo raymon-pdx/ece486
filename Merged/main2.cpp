@@ -1,4 +1,3 @@
-
 /*
 * AUTHORS: Ommaimah Hussein Mohammed,
 *          Even Sprecher,
@@ -23,12 +22,16 @@ int main(int argc, char *argv[])
 {
 	BitTwiddle bits;    // class used for instructions
 	ifstream myFile;    // hold trace file
-	bool SILENT = true; // silent is set
 	int loadOffset = 0;  // offset used to load data from text file
+	int opcode = 0;
+	bool I = false;
+	bool M = false;
+	int offset = 0;
 	int lineCount = 0;
 	int address = 0;
 	int id = 0;
 	int ret = 0;
+	int count = 0;
 	
 	// INITIALIZATION
 	pagetable Memory(NUM_PAGES, PAGE_CAPACITY);  // initialize memory
@@ -39,8 +42,13 @@ int main(int argc, char *argv[])
 		std::cout << "ERROR - program execution\n";
 	}
 
+	// use test file
+	if(DEBUG)
+	{
+		myFile.open(TEST_FILE);
+	}
 	// check for trace file name
-	if (argc < 2)
+	else if (argc < 2)
 	{
 		std::cout << "Please pass object file as first argument\n";
 	}
@@ -49,16 +57,6 @@ int main(int argc, char *argv[])
 		// open pass file
 		myFile.open(argv[1]);
 	}	
-	
-	// check for silent mode
-	if(argc > 2)
-	{
-		// turn on additional debugging info
-		if(strcmp(argv[2], "1") == 0)
-		{
-			SILENT = false;
-		}
-	}
 	
 	if(myFile.is_open())
 	{	
@@ -81,7 +79,7 @@ int main(int argc, char *argv[])
 				goto EXIT;
 			}
 
-			if(DEBUG || !SILENT)
+			if(DEBUG)
 			{
 				cout << "Address = " << STARTING_ADDRESS + loadOffset << ", Data passed = " << address << endl;
 			}
@@ -93,26 +91,14 @@ int main(int argc, char *argv[])
 				goto EXIT;
 			}
 
-			if(DEBUG || !SILENT)
+			if(DEBUG)
 			{
-				// display what is in the address
-				Memory.display(STARTING_ADDRESS + loadOffset);
-
-				if ((ret = Memory.load(STARTING_ADDRESS + loadOffset)) != address)
-				{
-					cout << "ERROR - memory does not match passed data\n";
-					goto EXIT;
-				}
-				cout << "Data retrieved = " << ret << endl;
+				cout << "Data retrieved = " << ret << endl << endl;
 			}
+		
 			++loadOffset;
 		}  // eof?
 	} // end is_open()
-    else
-    {
-        cout << "ERROR - file not found\n";
-        goto EXIT;
-    }
 	
 EXIT:
 	// close the file
