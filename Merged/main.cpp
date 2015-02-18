@@ -62,7 +62,11 @@ int main(int argc, char *argv[])
 	
 	if(myFile.is_open())
 	{	
-	// place all data in file to memory
+		if(DEBUG || !SILENT)
+			{
+				cout << "\n***LOADING FILE INTO MEMORY***\n";
+			}
+		// place all data in file to memory
 		while (!myFile.eof())
 		{
 			// get an address from the file
@@ -75,7 +79,8 @@ int main(int argc, char *argv[])
 				goto EXIT;
 			}
 			
-			if (ret > 0)
+			// display error if not finished with file
+			if ((ret > 0) && !myFile.eof())
 			{   // handle error and exit
 				cout << "ERROR found on line" << lineCount << endl;
 				goto EXIT;
@@ -83,6 +88,7 @@ int main(int argc, char *argv[])
 
 			if(DEBUG || !SILENT)
 			{
+				cout << "\n***MEMORY ACCESS***\n";
 				cout << "Address = " << STARTING_ADDRESS + loadOffset << ", Data passed = " << address << endl;
 			}
 		
@@ -107,6 +113,12 @@ int main(int argc, char *argv[])
 			}
 			++loadOffset;
 		}  // eof?
+		
+		// give additional information that file is loaded
+		if(DEBUG || !SILENT)
+			{
+				cout << "\n***FINISHED LOADING FILE***\n";
+			}
 	} // end is_open()
     else
     {
