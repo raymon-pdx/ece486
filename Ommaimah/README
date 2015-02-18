@@ -1,46 +1,45 @@
 Author: Ommaimah Hussein Mohammed
 
 -----------------------------------------------------------
-Project Coding: 
------------------------------------------------------------
 COMPLETE:
-DCA insturction function
-JMS instruction function
-JMP instruction function
-Function that converts integer to octal
-   + change to own function outside main
+-----------------------------------------------------------
++ Added DCA instruction function
++ Added JMS instruction function
++ Added JMP instruction function
++ Added uInstruction into summary output (extra step)
++ Added uInstruction (Group 1) function
++ Added function that converts int to octal
 
+-----------------------------------------------------------
 IN PROGRESS:
-Implement function that outputs PDP-8 summary
-Implement correct clock cycles
-Function for outputting tracefile
-Implement uInstruction - Group 1
-Add into summary the sub-instructions in micro-instructions
+-----------------------------------------------------------
+- Implement function that outputs PDP-8 summary
+- Implement correct clock cycles
+- Function for outputting tracefile
 
+-----------------------------------------------------------
 TO DO:
-~I found out that C() was used ambiguously in our documentation, try to merge with Evan's code when you have the time~ -Evan
+-----------------------------------------------------------
+- Merge code with Evans
 
+-----------------------------------------------------------
 TO TEST:
+-----------------------------------------------------------
 - DCA function
 - JMS function
 - JMP function
 - uInstruction (group 1) function
-- ConvertToOctal Function:
-- Test if wrong size value was put in
-
-- double check that 4 values of octal gets printed, including 0000
-
+- Output summary
+- int to octal function
+- final trace file
+- correct clock cycles
+- correct response to No-OP
+- test if wrong size was put in (>12 bits)
+- double check that 4 values of octal gets printed
+  - including 0000
 
 -----------------------------------------------------------
 Project Report:
 -----------------------------------------------------------
++ Started "Draft 1"
 
-Project Report "Draft 1" is attached. 
-
-It includes the format we can use and some categories we can work on filling in during the project implementation. Feel free to add/write anything on it. Open to all suggestions.
-
-NOTE: The format is weird if you open it in a Linux machine, but don't worry, I will fix the formatting and do final edits for the report when we are finishing up the project.
-
-IMPORTANT:
-- Please type your tests done as soon as you finish them. It will be harder to remember what was tested later on in the term.
-- Please save all images you make, it will be helpful to add in the report when we discuss our understanding and implementations.

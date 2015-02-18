@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#define timeStamp //**OPTIONAL TIMESTAMP
+#define timeStamp /*OPTIONAL TIMESTAMP*/
 
 //trace file format:
 // <type> <address>
@@ -13,11 +13,12 @@ using namespace std;
 int traceFile(int type, int address){
 
    #ifndef timeStamp
-   //output time only when debugging
+   //call timestamp function
    time_t rawtime;
-   time ( &rawtime );
+   time (&rawtime);
    #endif
 
+   //create an output trace file
    ofstream outputTraceFile;
    outputTraceFile.open("TraceFile.txt");
 
@@ -28,9 +29,7 @@ int traceFile(int type, int address){
    #endif
 
    //use outputTraceFile like cout, but into txt file 
-   outputTraceFile << type << " " << address << endl;
-
-   //TODO: Output in Octal value!!!
+   outputTraceFile << type << " " << oct << address << endl;
 
    outputTraceFile.close();
    cout << "Trace file generated.\n";
@@ -41,7 +40,7 @@ int main()
 {
 
    int type = 0;
-   int address = 0b1111;
+   int address = 0b001010011;
 
    traceFile(type, address);
 
