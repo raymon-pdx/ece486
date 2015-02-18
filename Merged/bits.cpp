@@ -154,7 +154,7 @@ void BitTwiddle::PDP_IO(int device_num,int opcode){
 
 void BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
 
-
+	// TODO: incrementPC();
     bool bit5  = read_bit_x(offset, 5);
     bool bit6  = read_bit_x(offset, 6);
     bool bit7  = read_bit_x(offset, 7);

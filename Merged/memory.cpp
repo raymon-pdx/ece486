@@ -2,10 +2,12 @@
 // PDP-8 memory simulator
 // memory.cpp: memory implementation
 
+#include <stdlib.h>
 #include <iostream>
 #include <cstring>
 #include <cctype>
 #include <cmath>
+#include <bitset>
 #include "memory.h"
 
 using namespace std;
@@ -15,33 +17,38 @@ pagetable::pagetable(int numberofpages, int capacityofpage)
 	number_of_pages = numberofpages;
 	capacity_of_page = capacityofpage;
 
-	Table = new entry *[number_of_pages, capacity_of_page];
+	Table = new entry **[number_of_pages];
 
-	for (int i = 0; i < number_of_pages; ++i)
+	for (int i = 0; i < number_of_pages; i++)
 	{
-		for (int j = 0; j < capacity_of_page; ++j)
+		Table[i] = new entry *[capacity_of_page];
+	}
+
+	for (int i = 0; i < number_of_pages; i++)
+	{
+		for (int j = 0; j < capacity_of_page; j++)
 		{
-			if (Table[i, j])
-			{
-				Table[i, j] = NULL; // Set every ptr in 2d array to NULL
-			}
+			Table[i][j] = NULL; // Set every ptr in 2d array to NULL
 		}
 	}
 }
 
 pagetable::~pagetable()
 {
-	for (int i = 0; i < number_of_pages; ++i)
+	for (int i = 0; i < number_of_pages; i++)
 	{
-		for (int j = 0; j < capacity_of_page; ++j)
+		for (int j = 0; j < capacity_of_page; j++)
 		{
-			if (Table[i, j])
+			if (Table[i][j])
 			{
-				delete Table[i, j];
-				Table[i, j] = NULL; // Set every ptr in 2d array to NULL
+				delete Table[i][j];
+				Table[i][j] = NULL; // Set every ptr in 2d array to NULL
 			}
 		}
+		delete Table[i];
+		Table[i] = NULL;
 	}
+	delete Table;
 	Table = NULL; // Clear entire page table
 
 	number_of_pages = 0;
@@ -52,13 +59,12 @@ int pagetable::add(entry & to_add)
 {
 	// Assume the address does not exist,
 	// or overwrite permission granted
-	Table[to_add.pagenumber, to_add.offset] = new entry; // Create a new PTE
+	Table[to_add.pagenumber][to_add.offset] = new entry; // Create a new PTE
 
-	Table[to_add.pagenumber, to_add.offset]->pagenumber = to_add.pagenumber;
-	Table[to_add.pagenumber, to_add.offset]->offset = to_add.offset;
-	Table[to_add.pagenumber, to_add.offset]->word = to_add.word;
+	Table[to_add.pagenumber][to_add.offset]->pagenumber = to_add.pagenumber;
+	Table[to_add.pagenumber][to_add.offset]->offset = to_add.offset;
+	Table[to_add.pagenumber][to_add.offset]->word = to_add.word;
 	// Copy address and data values in to PTE
-
 	return true;
 }
 
@@ -66,14 +72,14 @@ int pagetable::clear(int pagenumber, int offset)
 {
 	// Assume the address exists
 	// and delete permission granted
-	Table[pagenumber, offset]->pagenumber = 0;
-	Table[pagenumber, offset]->offset = 0;
-	Table[pagenumber, offset]->word = 0;
+	Table[pagenumber][offset]->pagenumber = 0;
+	Table[pagenumber][offset]->offset = 0;
+	Table[pagenumber][offset]->word = 0;
 	// Delete address and data values
 
-	delete Table[pagenumber, offset]; // Delete PTE
+	delete Table[pagenumber][offset]; // Delete PTE
 
-	Table[pagenumber, offset] = NULL; // Clear this ptr
+	Table[pagenumber][offset] = NULL; // Clear this ptr
 
 	return 1;
 }
@@ -81,30 +87,23 @@ int pagetable::clear(int pagenumber, int offset)
 int pagetable::retrieve(int pagenumber, int offset, entry & retrieved)
 {
 	// Assume the address exists
-	retrieved.pagenumber = Table[pagenumber, offset]->pagenumber;
-	retrieved.offset = Table[pagenumber, offset]->offset;
-	retrieved.word = Table[pagenumber, offset]->word;
+	retrieved.pagenumber = Table[pagenumber][offset]->pagenumber;
+	retrieved.offset = Table[pagenumber][offset]->offset;
+	retrieved.word = Table[pagenumber][offset]->word;
 
 	return 1; // execution successful
 }
 
 int pagetable::breakdown(int address, int & result_pagenumber, int & result_offset)
 {
-	int temp_mask = 0;
-	for (int i = 0; i < PageSize + LineSize; ++i)
-	{
-		temp_mask |= temp_mask | (1 << i);
-	}// Create mask with 1's, same length as EAddr
+	int temp_mask = (1 << (PageSize + LineSize)) - 1;
+	// Create mask with 1's, same length as EAddr
 
 	int temp_address = address & temp_mask;
 	// Mask EAddr to get rid of garbage bits
 
-	temp_mask = 0; // Reset temp_mask to 0;
-
-	for (int i = 0; i < LineSize; ++i)
-	{
-		temp_mask |= temp_mask | (1 << i);
-	}// Create mask with 1's, same length as offset
+	temp_mask = (1 << (LineSize)) - 1;
+	// Create mask with 1's, same length as offset
 
 	result_offset = temp_address & temp_mask;
 	// Mask temp_address to get rid of page number bits
@@ -114,9 +113,62 @@ int pagetable::breakdown(int address, int & result_pagenumber, int & result_offs
 	return 1;
 }
 
+
+
+string pagetable::intToOctal(int value)
+{
+	std::string octalString = "";
+	std::bitset<(PageSize+LineSize)> aString(value);
+	std::string binaryString = aString.to_string();
+
+	// step through entire string to get octal value
+	for (int i = 0; i < (PageSize+LineSize); i += 3)
+	{
+		// find matching string
+		if (binaryString.compare(i, 3, "000") == 0)
+		{
+			octalString += "0";
+		}
+		else if (binaryString.compare(i, 3, "001") == 0)
+		{
+			octalString += "1";
+		}
+		else if (binaryString.compare(i, 3, "010") == 0)
+		{
+			octalString += "2";
+		}
+		else if (binaryString.compare(i, 3, "011") == 0)
+		{
+			octalString += "3";
+		}
+		else if (binaryString.compare(i, 3, "100") == 0)
+		{
+			octalString += "4";
+		}
+		else if (binaryString.compare(i, 3, "101") == 0)
+		{
+			octalString += "5";
+		}
+		else if (binaryString.compare(i, 3, "110") == 0)
+		{
+			octalString += "6";
+		}
+		else if (binaryString.compare(i, 3, "111") == 0)
+		{
+			octalString += "7";
+		}
+		else
+		{   // some error occured
+			octalString = "";
+			return octalString;
+		}
+	}
+	return octalString;
+}
+
 int pagetable::probe(int pagenumber, int offset)
 {
-	if (Table[pagenumber, offset] == NULL)
+	if (Table[pagenumber][offset] == NULL)
 		return 0; // Everything is 0, the address doesn't exist
 	else return 1; // The address exists return true;
 }
@@ -175,43 +227,14 @@ int pagetable::store(int address, int value)
 		cout << "Trimmed down to: " << value << endl;
 	}
 
-	if (probe(pagenumber, offset))
-	{
-		// If address exists, prompt user
-		char response = 'n';
-		cout << "Address occupied; Overwrite?";
-		cin >> response;
-		cin.ignore(100, '\n');
-		if (toupper(response) == 'Y')
-		{
-			// Overwrite granted
-			entry to_add;
-			to_add.pagenumber = pagenumber;
-			to_add.offset = offset;
-			to_add.word = value;
-			if (add(to_add))
-				return 1; // Execution successful
-			else return -1; // "add" function failed
-		}
-		else
-		{
-			// User chose not to overwrite
-			cout << "Overwrite aborted" << endl;
-			return 1;
-		}
-	}
-	else
-	{
-		// Address does not exist, store entry
-		entry to_add;
-		to_add.pagenumber = pagenumber;
-		to_add.offset = offset;
-		to_add.word = value;
-		if (add(to_add))
-			return 1; // Execution successful
-		else return -1; // "add" function failed
-	}
-	return 0; // For some unknown reason it got to this point
+	// Don't check if address exists, overwrite without prompt
+	entry to_add;
+	to_add.pagenumber = pagenumber;
+	to_add.offset = offset;
+	to_add.word = value;
+	if (add(to_add))
+		return 1; // Execution successful
+	else return -1; // "add" function failed
 }
 
 int pagetable::display(int address)
@@ -222,9 +245,9 @@ int pagetable::display(int address)
 	if (probe(pagenumber, offset))
 	{
 		// If address exists, start to display
-		cout << "Page: " << Table[pagenumber, offset]->pagenumber << endl;
-		cout << "Offset: " << Table[pagenumber, offset]->offset << endl;
-		cout << "Data word: " << Table[pagenumber, offset]->word << endl;
+		cout << "Page: " << Table[pagenumber][offset]->pagenumber << endl;
+		cout << "Offset: " << Table[pagenumber][offset]->offset << endl;
+		cout << "Data word: " << Table[pagenumber][offset]->word << endl;
 		return 1;
 	}
 	else
@@ -233,6 +256,38 @@ int pagetable::display(int address)
 		cout << "Address non-existent" << endl;
 		return 0;
 	}
+}
+
+int pagetable::display_all()
+{
+	int previous_pagenumber = -1; // Specify starting pagenumber, so when it starts, pagenumber changes from -1 to 0
+	
+	for (int i = 0; i < int(pow(2, PageSize)); i++) // Loop vertically
+	{
+		// Here i is the pagenumber
+		int previous_offset = -2; // Specify starting offset, reset to -2 every page
+
+		for (int j = 0; j < int(pow(2, LineSize)); j++) // Loop horizontally
+		{
+			if (probe(i, j)) // We encountered valid data
+			{
+				if (i != previous_pagenumber) // Now we are on a different page
+				{
+					cout << "Page Number: " << intToOctal(i) << endl;
+					previous_pagenumber = i; // Change previous_pagenumber to current page number
+				}
+				if (j != (previous_offset + 1)) // If the valid addresses are not continuous
+				{
+					cout << "\tOffset: " << intToOctal(j) << endl;
+				}
+				cout << "\t\tData: " << intToOctal(Table[i][j]->word) << endl;
+				previous_offset = j; // Store the previous valid address
+			}
+
+		}
+	}
+
+	return 1;
 }
 
 int pagetable::clear(int address)

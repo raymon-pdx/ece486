@@ -86,31 +86,35 @@ int main(int argc, char *argv[])
 				goto EXIT;
 			}
 
-			if(DEBUG || !SILENT)
+			if((DEBUG || !SILENT) && !myFile.eof())
 			{
 				cout << "\n***MEMORY ACCESS***\n";
 				cout << "Address = " << STARTING_ADDRESS + loadOffset << ", Data passed = " << address << endl;
 			}
 		
-			// add data to octal address 200
-			if (Memory.store(STARTING_ADDRESS + loadOffset, address) < 0)
+			// check that not end of file before loading memory
+			if(!myFile.eof())
 			{
-				cout << "ERROR - adding data failed\n";
-				goto EXIT;
-			}
-
-			if(DEBUG || !SILENT)
-			{
-				// display what is in the address
-				Memory.display(STARTING_ADDRESS + loadOffset);
-
-				if ((ret = Memory.load(STARTING_ADDRESS + loadOffset)) != address)
+				// add data to octal address 200 + offset
+				if (Memory.store(STARTING_ADDRESS + loadOffset, address) < 0)
 				{
-					cout << "ERROR - memory does not match passed data\n";
+					cout << "ERROR - adding data failed\n";
 					goto EXIT;
 				}
-				cout << "Data retrieved = " << ret << endl;
+				if(DEBUG || !SILENT)
+				{
+					// display what is in the address
+					Memory.display(STARTING_ADDRESS + loadOffset);
+
+					if ((ret = Memory.load(STARTING_ADDRESS + loadOffset)) != address)
+					{
+						cout << "ERROR - memory does not match passed data\n";
+						goto EXIT;
+					}
+					cout << "Data retrieved = " << ret << endl;
+				}
 			}
+
 			++loadOffset;
 		}  // eof?
 		
@@ -132,5 +136,25 @@ EXIT:
 	exitMessage();
 	return 0;
 }	
+
+
+/*FAUST PSEUDOCODE FROM CLASS*/
+/*
+  Running <- 1
+  PC <- 200o
+  while(Running)
+      <- MEM[PC]
+	  PC++
+	  case IR<12:10>  // decode
+	    ---
+		---
+		---
+		---           // execute
+		---
+		---
+		---
+      print statistics
+	  close files
+*/
 
 
