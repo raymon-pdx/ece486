@@ -273,14 +273,14 @@ int pagetable::display_all()
 			{
 				if (i != previous_pagenumber) // Now we are on a different page
 				{
-					cout << "Page Number: " << i << endl;
+					cout << "Page Number: " << intToOctal(i) << endl;
 					previous_pagenumber = i; // Change previous_pagenumber to current page number
 				}
 				if (j != (previous_offset + 1)) // If the valid addresses are not continuous
 				{
-					cout << "\tOffset: " << j << endl;
+					cout << "\tOffset: " << intToOctal(j) << endl;
 				}
-				cout << "\t\tData: " <<Table[i][j]->word << endl;
+				cout << "\t\tData: " << intToOctal(Table[i][j]->word) << endl;
 				previous_offset = j; // Store the previous valid address
 			}
 
