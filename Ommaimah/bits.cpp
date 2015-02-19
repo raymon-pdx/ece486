@@ -36,13 +36,13 @@ int main(){
     bits.PDP_TAD(1,0,123);
     cout<<"AC result:   "<<bits.AC<<" link: "<<bits.link<<"\n\n";
 
-
 }
 
 //-----------------------------------------------------------
 // Constructor
 //-----------------------------------------------------------
 BitTwiddle::BitTwiddle(){
+
    //initialize value for AC, PC, and link
    AC = 0;
    PC = 128;         //PC starts at 0200o
@@ -64,29 +64,6 @@ BitTwiddle::BitTwiddle(){
    sumIO = 0;   
    sumuInstr = 0;  
 
-   //initialize values for uInstructions (Group 1)
-   sumCLA = 0;
-   sumCLL = 0;
-   sumCMA = 0;
-   sumCML = 0;
-   sumIAC = 0;
-   sumRAR = 0;
-   sumRTR = 0;
-   sumRAL = 0;
-   sumRTL = 0;
-   sumNOP = 0;
-
-   //initialize values for uInstructions (Group 2)
-   sumSMA = 0;
-   sumSZA = 0;
-   sumSNL = 0;
-   sumSPA = 0;
-   sumSNA = 0;
-   sumSZL = 0;
-   sumSKP = 0;
-   sumCLA = 0;
-   sumOSR = 0;
-   sumHLT = 0;
 }
 
 //-----------------------------------------------------------
@@ -114,38 +91,12 @@ BitTwiddle::~BitTwiddle(){
     cout << "|     <IO>      |       " << sumIO     << "\n";
     cout << "| uInstructions |       " << sumuInstr << "\n";
     cout << "|-----------------------------------------------------\n\n";
-    cout << "           **Detailed uInstruction Access*\n";
-    cout << "|-----------------------------------------------------\n";
-    cout << "| Micro-Instruction - Group 1 Number of times executed\n";
-    cout << "|-----------------------------------------------------\n";
-    cout << "|      CLA: " << sumCLA    << "\n";
-    cout << "|      CLL: " << sumCLL    << "\n";
-    cout << "|      CMA: " << sumCMA    << "\n";
-    cout << "|      CML: " << sumCML    << "\n";
-    cout << "|      IAC: " << sumIAC    << "\n";
-    cout << "|      RAR: " << sumRAR    << "\n";
-    cout << "|      RTR: " << sumRTR    << "\n";
-    cout << "|      RAL: " << sumRAL    << "\n";
-    cout << "|      RTL: " << sumRTL    << "\n";
-    cout << "|      NOP: " << sumNOP    << "\n";
-    cout << "|-----------------------------------------------------\n";
-    cout << "| Micro-Instruction - Group 2 Number of times executed\n";
-    cout << "|-----------------------------------------------------\n";
-    cout << "|      SMA: " << sumSMA    << "\n";
-    cout << "|      SZA: " << sumSZA    << "\n";
-    cout << "|      SNL: " << sumSNL    << "\n";
-    cout << "|      SPA: " << sumSPA    << "\n";
-    cout << "|      SNA: " << sumSNA    << "\n";
-    cout << "|      SZL: " << sumSZL    << "\n";
-    cout << "|      SKP: " << sumSKP    << "\n";
-    cout << "|      CLA: " << sumCLA    << "\n";
-    cout << "|      OSR: " << sumOSR    << "\n";
-    cout << "|      HLT: " << sumHLT    << "\n";
-    cout << "|-----------------------------------------------------\n\n";
 
 }
 
-//AND C(accumulator) with memory
+//-----------------------------------------------------------
+// Function for Logical AND
+//-----------------------------------------------------------
 void BitTwiddle::PDP_AND(bool addr_bit,bool mem_page,int offset){
     sumAND++;
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
@@ -155,8 +106,9 @@ void BitTwiddle::PDP_AND(bool addr_bit,bool mem_page,int offset){
     return;
 }
 
-
-//two's compliment add to C(accumulator)
+//-----------------------------------------------------------
+// Function for Two's Complement Add 
+//-----------------------------------------------------------
 void BitTwiddle::PDP_TAD(bool addr_bit,bool mem_page,int offset){
     sumTAD++;
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
@@ -173,8 +125,9 @@ void BitTwiddle::PDP_TAD(bool addr_bit,bool mem_page,int offset){
     return;
 }
 
-
-//increment memory and skip if zero
+//-----------------------------------------------------------
+// Function for Increment and Skip on Zero
+//-----------------------------------------------------------
 void BitTwiddle::PDP_ISZ(bool addr_bit,bool mem_page,int offset){
     sumISZ++;
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
@@ -235,7 +188,6 @@ void BitTwiddle::PDP_JMP(bool addr_bit,bool mem_page,int offset)
     PC= EAddr;
 }
 
-
 //forbidden IO funtionality
 void BitTwiddle::PDP_IO(int device_num,int opcode){
     increment_PC();
@@ -275,7 +227,6 @@ void BitTwiddle::PDP_IO(int device_num,int opcode){
     return;
 }
 
-
 //-----------------------------------------------------------
 // Function for Micro Instructions
 //-----------------------------------------------------------
@@ -289,69 +240,54 @@ void BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
     bool bit10 = read_bit_x(offset,10);
     bool bit11 = read_bit_x(offset,11);
 
-    if(!bit3){                          //group 1 uinstructions
+    if(!bit3){  //group 1 uinstructions
 
         if(bit4){         //clear accumulator
 
-            cout << "Currently inside the 
-            sumCLA++;
             AC = 0; 
 
         }else if(bit5){   //clear link
 
-            sumCLL++; 
             link = 0;
-
 
         }else if(bit6){   //complement accumulator
 
-            sumCMA++;
             AC = ~AC;
 
         }else if(bit7){   //complement link
 
-            sumCML++;
             link = ~link;
 
         }else if(bit11){  //increment accumulator
 
-            sumIAC++;
             AC = AC++;
 
         }else if(bit8){   //rotate accumulator, link right
 
-           sumRAR++;
            char direction = 'R';
            rotateBits(AC, link, direction);
 
            if(bit10){ //rotate accumulator, link right twice (rotate once more)
 
-            sum RTR++;
-            sumRAR--;
             rotateBits(AC, link, direction);
 
            }
 
         }else if(bit9){   //rotate accumulator, link left
 
-           sumRAL++;
            char direction = 'L';
            rotateBits(AC, link, direction);
 
            if(bit10){ //rotate accumulator, link left twice (rotate once more)
 
-           sumRTL++;
-           sumRAL--;
            rotateBits(AC, link, direction);
 
            }
 
         }else{            //no operation
 
-            sumNOP++;
             warningMessage();
         }
-
 
     }else if(!bit11){                   //group 2 uinstructions            
         if(bit8){                       //AND subgroup and SKP
@@ -360,12 +296,15 @@ void BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
             bool cond7=1; //the idea is that these get flagged false when a bit is asserted and it is conditionally false
             // cond 5 6 and 7 are then ANDed together at the end and if true, skip.
             if(bit5){                   //SPA
+
                 cond5=!read_bit_x(AC, 0);//is the 0th bit of AC a 0?
             }
             if(bit6){                   //SNA
+
                 cond6=(AC!=0);//is AC not 0?
             }
             if(bit7){                   //SZL
+
                 cond7=!link;//is link 0?
             }
             if(cond5 && cond6 && cond7){
@@ -373,12 +312,15 @@ void BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
             }
         }else{                          //OR subgroup
             if(bit5 && read_bit_x(AC, 0)){//SMA
+
                 return; //is the 0th bit of AC a 1?
             }
             if(bit6 && (AC==0)){            //SZA
+
                 return; //is AC 0?
             }
             if(bit7 && link){           //SNL
+
                 return; //is link 1?
             }
         }

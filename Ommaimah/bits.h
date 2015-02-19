@@ -31,7 +31,7 @@ public:
     void PDP_uintructions(bool group, bool cla, int offset);
 
    //function for displaying warning message with NOP
-    void warningMessage();
+   void warningMessage();
    //function for rotating bits
    void rotateBits(int accumulator, int link, char dir);
 
@@ -58,30 +58,6 @@ public:
    int sumJMP;  
    int sumIO;   
    int sumuInstr;  
-
-   //count for uInstructions (Group 1)
-   int sumCLA;
-   int sumCLL;
-   int sumCMA;
-   int sumCML;
-   int sumIAC;
-   int sumRAR;
-   int sumRTR;
-   int sumRAL;
-   int sumRTL;
-   int sumNOP;
-
-   //count for uInstructions (Group 2)
-   int sumSMA;
-   int sumSZA;
-   int sumSNL;
-   int sumSPA;
-   int sumSNA;
-   int sumSZL;
-   int sumSKP;
-   int sumCLA;
-   int sumOSR;
-   int sumHLT;
 
    //function for finding the effective address
    int find_EAddr(bool addr_bit,bool mem_page,int offset);

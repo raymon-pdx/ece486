@@ -8,7 +8,7 @@
 #include <cctype>
 #include <cmath>
 #include <bitset>
-#include "memory.h"
+#include "memory.cpp"
 
 using namespace std;
 
