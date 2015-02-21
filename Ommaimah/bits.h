@@ -30,6 +30,8 @@ public:
     //function for (OPCODE = 7) uinstructions
     void PDP_uintructions(bool group, bool cla, int offset);
 
+   //function for trace file output
+   int traceFile(int type, int address); 
    //function for displaying warning message with NOP
    void warningMessage();
    //function for rotating bits
@@ -37,12 +39,10 @@ public:
 
 //private:
 
-   //accumulator
-   int AC;
-   //program counter
-   int PC;
-   //link bit
-   bool link;
+
+   int AC;     //accumulator
+   int PC;     //program counter
+   bool link;  //link bit
 
    //count for number of total instructions
    int sumInstr;

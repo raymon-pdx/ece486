@@ -1,0 +1,30 @@
+TESTING TRACEFILE IN MAIN:
+
+    //*****TESTING TRACEFILE HERE*********************
+    cout << "Starting tracefile here...\n";
+    pagetable testing(32, 128);
+
+    int address = 129;
+    int value = 2;
+    testing.store(address, value);
+    testing.load(address);
+    cout << "End of tracefile.\n";
+    //************************************************
+
+    //*****TESTING TRACEFILE HERE*********************
+    cout << "Reached the load/read function!\n";
+
+    int type =0; //type 0 indicates read    
+    traceFile(type, address);
+    //************************************************
+
+
+    //*****TESTING TRACEFILE HERE*********************
+    cout << "Reached the store/write function!\n";
+
+    int type = 1; //type 1 indicates write    
+    traceFile(type, address);
+    //************************************************
+
+
+

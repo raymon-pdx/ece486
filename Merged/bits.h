@@ -8,10 +8,8 @@ class BitTwiddle{
 
 public:
 
-    //constructor
-    BitTwiddle();
-    //destructor
-    ~BitTwiddle();
+    BitTwiddle();   //constructor
+    ~BitTwiddle();  //destructor
 
     //function for (OPCODE = 0) logical AND
     void PDP_AND(bool addr_bit,bool mem_page,int offset);    
@@ -34,6 +32,8 @@ public:
     //function for (OPCODE = 7) uinstructions
     void PDP_uintructions(bool group, bool cla, int offset);
 
+    //function for trace file output
+    int traceFile(int type, int address); 
     //function for displaying warning message with NOP
     void warningMessage();
     //function for rotating bits

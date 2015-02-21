@@ -78,7 +78,6 @@ BitTwiddle::~BitTwiddle(){
     //TODO: Add correct amount of clock cycles to each function
     cout << "Total number of clock cycles consumed: " << sumClk << "\n\n";
     cout << "**Number of times each instruction type was executed**\n"
-    //TODO: Add variable to each function to hold count
     cout << "|-----------------------------------------------------\n";
     cout << "|    Mnemonic   | Number of times executed            \n";
     cout << "|-----------------------------------------------------\n";
@@ -158,6 +157,7 @@ void BitTwiddle::PDP_DCA(bool addr_bit,bool mem_page,int offset)
     MEM_STORE(EAddr,AC);
     //store 0 into AC (clear AC)
     AC = 0;
+    return;
 }
 
 //-----------------------------------------------------------
@@ -173,6 +173,7 @@ void BitTwiddle::PDP_JMS(bool addr_bit,bool mem_page,int offset)
     MEM_STORE(EAddr,PC);
     //take EAddr, add 1, and store into PC
     PC = (EAddr + 1) & ((1<<REGISTERSIZE)-1);//carry and overflow are removed
+    return;
 }
 
 //-----------------------------------------------------------
@@ -344,11 +345,43 @@ void BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
 }
 
 //-----------------------------------------------------------
+// Function for outputing trace file
+//-----------------------------------------------------------
+int BitTwiddle::traceFile(int type, int address){
+
+   #ifndef timeStamp
+   //call timestamp function
+   time_t rawtime;
+   time (&rawtime);
+   #endif
+
+   //create an output trace file
+   ofstream outputTraceFile;
+   outputTraceFile.open("TraceFile.txt");
+
+   #ifndef timeStamp
+   //add time stamp as header of tracefile
+   outputTraceFile << "***** TIME STAMP *****\n";
+   outputTraceFile << "Trace file generated: " << ctime(&rawtime);
+   #endif
+
+   //use outputTraceFile like cout, but into txt file 
+   outputTraceFile << type << " " << oct << address << endl;
+
+   outputTraceFile.close();
+   cout << "Trace file generated.\n";
+
+   return 0;
+
+}
+
+//-----------------------------------------------------------
 // Function for displaying warning for a No-OP
 //-----------------------------------------------------------
 void BitTwiddle::warningMessage()
 {
     cout << "Warning. A NOP (No Operation) has been encountered.\n";
+    return;
 }
 
 //-----------------------------------------------------------
@@ -421,6 +454,7 @@ int BitTwiddle::rotateBits(int accumulator, int link, char dir){
 
         cout << "Error in reading direction of rotation.\n";
     }
+    return;
 }
 
 //-----------------------------------------------------------
