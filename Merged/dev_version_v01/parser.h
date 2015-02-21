@@ -4,7 +4,7 @@
 * LAST MODIFIED: 2/09/2015
 * DESCRIPTION: Functions to parse information from text file
 */
-
+#pragma once
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
