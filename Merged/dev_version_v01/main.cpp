@@ -8,9 +8,7 @@
 * LAST MODIFIED: 2/16/2015
 * DESCRIPTION: a program that simulates the PDP8 instruction set
 */
-//#include "parser.h"
-//#include "memory.h"
-#include "bits.h"
+
 #include <iostream>
 #include <cstring>
 
@@ -20,13 +18,15 @@ using namespace std;
 #define NUM_PAGES 32  // number of pages in memory
 #define PAGE_CAPACITY 128 // number of addresses per page
 #define STARTING_ADDRESS 128 // where program is stored
+bool SILENT=true;
 
+void BitTwiddle(char * input_file);
 
 int main(int argc, char *argv[])
 {
 
 	//ifstream myFile;    // hold trace file
-	bool SILENT = true; // silent is set
+	//bool SILENT = true; // silent is set
 	//int loadOffset = 0;  // offset used to load data from text file
 	//int lineCount = 0;
 	//int address = 0;
@@ -48,8 +48,9 @@ int main(int argc, char *argv[])
 		// turn on additional debugging info
 		if(strcmp(argv[2], "1") == 0)
 		{
+
 			SILENT = false;
-		}
+		}  
 	}
 
 	// check for trace file name
@@ -60,7 +61,7 @@ int main(int argc, char *argv[])
 	else
 	{
     //pass file to bits
-	BitTwiddle bits(argv[1],SILENT);    // class used for operation
+	BitTwiddle(argv[1]);    // class used for operation
 	}	
     //TODO: we really shouldn't be here, cout a warning
 }	

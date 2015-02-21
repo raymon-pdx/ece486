@@ -1,22 +1,57 @@
 //Evan Sprecher
 
-#include "bits.h"
+#include "parser.cpp"
+#include "memory.cpp"
+#include "main.cpp"
 #include <iostream>
+#include <cstring>
 
 
+
+#define TEST_FILE "test.txt" // used for debugging
+#define NUM_PAGES 32  // number of pages in memory
+#define PAGE_CAPACITY 128 // number of addresses per page
 #define STARTING_ADDRESS 128 // where program is stored
+#define REGISTERSIZE 12
+#define IO_verbose 0
 
 
 using namespace std;
 
+   int AC;          //accumulator
+   int PC;          //Program Counter
+   bool link;       //link bit
+   bool running;
+
+   int AND_Count; //number of AND instruction
+   int TAD_Count; //number of TAD instruction
+   int ISZ_Count; //number of ISZ instruction 
+   int DCA_Count; //number of DCA instruction
+   int JMS_Count; //number of JMS instruction 
+   int JMP_Count; //number of JMP instruction 
+   int IO_Count;  //number of IO instruction 
+   int uInstr_Count; //number of micro instruction 
+
+   //function for finding the effective address
+   int find_EAddr(bool addr_bit,bool mem_page,int offset);
+   void load_into_memory(char * input_file);
+   void execute_memory();
+   void increment_PC();
+   bool read_bit_x(int input,int x);
 
 
 
-BitTwiddle::BitTwiddle(char * input_file,bool IN_SILENT){
+   int MEM_LOAD(int dummy);
+   void MEM_STORE(int dummy1,int dummy2);
+   int temp;
+    pagetable Memory(32,128);  // initialize memory
+
+
+
+void BitTwiddle(char * input_file){
     AC=0;
     PC=STARTING_ADDRESS;         //PC starts at 0200o
     link=0;
-    SILENT=IN_SILENT;
 	running = true;
 
     AND_Count=0;     //number of AND instruction
@@ -28,18 +63,15 @@ BitTwiddle::BitTwiddle(char * input_file,bool IN_SILENT){
     IO_Count=0;      //number of IO instruction
     uInstr_Count=0;  //number of micro instruction
 
+
     load_into_memory(input_file);
-
-    Memory(32,128);  // initialize memory
 }
 
 
-BitTwiddle::~BitTwiddle(){
-}
 
 
 //AND C(accumulator) with memory
-void BitTwiddle::PDP_AND(bool addr_bit,bool mem_page,int offset){
+void PDP_AND(bool addr_bit,bool mem_page,int offset){
     AND_Count++;
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
     increment_PC();
@@ -50,7 +82,7 @@ void BitTwiddle::PDP_AND(bool addr_bit,bool mem_page,int offset){
 
 
 //two's compliment add to C(accumulator)
-void BitTwiddle::PDP_TAD(bool addr_bit,bool mem_page,int offset){
+void PDP_TAD(bool addr_bit,bool mem_page,int offset){
     TAD_Count++;
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
     increment_PC();
@@ -68,7 +100,7 @@ void BitTwiddle::PDP_TAD(bool addr_bit,bool mem_page,int offset){
 
 
 //increment memory and skip if zero
-void BitTwiddle::PDP_ISZ(bool addr_bit,bool mem_page,int offset){
+void PDP_ISZ(bool addr_bit,bool mem_page,int offset){
     ISZ_Count++;
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
     int C_EAddr = MEM_LOAD(EAddr);
@@ -87,7 +119,7 @@ void BitTwiddle::PDP_ISZ(bool addr_bit,bool mem_page,int offset){
 
 
 // Function for Deposit and Clear Accumulator
-void BitTwiddle::PDP_DCA(bool addr_bit,bool mem_page,int offset)
+void PDP_DCA(bool addr_bit,bool mem_page,int offset)
 {
     DCA_Count++;
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
@@ -101,7 +133,7 @@ void BitTwiddle::PDP_DCA(bool addr_bit,bool mem_page,int offset)
 
 
 // Function for Jump to Subroutine
-void BitTwiddle::PDP_JMS(bool addr_bit,bool mem_page,int offset)
+void PDP_JMS(bool addr_bit,bool mem_page,int offset)
 {
     JMS_Count++;
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
@@ -115,7 +147,7 @@ void BitTwiddle::PDP_JMS(bool addr_bit,bool mem_page,int offset)
 
 
 //Function for Jump
-void BitTwiddle::PDP_JMP(bool addr_bit,bool mem_page,int offset)
+void PDP_JMP(bool addr_bit,bool mem_page,int offset)
 {
     JMP_Count++;
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
@@ -127,7 +159,7 @@ void BitTwiddle::PDP_JMP(bool addr_bit,bool mem_page,int offset)
 
 
 //forbidden IO funtionality
-void BitTwiddle::PDP_IO(int device_num,int opcode){
+void PDP_IO(int device_num,int opcode){
     increment_PC();
     //IO is a NO-OP, but I'll display flags
     //IO_verbose is #defined to be 1 or 0
@@ -166,7 +198,7 @@ void BitTwiddle::PDP_IO(int device_num,int opcode){
 }
 
 
-void BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
+void PDP_uintructions(bool bit3, bool bit4, int offset){
 
 	// TODO: incrementPC();
     bool bit5  = read_bit_x(offset, 5);
@@ -234,7 +266,7 @@ void BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
 /*//
 PRIVATE FUNCTIONS!
 //*/
-int BitTwiddle::find_EAddr(bool addr_bit,bool mem_page,int offset){
+int find_EAddr(bool addr_bit,bool mem_page,int offset){
     if(!addr_bit){
         if(!mem_page){//bit3=0 bit4=0
             if(offset>=8 && offset<=15){ //autoindexing offset=010o-017o
@@ -257,7 +289,7 @@ int BitTwiddle::find_EAddr(bool addr_bit,bool mem_page,int offset){
     }
 }
 
-void BitTwiddle::load_into_memory(char * input_file){
+void load_into_memory(char * input_file){
 
     ifstream myFile;
     myFile.open(input_file);
@@ -349,14 +381,14 @@ EXIT:
 
 
 
-void BitTwiddle::execute_memory(){
+void execute_memory(){
 
 	int opcode = 0;
 	int offset = 0;
 	int address = 0;
 	int ret = 0;
 
-    int indirect= false;
+    bool indirect= false;
     bool currentPage= false;
 
 	// begin program execution
@@ -374,7 +406,7 @@ void BitTwiddle::execute_memory(){
 		PC++;
 
 		// parse the address
-		ret = parseAddress(address, opcode, indirect, currentPage, offset);
+		ret = parseAddress(address, opcode, indirect, currentPage,offset);
 		if (ret < 0)
 		{   // error occurred
 			cout << "ERROR - could not parse address\n";
@@ -452,25 +484,25 @@ void BitTwiddle::execute_memory(){
 
 
 
-void BitTwiddle::increment_PC(){
+void increment_PC(){
     PC=(PC + 1) & ((1<<REGISTERSIZE)-1);
     return;
 }
 
 
-bool BitTwiddle::read_bit_x(int input,int x){
+bool read_bit_x(int input,int x){
    return 1 & (input>>(REGISTERSIZE - (x + 1)));
 }
 
 
 //temp functions
-int BitTwiddle::MEM_LOAD(int dummy){
+int MEM_LOAD(int dummy){
 //return 0;
   return temp;
 }
 
 
-void BitTwiddle::MEM_STORE(int dummy1,int dummy2){
+void MEM_STORE(int dummy1,int dummy2){
 return;
 }
 
