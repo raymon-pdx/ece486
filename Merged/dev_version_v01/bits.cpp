@@ -3,29 +3,6 @@
 
 // TODO: Add clock cycles used for each instruction
 
-//-----------------------------------------------------------
-// Default Constructor
-//-----------------------------------------------------------
-/*
-BitTwiddle::BitTwiddle(){
-	AC=0;
-	PC=128;         //PC starts at 0200o
-	link=false;
-	
-	sumInstr = 0;
-	sumClk = 0;
-
-	AND_Count=0;     //number of AND instruction
-	TAD_Count=0;     //number of TAD instruction
-	ISZ_Count=0;     //number of ISZ instruction 
-	DCA_Count=0;     //number of DCA instruction
-	JMS_Count=0;     //number of JMS instruction 
-	JMP_Count=0;     //number of JMP instruction 
-	IO_Count=0;      //number of IO instruction 
-	uInstr_Count=0;  //number of micro instruction 
-	memory = new pagetable(32,128);
-}*/
-
 
 //-----------------------------------------------------------
 // Constructor
@@ -56,8 +33,6 @@ BitTwiddle::BitTwiddle(pagetable *table)
 // Destructor
 //-----------------------------------------------------------
 BitTwiddle::~BitTwiddle(){
-	//delete memory;
-	if(DEBUG) std::cout << "AC = " << AC << std::endl;
 }
 
 
@@ -88,9 +63,9 @@ void BitTwiddle::PDP_TAD(bool addr_bit,bool mem_page,int offset){
     int addb = MEM_LOAD(EAddr);    
     int addc = adda + addb;
 
-    AC=addc & ((1<<REGISTERSIZE)-1);//carry and overflow are removed
+	AC = addc & ((1 << pdp8::REGISTERSIZE) - 1);//carry and overflow are removed
 
-    if((1<<REGISTERSIZE) == (addc&(1<<REGISTERSIZE))) link = !link;//compliment link if carry out
+	if ((1 << pdp8::REGISTERSIZE) == (addc&(1 << pdp8::REGISTERSIZE))) link = !link;//compliment link if carry out
 	return;
 }
 
@@ -108,9 +83,9 @@ void BitTwiddle::PDP_ISZ(bool addr_bit,bool mem_page,int offset){
     int adda=AC;   
     int addc=adda + 1;
 
-    AC=addc & ((1<<REGISTERSIZE)-1);//carry and overflow are removed
+	AC = addc & ((1 << pdp8::REGISTERSIZE) - 1);//carry and overflow are removed
 
-    if(!((C_EAddr + 1) & ((1<<REGISTERSIZE)-1))){
+	if (!((C_EAddr + 1) & ((1 << pdp8::REGISTERSIZE) - 1))){
         increment_PC(); //skip if zero
     }
 	return;
@@ -148,7 +123,7 @@ void BitTwiddle::PDP_JMS(bool addr_bit,bool mem_page,int offset)
     // take contents of PC and place into content of EAddr
     MEM_STORE(EAddr,PC);
     // take EAddr, add 1, and store into PC
-    PC = (EAddr + 1) & ((1<<REGISTERSIZE)-1);//carry and overflow are removed
+	PC = (EAddr + 1) & ((1 << pdp8::REGISTERSIZE) - 1);//carry and overflow are removed
 	return;
 }
 
@@ -408,60 +383,60 @@ void BitTwiddle::rotateBits(int accumulator, int link, char dir){
 	char direction = ' ';  // temporarily holds value of dir
 
     #ifndef rotatebit_DEBUG
-    cout << "Current accumulator value: " << (bitset<12>) accumulator << "\n";
-    cout << "Current link bit: " << link << "\n"; 
-    cout << "Current direction: " << dir << "\n\n";
+    std::cout << "Current accumulator value: " << (bitset<12>) accumulator << "\n";
+	std::cout << "Current link bit: " << link << "\n";
+    std::cout << "Current direction: " << dir << "\n\n";
     #endif
 
     if(dir == 'R'){ //ROTATE RIGHT
 
         lsb = accumulator & 1; //save lsb of accumulator
         #ifndef rotatebit_DEBUG
-        cout << "Value of lsb is:" << lsb << "\n\n";
+        std::cout << "Value of lsb is:" << lsb << "\n\n";
         #endif
 
         accumulator = accumulator >> 1; //shift accumulator to right by 1
         #ifndef rotatebit_DEBUG
-        cout << "Value of shifted accumulator: " << (bitset<12>)accumulator << "\n";
+		std::cout << "Value of shifted accumulator: " << (bitset<12>)accumulator << "\n";
         #endif
 
         templink = link; //save value of link before we change it
         link = lsb; //lsb will be shifted into the link
         #ifndef rotatebit_DEBUG
-        cout << "New value of link: " << link << "\n";
+		std::cout << "New value of link: " << link << "\n";
         #endif
 
         templink = templink << 11; //put old value of link into accumulator MSB
         accumulator = (accumulator | templink); //put MSB into the accumulator
         #ifndef rotatebit_DEBUG
-        cout << "New value of accumulator: " << (bitset<12>)accumulator << "\n"; 
+		std::cout << "New value of accumulator: " << (bitset<12>)accumulator << "\n"; 
         #endif
 
     }else if(direction == 'L'){ //ROTATE LEFT
 
         msb = (accumulator>>11) & 1; //save msb of accumulator
         #ifndef rotatebit_DEBUG
-        cout << "Value of msb is:" << msb << "\n\n";
+		std::cout << "Value of msb is:" << msb << "\n\n";
         #endif
 
         accumulator = accumulator << 1; //shift accumulator to left by 1
         #ifndef rotatebit_DEBUG
-        cout << "Value of shifted accumulator: " << (bitset<12>)accumulator << "\n";
+		std::cout << "Value of shifted accumulator: " << (bitset<12>)accumulator << "\n";
         #endif
      
         templink = link; //save value of link before we change it
         #ifndef rotatebit_DEBUG
-        cout << "Value of templink: " << templink << "\n";
+		std::cout << "Value of templink: " << templink << "\n";
         #endif
 
         link = msb; //lsb will be shifted into the link
         #ifndef rotatebit_DEBUG
-        cout << "New value of link: " << link << "\n";
+		std::cout << "New value of link: " << link << "\n";
         #endif
 
         accumulator = (accumulator | templink); //put MSB into the accumulator as MSB
         #ifndef rotatebit_DEBUG
-        cout << "New value of accumulator: " << (bitset<12>)accumulator << "\n"; 
+		std::cout << "New value of accumulator: " << (bitset<12>)accumulator << "\n"; 
         #endif
 
     }else{
@@ -484,7 +459,7 @@ int BitTwiddle::find_EAddr(bool addr_bit,bool mem_page,int offset){
         if(!mem_page){//bit3=0 bit4=0
             if(offset>=8 && offset<=15){ //autoindexing offset=010o-017o
                 int temp = MEM_LOAD(offset)+1; //load C(AutoIndex_Register)+1
-                temp=temp & ((1<<REGISTERSIZE)-1); //scrub it to 12 bits
+                temp=temp & ((1<<pdp8::REGISTERSIZE)-1); //scrub it to 12 bits
                 MEM_STORE(offset , temp); //store it into C(AutoIndex_Register)
                 return temp; //C(AutoIndex_Register) is our EAddr
             }else{    
@@ -507,7 +482,7 @@ int BitTwiddle::find_EAddr(bool addr_bit,bool mem_page,int offset){
 // Function for incrementing the PC
 //----------------------------------------------------------
 void BitTwiddle::increment_PC(){
-    PC=(PC + 1) & ((1<<REGISTERSIZE)-1);
+	PC = (PC + 1) & ((1 << pdp8::REGISTERSIZE) - 1);
     return;
 }
 
@@ -516,7 +491,7 @@ void BitTwiddle::increment_PC(){
 // Function for reading a specific bit location
 //----------------------------------------------------------
 bool BitTwiddle::read_bit_x(int input,int x){
-	return 1 & (input>>(REGISTERSIZE - (x + 1)));
+	return 1 & (input >> (pdp8::REGISTERSIZE - (x + 1)));
 }
 
 

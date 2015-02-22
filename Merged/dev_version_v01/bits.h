@@ -2,22 +2,13 @@
 // Class to hold functions for implementing the PDP-8 Instructions
 //--------------------------------------------------------------------------------------
 #pragma once
+#include "constants.h"
 #include "memory.h"
 #include <iostream>
 #include <fstream>
 #include <time.h>
 #include <bitset>
 
-#ifndef REGISTERSIZE
-#define REGISTERSIZE 12
-#endif
-
-#ifndef DEBUG
-#define DEBUG 1
-#endif
-
-#define IO_verbose 0
-#define rotatebit_DEBUG
 
 class BitTwiddle{
 
@@ -61,6 +52,9 @@ public:
 
 	// return value of program counter
 	int getPC()	{ return PC; }
+
+	// return value of accumulator
+	int getAC() { return AC; }
 
     //function for trace file output
     int traceFile(int type, int address); 

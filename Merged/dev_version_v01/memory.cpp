@@ -118,18 +118,18 @@ int pagetable::retrieve(int pagenumber, int offset, entry & retrieved)
 
 int pagetable::breakdown(int address, int & result_pagenumber, int & result_offset)
 {
-	int temp_mask = (1 << (PAGESIZE + LINESIZE)) - 1;
+	int temp_mask = (1 << (pdp8::PAGESIZE + pdp8::LINESIZE)) - 1;
 	// Create mask with 1's, same length as EAddr
 
 	int temp_address = address & temp_mask;
 	// Mask EAddr to get rid of garbage bits
 
-	temp_mask = (1 << (LINESIZE)) - 1;
+	temp_mask = (1 << (pdp8::LINESIZE)) - 1;
 	// Create mask with 1's, same length as offset
 
 	result_offset = temp_address & temp_mask;
 	// Mask temp_address to get rid of page number bits
-	result_pagenumber = temp_address >> LINESIZE;
+	result_pagenumber = temp_address >> pdp8::LINESIZE;
 	// Right shift temp_address to get rid of offset bits
 
 	return 1;
@@ -140,11 +140,11 @@ int pagetable::breakdown(int address, int & result_pagenumber, int & result_offs
 string pagetable::intToOctal(int value)
 {
 	std::string octalString = "";
-	std::bitset<(PAGESIZE+LINESIZE)> aString(value);
+	std::bitset<(pdp8::PAGESIZE + pdp8::LINESIZE)> aString(value);
 	std::string binaryString = aString.to_string();
 
 	// step through entire string to get octal value
-	for (int i = 0; i < (PAGESIZE+LINESIZE); i += 3)
+	for (int i = 0; i < (pdp8::PAGESIZE + pdp8::LINESIZE); i += 3)
 	{
 		// find matching string
 		if (binaryString.compare(i, 3, "000") == 0)
@@ -234,12 +234,12 @@ int pagetable::store(int address, int value)
 	int pagenumber, offset;
 	breakdown(address, pagenumber, offset);
 
-	if (value >= int(pow(2, REGSIZE))) // See if value to be stored exceeded max value
+	if (value >= int(pow(2, pdp8::REGISTERSIZE))) // See if value to be stored exceeded max value
 	{
 		cout << "Value larger than register size; Will be trimmed down to "
-			<< REGSIZE << " bits!\n";
+			<< pdp8::REGISTERSIZE << " bits!\n";
 		int temp_mask = 0;
-		for (int i = 0; i < REGSIZE; ++i)
+		for (int i = 0; i < pdp8::REGISTERSIZE; ++i)
 		{
 			temp_mask |= temp_mask | (1 << i);
 		}// Create mask with 1's, length of register size
@@ -284,12 +284,12 @@ int pagetable::display_all()
 {
 	int previous_pagenumber = -1; // Specify starting pagenumber, so when it starts, pagenumber changes from -1 to 0
 	
-	for (int i = 0; i < int(pow(2, PAGESIZE)); i++) // Loop vertically
+	for (int i = 0; i < int(pow(2, pdp8::PAGESIZE)); i++) // Loop vertically
 	{
 		// Here i is the pagenumber
 		int previous_offset = -2; // Specify starting offset, reset to -2 every page
 
-		for (int j = 0; j < int(pow(2, LINESIZE)); j++) // Loop horizontally
+		for (int j = 0; j < int(pow(2, pdp8::LINESIZE)); j++) // Loop horizontally
 		{
 			if (probe(i, j)) // We encountered valid data
 			{

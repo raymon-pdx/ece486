@@ -7,19 +7,12 @@
 * LAST MODIFIED: 2/21/2015
 * DESCRIPTION: a program that simulates the PDP8 instruction set
 */
+#include "constants.h"
 #include "parser.h"
 #include "memory.h"
 #include "bits.h"
 using namespace std;
 
-#define TEST_FILE "test.txt" // used for debugging
-#define NUM_PAGES 32  // number of pages in memory
-#define PAGE_CAPACITY 128 // number of addresses per page
-#define STARTING_ADDRESS 128 // where program is stored
-
-/* FUNCTION PROTOTYPE */
-void loadFile();
-void execute();
 
 
 int main(int argc, char *argv[])
@@ -38,7 +31,7 @@ int main(int argc, char *argv[])
 	int ret = 0;
 	
 	// INITIALIZATION
-	pagetable Memory(NUM_PAGES, PAGE_CAPACITY);  // initialize memory
+	pagetable Memory(pdp8::NUM_PAGES, pdp8::PAGE_CAPACITY);  // initialize memory
 	BitTwiddle PDP8(&Memory);  // initialize ISA class
 
 	// LOAD FILE INTO MEMORY
@@ -72,7 +65,7 @@ int main(int argc, char *argv[])
 	
 	if(myFile.is_open())
 	{	
-		if(DEBUG || !SILENT)
+		if (pdp8::DEBUG || !SILENT)
 			{
 				cout << "\n***LOADING FILE INTO MEMORY***\n";
 			}
@@ -111,14 +104,14 @@ int main(int argc, char *argv[])
 			}
 			
 			// display before data
-			if((DEBUG || !SILENT) && !myFile.eof() && (id == 0))
+			if ((pdp8::DEBUG || !SILENT) && !myFile.eof() && (id == 0))
 			{
 				cout << "\n***LOAD DATA***\n";
 				cout << "Address = " << loadLocation << ", Data passed = " << address << endl;
 			}
 
 			// display for address
-			if ((DEBUG || !SILENT) && !myFile.eof() && (id == 1))
+			if ((pdp8::DEBUG || !SILENT) && !myFile.eof() && (id == 1))
 			{
 				cout << "\n***NEW ADDRESS***\n";
 				cout << "Address = " << loadLocation << endl;
@@ -134,7 +127,7 @@ int main(int argc, char *argv[])
 					cout << "ERROR - adding data failed\n";
 					goto EXIT;
 				}
-				if(DEBUG || !SILENT)
+				if (pdp8::DEBUG || !SILENT)
 				{
 					// display what is in the address
 					Memory.display(loadLocation);
@@ -151,7 +144,7 @@ int main(int argc, char *argv[])
 		}  // eof?
 		
 		// give additional information that file is loaded
-		if(DEBUG || !SILENT)
+		if (pdp8::DEBUG || !SILENT)
 		{
 			cout << "\n***FINISHED LOADING FILE***\n";
 		}
@@ -163,7 +156,7 @@ int main(int argc, char *argv[])
     }
 
 	/* BEGIN PROGRAM EXECUTION */
-	if (DEBUG || !SILENT)
+	if (pdp8::DEBUG || !SILENT)
 	{
 		cout << "\n***BEGIN PROGRAM EXECUTION***\n";
 	}
@@ -196,7 +189,7 @@ int main(int argc, char *argv[])
 		switch (opcode)
 		{
 		case 0:
-			if (DEBUG || !SILENT)
+			if (pdp8::DEBUG || !SILENT)
 			{
 				cout << "[AND|" << indirect << "|" << currentPage
                      << "|" << offset << "]\n";
@@ -204,7 +197,7 @@ int main(int argc, char *argv[])
 			PDP8.PDP_AND(indirect, currentPage, offset);
 			break;
 		case 1:
-			if (DEBUG || !SILENT)
+			if (pdp8::DEBUG || !SILENT)
 			{
 				cout << "[TAD|" << indirect << "|" << currentPage
 					<< "|" << offset << "]\n";
@@ -212,7 +205,7 @@ int main(int argc, char *argv[])
 			PDP8.PDP_TAD(indirect, currentPage, offset);
 			break;
 		case 2:
-			if (DEBUG || !SILENT)
+			if (pdp8::DEBUG || !SILENT)
 			{
 				cout << "[ISZ|" << indirect << "|" << currentPage
 					<< "|" << offset << "]\n";
@@ -220,7 +213,7 @@ int main(int argc, char *argv[])
 			PDP8.PDP_ISZ(indirect, currentPage, offset);
 			break;
 		case 3:
-			if (DEBUG || !SILENT)
+			if (pdp8::DEBUG || !SILENT)
 			{
 				cout << "[DCA|" << indirect << "|" << currentPage
 					<< "|" << offset << "]\n";
@@ -228,7 +221,7 @@ int main(int argc, char *argv[])
 			PDP8.PDP_DCA(indirect, currentPage, offset);
 			break;
 		case 4:
-			if (DEBUG || !SILENT)
+			if (pdp8::DEBUG || !SILENT)
 			{
 				cout << "[JMS|" << indirect << "|" << currentPage
 					<< "|" << offset << "]\n";
@@ -236,7 +229,7 @@ int main(int argc, char *argv[])
 			PDP8.PDP_JMS(indirect, currentPage, offset);
 			break;
 		case 5:
-			if (DEBUG || !SILENT)
+			if (pdp8::DEBUG || !SILENT)
 			{
 				cout << "[JMP|" << indirect << "|" << currentPage
 					<< "|" << offset << "]\n";
@@ -244,7 +237,7 @@ int main(int argc, char *argv[])
 			PDP8.PDP_JMP(indirect, currentPage, offset);
 			break;
 		case 6:
-			if (DEBUG || !SILENT)
+			if (pdp8::DEBUG || !SILENT)
 			{
 				cout << "[IO|" << indirect << "|" << currentPage
 					<< "|" << offset << "]\n";
@@ -253,7 +246,7 @@ int main(int argc, char *argv[])
 			cout << "IO not implemented\n";
 			break;
 		case 7:
-			if (DEBUG || !SILENT)
+			if (pdp8::DEBUG || !SILENT)
 			{
 				cout << "[MICRO|" << indirect << "|" << currentPage
 					<< "|" << offset << "]\n";
@@ -265,7 +258,7 @@ int main(int argc, char *argv[])
 			goto EXECUTION_DONE;  // TODO: remove this when function implemented
 			break;
 		default:
-			if (DEBUG || !SILENT)
+			if (pdp8::DEBUG || !SILENT)
 			{
 				cout << "[" << opcode << "|" << indirect << "|" 
 					 << currentPage	<< "|" << offset << "]\n";
@@ -277,13 +270,14 @@ int main(int argc, char *argv[])
 
 EXECUTION_DONE:
 	// end of program execution
-	if (DEBUG || !SILENT)
+	if (pdp8::DEBUG || !SILENT)
 	{
 		cout << "\n***FINISHED EXECUTING PROGRAM***\n";
 	}
 
 	// print statistics
 	PDP8.display();
+	cout << "AC = " << PDP8.getAC() << endl;
 
 EXIT:
 	// close the file
