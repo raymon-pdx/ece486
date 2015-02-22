@@ -12,6 +12,10 @@
 #define REGISTERSIZE 12
 #endif
 
+#ifndef DEBUG
+#define DEBUG 1
+#endif
+
 #define IO_verbose 0
 #define rotatebit_DEBUG
 

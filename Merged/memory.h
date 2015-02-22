@@ -1,16 +1,28 @@
 // Author: Meng Lei
 // PDP-8 memory simulator
 // memory.h: header file for memory implementation
-
+#pragma once
 #include <stdlib.h>
 #include <iostream>
 #include <cstring>
 #include <cctype>
 #include <bitset>
 
-const int RegSize = 12; // 12 bits = 4096
-const int PageSize = 5; // 5 bits = 32
-const int LineSize = 7; // 7 bits = 128
+#ifndef REGSIZE
+#define REGSIZE 12
+#endif
+#ifndef PAGESIZE
+#define PAGESIZE 5
+#endif
+#ifndef LINESIZE
+#define LINESIZE 7
+#endif
+
+/*
+int RegSize; // 12 bits = 4096
+int PageSize; // 5 bits = 32
+int LineSize; // 7 bits = 128
+*/
 
 // Each PTE is handled by a ptr in page table
 // One entry contains:
@@ -24,6 +36,7 @@ struct entry
 class pagetable
 {
 public:
+	pagetable();
 	pagetable(int numberofpages, int capacityofpage); // constructor
 	~pagetable(); // destructor
 	int load(int address); // wrapper function interacting with "bits" module

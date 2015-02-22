@@ -1,84 +1,86 @@
 //Evan Sprecher & Ommaimah Hussein
-
 #include "bits.h"
-#include <iostream>
-#include <bitset>
 
-#define IO_verbose 0
-#define REGISTERSIZE 12
-#define rotatebit_DEBUG
+// TODO: Add clock cycles used for each instruction
+
+//-----------------------------------------------------------
+// Default Constructor
+//-----------------------------------------------------------
+/*
+BitTwiddle::BitTwiddle(){
+	AC=0;
+	PC=128;         //PC starts at 0200o
+	link=false;
+	
+	sumInstr = 0;
+	sumClk = 0;
+
+	AND_Count=0;     //number of AND instruction
+	TAD_Count=0;     //number of TAD instruction
+	ISZ_Count=0;     //number of ISZ instruction 
+	DCA_Count=0;     //number of DCA instruction
+	JMS_Count=0;     //number of JMS instruction 
+	JMP_Count=0;     //number of JMP instruction 
+	IO_Count=0;      //number of IO instruction 
+	uInstr_Count=0;  //number of micro instruction 
+	memory = new pagetable(32,128);
+}*/
+
 
 //-----------------------------------------------------------
 // Constructor
 //-----------------------------------------------------------
-BitTwiddle::BitTwiddle(){
+BitTwiddle::BitTwiddle(pagetable *table)
+{
+	AC=0;
+	PC=128;         //PC starts at 0200o
+	link=false;
+	
+	sumInstr = 0;
+	sumClk = 0;
 
-   //initialize value for AC, PC, and link
-   AC = 0;
-   PC = 128;         //PC starts at 0200o
-   link = 0;
-
-   //initialize values for sum of instructions
-   sumInstr = 0;
-
-   //initialize vlaues for clock cycles
-   sumClk = 0;
-
-   //initialize values for instruction accesses
-   sumAND = 0;
-   sumTAD = 0; 
-   sumISZ = 0; 
-   sumDCA = 0; 
-   sumJMS = 0;  
-   sumJMP = 0;  
-   sumIO = 0;   
-   sumuInstr = 0;  
+	AND_Count=0;     //number of AND instruction
+	TAD_Count=0;     //number of TAD instruction
+	ISZ_Count=0;     //number of ISZ instruction 
+	DCA_Count=0;     //number of DCA instruction
+	JMS_Count=0;     //number of JMS instruction 
+	JMP_Count=0;     //number of JMP instruction 
+	IO_Count=0;      //number of IO instruction 
+	uInstr_Count=0;  //number of micro instruction 
+	
+	memory = table;
 }
+
 
 //-----------------------------------------------------------
 // Destructor
 //-----------------------------------------------------------
 BitTwiddle::~BitTwiddle(){
-
-    //print out brief summary 
-    cout << "-----------PDP-8 ISA Simulation Summary-----------\n\n";
-    //TODO: Add the +1 to numInstr for every instruction
-    cout << "Total number of Instructions executed: " << sumInstr << "\n";
-    //TODO: Add correct amount of clock cycles to each function
-    cout << "Total number of clock cycles consumed: " << sumClk << "\n\n";
-    cout << "Number of times each instruction type was executed\n"
-    cout << "|-------------------------------------------------\n";
-    cout << "|    Mnemonic   | Number of times executed        \n";
-    cout << "|-------------------------------------------------\n";
-    cout << "|      AND      |       " << sumAND    << "\n";
-    cout << "|      TAD      |       " << sumTAD    << "\n";
-    cout << "|      ISZ      |       " << sumISZ    << "\n";
-    cout << "|      DCA      |       " << sumDCA    << "\n";
-    cout << "|      JMS      |       " << sumJMS    << "\n";
-    cout << "|      JMP      |       " << sumJMP    << "\n";
-    cout << "|     <IO>      |       " << sumIO     << "\n";
-    cout << "| uInstructions |       " << sumuInstr << "\n";
-    cout << "|-------------------------------------------------\n\n";
-
+	//delete memory;
+	if(DEBUG) std::cout << "AC = " << AC << std::endl;
 }
+
 
 //-----------------------------------------------------------
 // Function for Logical AND
 //-----------------------------------------------------------
 void BitTwiddle::PDP_AND(bool addr_bit,bool mem_page,int offset){
-    sumAND++;
+    ++AND_Count;
+	++sumInstr;
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
     increment_PC();
 
     AC=AC & MEM_LOAD(EAddr);
-    return;
+	return;
 }
+
 
 //-----------------------------------------------------------
 // Function for Two's Complement Add 
 //-----------------------------------------------------------
 void BitTwiddle::PDP_TAD(bool addr_bit,bool mem_page,int offset){
-    sumTAD++;
+    ++TAD_Count;
+	++sumInstr;
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
     increment_PC();
 
@@ -89,15 +91,16 @@ void BitTwiddle::PDP_TAD(bool addr_bit,bool mem_page,int offset){
     AC=addc & ((1<<REGISTERSIZE)-1);//carry and overflow are removed
 
     if((1<<REGISTERSIZE) == (addc&(1<<REGISTERSIZE))) link = !link;//compliment link if carry out
-
-    return;
+	return;
 }
+
 
 //-----------------------------------------------------------
 // Function for Increment and Skip on Zero
 //-----------------------------------------------------------
 void BitTwiddle::PDP_ISZ(bool addr_bit,bool mem_page,int offset){
-    sumISZ++;
+    ++ISZ_Count;
+	++sumInstr;
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
     int C_EAddr = MEM_LOAD(EAddr);
     increment_PC();
@@ -110,7 +113,7 @@ void BitTwiddle::PDP_ISZ(bool addr_bit,bool mem_page,int offset){
     if(!((C_EAddr + 1) & ((1<<REGISTERSIZE)-1))){
         increment_PC(); //skip if zero
     }
-    return;
+	return;
 }
 
 
@@ -119,7 +122,8 @@ void BitTwiddle::PDP_ISZ(bool addr_bit,bool mem_page,int offset){
 //-----------------------------------------------------------
 void BitTwiddle::PDP_DCA(bool addr_bit,bool mem_page,int offset)
 {
-    sumDCA++;
+    ++DCA_Count;
+	++sumInstr;
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
     increment_PC();
     
@@ -127,23 +131,25 @@ void BitTwiddle::PDP_DCA(bool addr_bit,bool mem_page,int offset)
     MEM_STORE(EAddr,AC);
     // store 0 into AC (clear AC)
     AC = 0;
-    return;
+	return;
 }
+
 
 //-----------------------------------------------------------
 // Function for Jump to Subroutine
 //-----------------------------------------------------------
 void BitTwiddle::PDP_JMS(bool addr_bit,bool mem_page,int offset)
 {
-    sumJMS++;
+    ++JMS_Count;
+	++sumInstr;
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
     increment_PC();
     
-    //take contents of PC and place into content of EAddr
+    // take contents of PC and place into content of EAddr
     MEM_STORE(EAddr,PC);
-    //take EAddr, add 1, and store into PC
+    // take EAddr, add 1, and store into PC
     PC = (EAddr + 1) & ((1<<REGISTERSIZE)-1);//carry and overflow are removed
-    return;
+	return;
 }
 
 
@@ -152,24 +158,24 @@ void BitTwiddle::PDP_JMS(bool addr_bit,bool mem_page,int offset)
 //-----------------------------------------------------------
 void BitTwiddle::PDP_JMP(bool addr_bit,bool mem_page,int offset)
 {
-    sumJMP++;
+    ++JMP_Count;
+	++sumInstr;
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
     increment_PC();
 
-    //take EAddr and store into PC
+    // take EAddr and store into PC
     PC= EAddr;
-    return;
+	return;
 }
+
 
 //-----------------------------------------------------------
 // Forbidden IO functionality
 //-----------------------------------------------------------
-
 void BitTwiddle::PDP_IO(int device_num,int opcode){
-
-    sumIO++;
-
-    increment_PC();
+    ++IO_Count;
+	++sumInstr;
+	increment_PC();
     //IO is a NO-OP, but I'll display flags
     //IO_verbose is #defined to be 1 or 0
     if(device_num == 3){
@@ -200,19 +206,21 @@ void BitTwiddle::PDP_IO(int device_num,int opcode){
 
     }else if(device_num == 4){
 
-    }
 
-    return;
+    }
+	return;
 }
+
 
 //-----------------------------------------------------------
 // Function for Micro Instructions
 //-----------------------------------------------------------
 void BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
-
-    sumuInstr++;
-
-	//TODO: incrementPC();
+	// TODO: add increment_PC() to specific uInst
+	++uInstr_Count;
+	++sumInstr;
+	
+	increment_PC();
     bool bit5  = read_bit_x(offset, 5);
     bool bit6  = read_bit_x(offset, 6);
     bool bit7  = read_bit_x(offset, 7);
@@ -221,7 +229,7 @@ void BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
     bool bit10 = read_bit_x(offset,10);
     bool bit11 = read_bit_x(offset,11);
 
-    //*************GROUP 1*******************
+//*************GROUP 1*******************
     if(!bit3){
 
         if(bit4){         //clear accumulator
@@ -242,7 +250,7 @@ void BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
 
         }else if(bit11){  //increment accumulator
 
-            AC = AC++;
+            ++AC;
 
         }else if(bit8){   //rotate accumulator, link right
 
@@ -272,7 +280,7 @@ void BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
         }
 
     //*************GROUP 2*******************
-    }else if(!bit11){                    uinstructions            
+    }else if(!bit11){                   //uinstructions            
         if(bit8){                       //AND subgroup and SKP
             bool cond5=1; //combinations will skip when all conditions are true.
             bool cond6=1; //so we do not skip if any one condition is false.
@@ -321,6 +329,32 @@ void BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
     return;
 }
 
+// display data from BitTwiddle class
+void BitTwiddle::display()
+{
+	//print out brief summary 
+	std::cout << "-----------PDP-8 ISA Simulation Summary---------------\n\n";
+	//TODO: Add the +1 to numInstr for every instruction
+	std::cout << "Total number of Instructions executed: " << sumInstr << "\n";
+	//TODO: Add correct amount of clock cycles to each function
+	std::cout << "Total number of clock cycles consumed: " << sumClk << "\n\n";
+	std::cout << "**Number of times each instruction type was executed**\n";
+	//TODO: Add variable to each function to hold count
+	std::cout << "|-----------------------------------------------------\n";
+	std::cout << "|    Mnemonic   | Number of times executed            \n";
+	std::cout << "|-----------------------------------------------------\n";
+	std::cout << "|      AND      |       " << AND_Count << "\n";
+	std::cout << "|      TAD      |       " << TAD_Count << "\n";
+	std::cout << "|      ISZ      |       " << ISZ_Count << "\n";
+	std::cout << "|      DCA      |       " << DCA_Count << "\n";
+	std::cout << "|      JMS      |       " << JMS_Count << "\n";
+	std::cout << "|      JMP      |       " << JMP_Count << "\n";
+	std::cout << "|     <IO>      |       " << IO_Count << "\n";
+	std::cout << "| uInstructions |       " << uInstr_Count << "\n";
+	std::cout << "------------------------------------------------------\n";
+}
+
+
 //-----------------------------------------------------------
 // Function for outputing trace file
 //-----------------------------------------------------------
@@ -333,7 +367,7 @@ int BitTwiddle::traceFile(int type, int address){
    #endif
 
    //create an output trace file
-   ofstream outputTraceFile;
+   std::ofstream outputTraceFile;
    outputTraceFile.open("TraceFile.txt");
 
    #ifndef timeStamp
@@ -343,32 +377,35 @@ int BitTwiddle::traceFile(int type, int address){
    #endif
 
    //use outputTraceFile like cout, but into txt file 
-   outputTraceFile << type << " " << oct << address << endl;
+   outputTraceFile << type << " " << std::oct << address << std::endl;
 
    outputTraceFile.close();
-   cout << "Trace file generated.\n";
+   std::cout << "Trace file generated.\n";
 
    return 0;
 
 }
+
 
 //-----------------------------------------------------------
 // Function for displaying warning for a No-OP
 //-----------------------------------------------------------
 void BitTwiddle::warningMessage()
 {
-    cout << "Warning. A NOP (No Operation) has been encountered.\n";
+    std::cout << "Warning. A NOP (No Operation) has been encountered.\n";
     return;
 }
+
 
 //-----------------------------------------------------------
 // Function for rotating bits (used in uInstruction Group 1)
 //-----------------------------------------------------------
-int BitTwiddle::rotateBits(int accumulator, int link, char dir){
+void BitTwiddle::rotateBits(int accumulator, int link, char dir){
 
-    int lsb; //value of lsb from accumulator
-    int msb; //value of msb from accumulator
-    int templink; //temporarily holds value of link
+    int lsb = 0; //value of lsb from accumulator
+    int msb = 0; //value of msb from accumulator
+    int templink = 0; //temporarily holds value of link
+	char direction = ' ';  // temporarily holds value of dir
 
     #ifndef rotatebit_DEBUG
     cout << "Current accumulator value: " << (bitset<12>) accumulator << "\n";
@@ -429,10 +466,11 @@ int BitTwiddle::rotateBits(int accumulator, int link, char dir){
 
     }else{
 
-        cout << "Error in reading direction of rotation.\n";
+        std::cout << "Error in reading direction of rotation.\n";
     }
     return;
 }
+
 
 //____________________________________________________________
 //                    PRIVATE FUNCTIONS! 
@@ -464,6 +502,7 @@ int BitTwiddle::find_EAddr(bool addr_bit,bool mem_page,int offset){
     }
 }
 
+
 //-----------------------------------------------------------
 // Function for incrementing the PC
 //----------------------------------------------------------
@@ -472,21 +511,29 @@ void BitTwiddle::increment_PC(){
     return;
 }
 
+
 //-----------------------------------------------------------
 // Function for reading a specific bit location
 //----------------------------------------------------------
 bool BitTwiddle::read_bit_x(int input,int x){
-   return 1 & (input>>(REGISTERSIZE - (x + 1)));
+	return 1 & (input>>(REGISTERSIZE - (x + 1)));
 }
 
 
-//*********TEMP FUNCTIONS*********
-int BitTwiddle::MEM_LOAD(int dummy){
-//return 0;
-  return temp;
+//-----------------------------------------------------------
+// Function for loading from memory
+//----------------------------------------------------------
+int BitTwiddle::MEM_LOAD(int address){
+	temp = memory->load(address);
+	return temp;
 }
 
-void BitTwiddle::MEM_STORE(int dummy1,int dummy2){
-return;
+
+//-----------------------------------------------------------
+// Function for storing to memory
+//----------------------------------------------------------
+void BitTwiddle::MEM_STORE(int address,int value){
+	memory->store(address, value);
+	return;
 }
 

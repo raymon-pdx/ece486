@@ -57,6 +57,7 @@ BitTwiddle::BitTwiddle(pagetable *table)
 //-----------------------------------------------------------
 BitTwiddle::~BitTwiddle(){
 	//delete memory;
+	if(DEBUG) std::cout << "AC = " << AC << std::endl;
 }
 
 

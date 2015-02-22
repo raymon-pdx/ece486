@@ -12,6 +12,28 @@
 
 using namespace std;
 
+// default constructor
+pagetable::pagetable()
+{
+	number_of_pages = 32;
+	capacity_of_page = 128;
+
+	Table = new entry **[number_of_pages];
+
+	for (int i = 0; i < number_of_pages; i++)
+	{
+		Table[i] = new entry *[capacity_of_page];
+	}
+
+	for (int i = 0; i < number_of_pages; i++)
+	{
+		for (int j = 0; j < capacity_of_page; j++)
+		{
+			Table[i][j] = NULL; // Set every ptr in 2d array to NULL
+		}
+	}
+}
+
 pagetable::pagetable(int numberofpages, int capacityofpage)
 {
 	number_of_pages = numberofpages;
@@ -96,18 +118,18 @@ int pagetable::retrieve(int pagenumber, int offset, entry & retrieved)
 
 int pagetable::breakdown(int address, int & result_pagenumber, int & result_offset)
 {
-	int temp_mask = (1 << (PageSize + LineSize)) - 1;
+	int temp_mask = (1 << (PAGESIZE + LINESIZE)) - 1;
 	// Create mask with 1's, same length as EAddr
 
 	int temp_address = address & temp_mask;
 	// Mask EAddr to get rid of garbage bits
 
-	temp_mask = (1 << (LineSize)) - 1;
+	temp_mask = (1 << (LINESIZE)) - 1;
 	// Create mask with 1's, same length as offset
 
 	result_offset = temp_address & temp_mask;
 	// Mask temp_address to get rid of page number bits
-	result_pagenumber = temp_address >> LineSize;
+	result_pagenumber = temp_address >> LINESIZE;
 	// Right shift temp_address to get rid of offset bits
 
 	return 1;
@@ -118,11 +140,11 @@ int pagetable::breakdown(int address, int & result_pagenumber, int & result_offs
 string pagetable::intToOctal(int value)
 {
 	std::string octalString = "";
-	std::bitset<(PageSize+LineSize)> aString(value);
+	std::bitset<(PAGESIZE+LINESIZE)> aString(value);
 	std::string binaryString = aString.to_string();
 
 	// step through entire string to get octal value
-	for (int i = 0; i < (PageSize+LineSize); i += 3)
+	for (int i = 0; i < (PAGESIZE+LINESIZE); i += 3)
 	{
 		// find matching string
 		if (binaryString.compare(i, 3, "000") == 0)
@@ -212,12 +234,12 @@ int pagetable::store(int address, int value)
 	int pagenumber, offset;
 	breakdown(address, pagenumber, offset);
 
-	if (value >= int(pow(2, RegSize))) // See if value to be stored exceeded max value
+	if (value >= int(pow(2, REGSIZE))) // See if value to be stored exceeded max value
 	{
 		cout << "Value larger than register size; Will be trimmed down to "
-			<< RegSize << " bits!\n";
+			<< REGSIZE << " bits!\n";
 		int temp_mask = 0;
-		for (int i = 0; i < RegSize; ++i)
+		for (int i = 0; i < REGSIZE; ++i)
 		{
 			temp_mask |= temp_mask | (1 << i);
 		}// Create mask with 1's, length of register size
@@ -262,12 +284,12 @@ int pagetable::display_all()
 {
 	int previous_pagenumber = -1; // Specify starting pagenumber, so when it starts, pagenumber changes from -1 to 0
 	
-	for (int i = 0; i < int(pow(2, PageSize)); i++) // Loop vertically
+	for (int i = 0; i < int(pow(2, PAGESIZE)); i++) // Loop vertically
 	{
 		// Here i is the pagenumber
 		int previous_offset = -2; // Specify starting offset, reset to -2 every page
 
-		for (int j = 0; j < int(pow(2, LineSize)); j++) // Loop horizontally
+		for (int j = 0; j < int(pow(2, LINESIZE)); j++) // Loop horizontally
 		{
 			if (probe(i, j)) // We encountered valid data
 			{
