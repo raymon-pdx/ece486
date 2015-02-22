@@ -1,11 +1,10 @@
-
 /*
 * AUTHORS: Ommaimah Hussein Mohammed,
 *          Even Sprecher,
 *          Meng Lei,
 *          Sean Hendrickson
 * FILE: main.cpp
-* LAST MODIFIED: 2/16/2015
+* LAST MODIFIED: 2/21/2015
 * DESCRIPTION: a program that simulates the PDP8 instruction set
 */
 #include "parser.h"
@@ -17,6 +16,10 @@ using namespace std;
 #define NUM_PAGES 32  // number of pages in memory
 #define PAGE_CAPACITY 128 // number of addresses per page
 #define STARTING_ADDRESS 128 // where program is stored
+
+/* FUNCTION PROTOTYPE */
+void loadFile();
+void execute();
 
 
 int main(int argc, char *argv[])
@@ -37,6 +40,8 @@ int main(int argc, char *argv[])
 	// INITIALIZATION
 	pagetable Memory(NUM_PAGES, PAGE_CAPACITY);  // initialize memory
 	BitTwiddle PDP8(&Memory);  // initialize ISA class
+
+	// LOAD FILE INTO MEMORY
 	
 	// check for program error
 	if (argc < 1)
@@ -244,6 +249,7 @@ int main(int argc, char *argv[])
 				cout << "[IO|" << indirect << "|" << currentPage
 					<< "|" << offset << "]\n";
 			}
+			PDP8.increment_PC();
 			cout << "IO not implemented\n";
 			break;
 		case 7:
@@ -252,6 +258,11 @@ int main(int argc, char *argv[])
 				cout << "[MICRO|" << indirect << "|" << currentPage
 					<< "|" << offset << "]\n";
 			}
+			// TODO: parse address to pass to micro instruction
+			// TODO: add the new function to parser file
+			//PDP8.PDP_uintructions();
+			cout << "uINSTRUCTIONS not implemented\n";
+			goto EXECUTION_DONE;  // TODO: remove this when function implemented
 			break;
 		default:
 			if (DEBUG || !SILENT)

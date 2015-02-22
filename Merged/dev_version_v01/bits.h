@@ -3,8 +3,17 @@
 //--------------------------------------------------------------------------------------
 #pragma once
 #include "memory.h"
+#include <iostream>
+#include <fstream>
+#include <time.h>
+#include <bitset>
+
+#ifndef REGISTERSIZE
 #define REGISTERSIZE 12
+#endif
+
 #define IO_verbose 0
+#define rotatebit_DEBUG
 
 class BitTwiddle{
 
@@ -37,14 +46,27 @@ public:
     //function for (OPCODE = 5) jump
     void PDP_JMP(bool addr_bit,bool mem_page,int offset);
 
-    //TODO IO and uinstructions have special inputs, not the normal ones.
+    //TODO IO and uinstructions have specal inputs
+    //not the normal ones.
+	
+	//function for (OPCODE = 6) input/output
     void PDP_IO(int device_num,int opcode);
   
+	//function for (OPCODE = 7) uinstructions
     void PDP_uintructions(bool group, bool cla, int offset);
 
 	// return value of program counter
 	int getPC()	{ return PC; }
 
+    //function for trace file output
+    int traceFile(int type, int address); 
+	
+    //function for displaying warning message with NOP
+    void warningMessage();
+	
+    //function for rotating bits
+    void rotateBits(int accumulator, int link, char dir);	
+	
 	// increments the program counter
 	void increment_PC();
 	
@@ -57,7 +79,7 @@ private:
    bool link;       //link bit
    
    int sumInstr;  // count for number of total instructions
-   int sumClk;   // count for number of total clocks
+   int sumClk;    // count for number of total clocks
 
    int AND_Count; //number of AND instruction
    int TAD_Count; //number of TAD instruction
@@ -77,6 +99,4 @@ private:
    int MEM_LOAD(int address);
    void MEM_STORE(int address,int value);
    int temp;
-//private: //temp here, for testing
-
 };
