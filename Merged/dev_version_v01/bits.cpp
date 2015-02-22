@@ -6,6 +6,7 @@
 //-----------------------------------------------------------
 // Default Constructor
 //-----------------------------------------------------------
+/*
 BitTwiddle::BitTwiddle(){
 	AC=0;
 	PC=128;         //PC starts at 0200o
@@ -23,7 +24,7 @@ BitTwiddle::BitTwiddle(){
 	IO_Count=0;      //number of IO instruction 
 	uInstr_Count=0;  //number of micro instruction 
 	memory = new pagetable(32,128);
-}
+}*/
 
 
 //-----------------------------------------------------------
@@ -55,7 +56,7 @@ BitTwiddle::BitTwiddle(pagetable *table)
 // Destructor
 //-----------------------------------------------------------
 BitTwiddle::~BitTwiddle(){
-	delete memory;
+	//delete memory;
 }
 
 
