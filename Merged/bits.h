@@ -41,7 +41,7 @@ public:
     //function for (OPCODE = 5) jump
     void PDP_JMP(bool addr_bit,bool mem_page,int offset);
 
-    //TODO IO and uinstructions have specal inputs
+    //TODO: IO and uinstructions have specal inputs
     //not the normal ones.
 	
 	//function for (OPCODE = 6) input/output

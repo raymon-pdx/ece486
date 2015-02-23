@@ -35,6 +35,22 @@ int getAddress(std::ifstream &file, int &id, int &address, int &lineCount);
 int parseAddress(int address, int &opcode, bool &I, bool &M, int &offset);
 
 
+// break down octal address for use in microinstructions
+// PRE-COND: buffers must be designated for groupBit, CLA, and offset before function call
+// POST-COND: values pased back through function parameters
+// RET: 0 on success
+//     -1 if passed address tp large (assumed 12 bits) 
+int microInstrParser(int address, int &groupBit, int &CLA, int &offset);
+
+
+// break down octal address for use in IO instructions
+// PRE-COND: buffers must be designated for devNumber, and function before function call
+// POST-COND: values pased back through function parameters
+// RET: 0 on success
+//     -1 if passed address tp large (assumed 12 bits) 
+int IOInstrParser(int address, int &devNumber, int &function);
+
+
 // this function takes a string of octal values and 
 // converts it to a binary sting
 // PRE-COND: characters must be ANSI

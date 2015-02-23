@@ -277,6 +277,67 @@ int parseAddress(int address, int &opcode, bool &I, bool &M, int &offset)
 	return 0;  // exit normally
 }
 
+
+// break down octal address for use in microinstructions
+// PRE-COND: buffers must be designated for groupBit, CLA, and offset before function call
+// POST-COND: values pased back through function parameters
+// RET: 0 on success
+//     -1 if passed address tp large (assumed 12 bits) 
+int microInstrParser(int address, int &groupBit, int &CLA, int &offset)
+{
+	int bit3Mask = 0x100;
+	int bit4Mask = 0x080;
+	int addressMask = 0x07F;
+	int temp = 0;
+
+	// check that passed address is not too large
+	if (address > (pow(2, pdp8::REGISTERSIZE) - 1))
+	{   // passed address too large
+		return -1;
+	}
+
+	// get bit 3
+	temp = address & bit3Mask;  // get only bit 8
+	groupBit = temp >> 8;       // shift right 8 bits
+
+	// get bit 4
+	temp = address & bit4Mask;  // get only bit 7
+	CLA = temp >> 7;            // shift right 7 bits
+
+	// get offset
+	offset = address & addressMask;  // get lowest 7 bits
+	return 0;
+}
+
+
+// break down octal address for use in IO instructions
+// PRE-COND: buffers must be designated for devNumber, and function before function call
+// POST-COND: values pased back through function parameters
+// RET: 0 on success
+//     -1 if passed address tp large (assumed 12 bits) 
+int IOInstrParser(int address, int &devNumber, int &function)
+{
+	int deviceMask = 0x1F8;
+	int funcMask = 0x007;
+	int temp = 0;
+
+	// check that passed address is not too large
+	if (address > (pow(2, pdp8::REGISTERSIZE) - 1))
+	{   // passed address too large
+		return -1;
+	}
+
+	// get device number
+	temp = address & deviceMask;  // get bits 3:8
+	devNumber = temp >> 3;        // shift right 3 bits
+
+	// get function
+	function = address & funcMask;    // get lowest 3 bits
+
+	return 0;
+}
+
+
 // this function takes a string of octal values and
 // converts it to a binary sting
 // PRE-COND: characters must be ANSI

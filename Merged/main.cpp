@@ -13,7 +13,7 @@
 #include "bits.h"
 using namespace std;
 
-
+// TODO: display output in main as octal values where appropriate
 
 int main(int argc, char *argv[])
 {
@@ -27,6 +27,11 @@ int main(int argc, char *argv[])
 	int loadLocation = 0;       // address to load data too
 	int opcode = 0;             // opcode used to decode instructions
 	int offset = 0;             // offset from parsing address
+	int groupBit = 0;           // use for parsing micro instr
+	int CLA = 0;                // use for parsing micro instr
+	int microOffset = 0;        // use for parsing micro instr
+	int deviceNum = 0;          // used for parsing address for IO instr
+	int function = 0;           // used for parsing address for IO instr
 	int id = 0;                 // data or instruction word
 	int ret = 0;
 	
@@ -66,9 +71,9 @@ int main(int argc, char *argv[])
 	if(myFile.is_open())
 	{	
 		if (pdp8::DEBUG || !SILENT)
-			{
-				cout << "\n***LOADING FILE INTO MEMORY***\n";
-			}
+		{
+			cout << "\n***LOADING FILE INTO MEMORY***\n";
+		}
 		// place all data in file to memory
 		while (!myFile.eof())
 		{
@@ -237,25 +242,34 @@ int main(int argc, char *argv[])
 			PDP8.PDP_JMP(indirect, currentPage, offset);
 			break;
 		case 6:
+			// parse address for IO instruction
+			if (IOInstrParser(address, deviceNum, function) < 0)
+			{
+				cout << "ERROR - Passed address to IO instructions is too large\n";
+				goto EXIT;
+			}
+
 			if (pdp8::DEBUG || !SILENT)
 			{
-				cout << "[IO|" << indirect << "|" << currentPage
-					<< "|" << offset << "]\n";
+				cout << "[IO|" << deviceNum << "|" << function << "]\n";
 			}
-			PDP8.increment_PC();
-			cout << "IO not implemented\n";
+			PDP8.PDP_IO(deviceNum, function);
 			break;
 		case 7:
+			// parse address for micro instructions
+			if (microInstrParser(address, groupBit, CLA, microOffset) < 0)
+			{
+				cout << "ERROR - Passed address to micro instructions is too large\n";
+				goto EXIT;
+			}
+
 			if (pdp8::DEBUG || !SILENT)
 			{
-				cout << "[MICRO|" << indirect << "|" << currentPage
-					<< "|" << offset << "]\n";
+				cout << "[MICRO|" << groupBit << "|" << CLA
+					<< "|" << microOffset << "]\n";
 			}
-			// TODO: parse address to pass to micro instruction
-			// TODO: add the new function to parser file
-			//PDP8.PDP_uintructions();
-			cout << "uINSTRUCTIONS not implemented\n";
-			goto EXECUTION_DONE;  // TODO: remove this when function implemented
+			
+			PDP8.PDP_uintructions(groupBit, CLA, microOffset);
 			break;
 		default:
 			if (pdp8::DEBUG || !SILENT)
