@@ -1,9 +1,6 @@
 //Evan Sprecher & Ommaimah Hussein
 #include "bits.h"
 
-// TODO: Add clock cycles used for each instruction
-
-
 //-----------------------------------------------------------
 // Constructor
 //-----------------------------------------------------------
@@ -40,8 +37,11 @@ BitTwiddle::~BitTwiddle(){
 // Function for Logical AND
 //-----------------------------------------------------------
 void BitTwiddle::PDP_AND(bool addr_bit,bool mem_page,int offset){
+
     ++AND_Count;
 	++sumInstr;
+    sumClk = sumClk + 2; //takes 2 clk cycles
+
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
     increment_PC();
 
@@ -54,8 +54,11 @@ void BitTwiddle::PDP_AND(bool addr_bit,bool mem_page,int offset){
 // Function for Two's Complement Add 
 //-----------------------------------------------------------
 void BitTwiddle::PDP_TAD(bool addr_bit,bool mem_page,int offset){
+
     ++TAD_Count;
 	++sumInstr;
+    sumClk = sumClk + 2; //takes 2 clk cycles
+
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
     increment_PC();
 
@@ -74,8 +77,11 @@ void BitTwiddle::PDP_TAD(bool addr_bit,bool mem_page,int offset){
 // Function for Increment and Skip on Zero
 //-----------------------------------------------------------
 void BitTwiddle::PDP_ISZ(bool addr_bit,bool mem_page,int offset){
+
     ++ISZ_Count;
 	++sumInstr;
+    sumClk = sumClk + 2; //takes 2 clk cycles
+
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
     int C_EAddr = MEM_LOAD(EAddr);
     increment_PC();
@@ -99,6 +105,8 @@ void BitTwiddle::PDP_DCA(bool addr_bit,bool mem_page,int offset)
 {
     ++DCA_Count;
 	++sumInstr;
+    sumClk = sumClk + 2; //takes 2 clk cycles
+
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
     increment_PC();
     
@@ -117,6 +125,8 @@ void BitTwiddle::PDP_JMS(bool addr_bit,bool mem_page,int offset)
 {
     ++JMS_Count;
 	++sumInstr;
+    sumClk = sumClk + 2; //takes 2 clk cycles
+
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
     increment_PC();
     
@@ -135,6 +145,8 @@ void BitTwiddle::PDP_JMP(bool addr_bit,bool mem_page,int offset)
 {
     ++JMP_Count;
 	++sumInstr;
+    sumClk = sumClk + 1; //takes 1 clk cycle
+
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
     increment_PC();
 
@@ -148,8 +160,10 @@ void BitTwiddle::PDP_JMP(bool addr_bit,bool mem_page,int offset)
 // Forbidden IO functionality
 //-----------------------------------------------------------
 void BitTwiddle::PDP_IO(int device_num,int opcode){
+
     ++IO_Count;
 	++sumInstr;
+
 	increment_PC();
     //IO is a NO-OP, but I'll display flags
     //IO_verbose is #defined to be 1 or 0
@@ -194,6 +208,7 @@ void BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
 	// TODO: add increment_PC() to specific uInst
 	++uInstr_Count;
 	++sumInstr;
+    sumClk = sumClk + 1; //takes 1 clk cycles
 	
 	increment_PC();
     bool bit5  = read_bit_x(offset, 5);
@@ -309,12 +324,9 @@ void BitTwiddle::display()
 {
 	//print out brief summary 
 	std::cout << "-----------PDP-8 ISA Simulation Summary---------------\n\n";
-	//TODO: Add the +1 to numInstr for every instruction
 	std::cout << "Total number of Instructions executed: " << sumInstr << "\n";
-	//TODO: Add correct amount of clock cycles to each function
 	std::cout << "Total number of clock cycles consumed: " << sumClk << "\n\n";
 	std::cout << "**Number of times each instruction type was executed**\n";
-	//TODO: Add variable to each function to hold count
 	std::cout << "|-----------------------------------------------------\n";
 	std::cout << "|    Mnemonic   | Number of times executed            \n";
 	std::cout << "|-----------------------------------------------------\n";
