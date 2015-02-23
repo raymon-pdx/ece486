@@ -5,6 +5,7 @@
 * DESCRIPTION: Functions to parse information from text file
 */
 #pragma once
+#include "constants.h"
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
@@ -13,11 +14,6 @@
 #include <cctype>
 #include <cmath>
 
-#define DEBUG 0   // 1 for on, 0 for off
-#define ADDRESS_SIZE 12  // number of bits in address
-#define OFFSET_SIZE 7  // size of offset used for bitset
-#define MAX_NUMBERS 3  // number of numbers to find per line
-#define NUM_OPCODE_BITS 3 // number of bits used for opcode
 
 /* FUNCTION PROTOTYPES */
 

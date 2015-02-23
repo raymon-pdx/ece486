@@ -2,21 +2,13 @@
 // PDP-8 memory simulator
 // memory.h: header file for memory implementation
 #pragma once
+#include "constants.h"
 #include <stdlib.h>
 #include <iostream>
 #include <cstring>
 #include <cctype>
 #include <bitset>
 
-#ifndef REGSIZE
-#define REGSIZE 12
-#endif
-#ifndef PAGESIZE
-#define PAGESIZE 5
-#endif
-#ifndef LINESIZE
-#define LINESIZE 7
-#endif
 
 /*
 int RegSize; // 12 bits = 4096

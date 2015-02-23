@@ -38,7 +38,7 @@ int getAddress(std::ifstream &file, int &id, int &address, int &lineCount)
 			lineCount = 1;
 		}
 
-		if (DEBUG) std::cout << "file found\n";
+		if (pdp8::DEBUG) std::cout << "file found\n";
 
 		// loop until both addresses found
 		while ((addressComplete == false) && (!file.eof()))
@@ -46,7 +46,7 @@ int getAddress(std::ifstream &file, int &id, int &address, int &lineCount)
 			// step through each character in line
 			while (((currentChar = file.get()) != '\n') && (!file.eof()))
 			{
-				if (DEBUG) std::cout << "currentChar = " << currentChar << std::endl;
+				if (pdp8::DEBUG) std::cout << "currentChar = " << currentChar << std::endl;
 
 				// find if current char is a number
 				if (addrCount == 0)
@@ -70,7 +70,7 @@ int getAddress(std::ifstream &file, int &id, int &address, int &lineCount)
 						}
 						else  // number is not octal
 						{
-							if (DEBUG)
+							if (pdp8::DEBUG)
 							{
 								std::cout << "line" << lineCount << ", non-octal number found\n";
 								exitMessage();
@@ -100,7 +100,7 @@ int getAddress(std::ifstream &file, int &id, int &address, int &lineCount)
 						}
 						else  // number is not octal
 						{
-							if (DEBUG)
+							if (pdp8::DEBUG)
 							{
 								std::cout << "line" << lineCount << ", non-octal number found\n";
 								exitMessage();
@@ -111,7 +111,7 @@ int getAddress(std::ifstream &file, int &id, int &address, int &lineCount)
 				}
 				else
 				{  // error so return
-					if (DEBUG)
+					if (pdp8::DEBUG)
 					{
 						std::cout << "Unknown error with address counter occured\n";
 						exitMessage();
@@ -119,18 +119,18 @@ int getAddress(std::ifstream &file, int &id, int &address, int &lineCount)
 					return 0;
 				}
 
-				if (DEBUG) std::cout << "lineC = " << lineCount
+				if (pdp8::DEBUG) std::cout << "lineC = " << lineCount
 					<< ", addrC = " << addrCount
 					<< ", numC = " << numCount << std::endl;
-				if (DEBUG) std::cout << "id1 = " << id1
+				if (pdp8::DEBUG) std::cout << "id1 = " << id1
 					<< ", id2 = " << id2
 					<< ", addr1 = " << address1
 					<< ", addr2 = " << address2 << std::endl;
 
 				// check if too many numbers found
-				if (numCount > MAX_NUMBERS)
+				if (numCount > pdp8::MAX_NUMBERS)
 				{
-					if (DEBUG)
+					if (pdp8::DEBUG)
 					{
 						std::cout << "line" << lineCount << ", too many numbers found\n";
 						exitMessage();
@@ -140,9 +140,9 @@ int getAddress(std::ifstream &file, int &id, int &address, int &lineCount)
 			}  // end of line loop
 
 			// check if too few numbers found
-			if ((numCount < MAX_NUMBERS) && (numCount > 0))
+			if ((numCount < pdp8::MAX_NUMBERS) && (numCount > 0))
 			{
-				if (DEBUG)
+				if (pdp8::DEBUG)
 				{
 					std::cout << "line" << lineCount << ", too few numbers found\n";
 					exitMessage();
@@ -153,7 +153,7 @@ int getAddress(std::ifstream &file, int &id, int &address, int &lineCount)
 			// check if no numbers found
 			if (numCount <= 0)
 			{
-				if (DEBUG) std::cout << "line" << lineCount << ", line has no numbers\n";
+				if (pdp8::DEBUG) std::cout << "line" << lineCount << ", line has no numbers\n";
 				++lineCount;
 			}
 			else
@@ -178,7 +178,7 @@ int getAddress(std::ifstream &file, int &id, int &address, int &lineCount)
 		// add a debugging note for end of file
 		if (file.eof())
 		{
-			if (DEBUG) std::cout << "\n************************\n"
+			if (pdp8::DEBUG) std::cout << "\n************************\n"
 				<< "* END OF FILE DETECTED *\n"
 				<< "************************\n\n";
 		}
@@ -186,7 +186,7 @@ int getAddress(std::ifstream &file, int &id, int &address, int &lineCount)
 		// exit program if end of file but both addresses not obtained
 		if (file.eof() && (addressComplete == false))
 		{
-			if (DEBUG) std::cout << "both parts of address not found\n";
+			if (pdp8::DEBUG) std::cout << "both parts of address not found\n";
 			return lineCount;
 		}
 		else
@@ -195,8 +195,8 @@ int getAddress(std::ifstream &file, int &id, int &address, int &lineCount)
 			// convert address from octal string to binary
 			address = octalToInt(octalAddress);
 
-			if (DEBUG) std::cout << "***** ADDRESS BREAKDOWN *****\n";
-			if (DEBUG) std::cout << "octal address = " << octalAddress
+			if (pdp8::DEBUG) std::cout << "***** ADDRESS BREAKDOWN *****\n";
+			if (pdp8::DEBUG) std::cout << "octal address = " << octalAddress
 				<< "\ninteger address = " << address << std::endl;
 
 			// get id to return
@@ -207,7 +207,7 @@ int getAddress(std::ifstream &file, int &id, int &address, int &lineCount)
 	}  // else - file failed to open
 	else
 	{
-		if (DEBUG) std::cout << "file not open" << std::endl;
+		if (pdp8::DEBUG) std::cout << "file not open" << std::endl;
 		return -1;
 	}
 }
@@ -223,14 +223,14 @@ int parseAddress(int address, int &opcode, bool &I, bool &M, int &offset)
 	// convert address from int to a string
 	std::string binaryAddress = createBinaryString(address);
 
-	if (DEBUG) std::cout << "***** ADDRESS BREAKDOWN *****\n";
-	if (DEBUG) std::cout << "binary address = " << binaryAddress
-		<< "\nbinary opcode = " << binaryAddress.substr(0, NUM_OPCODE_BITS) << std::endl;
+	if (pdp8::DEBUG) std::cout << "***** ADDRESS BREAKDOWN *****\n";
+	if (pdp8::DEBUG) std::cout << "binary address = " << binaryAddress
+		<< "\nbinary opcode = " << binaryAddress.substr(0, pdp8::NUM_OPCODE_BITS) << std::endl;
 
 	// find opcode
 	if ((opcode = findOpcode(binaryAddress)) < 0)
 	{
-		if (DEBUG)
+		if (pdp8::DEBUG)
 		{
 			std::cout << "ERROR - opcode not found\n";
 			exitMessage();
@@ -238,11 +238,11 @@ int parseAddress(int address, int &opcode, bool &I, bool &M, int &offset)
 		return -1;
 	}
 
-	if (DEBUG) std::cout << "OP-CODE=" << opcode << std::endl;
+	if (pdp8::DEBUG) std::cout << "OP-CODE=" << opcode << std::endl;
 
 	// find the value of I
-	if (DEBUG) std::cout << "I=" << binaryAddress[NUM_OPCODE_BITS] << std::endl;
-	if (binaryAddress[NUM_OPCODE_BITS] == '1')
+	if (pdp8::DEBUG) std::cout << "I=" << binaryAddress[pdp8::NUM_OPCODE_BITS] << std::endl;
+	if (binaryAddress[pdp8::NUM_OPCODE_BITS] == '1')
 	{
 		I = true;
 	}
@@ -252,8 +252,8 @@ int parseAddress(int address, int &opcode, bool &I, bool &M, int &offset)
 	}
 
 	// find the value of M
-	if (DEBUG) std::cout << "M=" << binaryAddress[NUM_OPCODE_BITS + 1] << std::endl;
-	if (binaryAddress[NUM_OPCODE_BITS + 1] == '1')
+	if (pdp8::DEBUG) std::cout << "M=" << binaryAddress[pdp8::NUM_OPCODE_BITS + 1] << std::endl;
+	if (binaryAddress[pdp8::NUM_OPCODE_BITS + 1] == '1')
 	{
 		M = true;
 	}
@@ -264,10 +264,10 @@ int parseAddress(int address, int &opcode, bool &I, bool &M, int &offset)
 
 	// get the offset and return as integer
 	offset = getOffset(binaryAddress);
-	if (DEBUG) std::cout << "FINAL OFFSET = " << offset << std::endl;
+	if (pdp8::DEBUG) std::cout << "FINAL OFFSET = " << offset << std::endl;
 
 	// display the final breakdown of the address
-	if (DEBUG)
+	if (pdp8::DEBUG)
 	{
 		std::cout << "ADDRESS [ OPCODE | I | M | OFFSET ]" << std::endl;
 		std::cout << "ADDRESS [ " << opcode << " | " << I << " | "
@@ -379,7 +379,7 @@ int octalToInt(std::string octal)
 	}
 
 	// convert binary string to an integer
-	std::bitset<ADDRESS_SIZE> aString(binaryAddress);
+	std::bitset<pdp8::REGISTERSIZE> aString(binaryAddress);
 	return static_cast<int>(aString.to_ulong());
 }
 
@@ -394,11 +394,11 @@ int octalToInt(std::string octal)
 std::string intToOctal(int value)
 {
 	std::string octalString = "";
-	std::bitset<ADDRESS_SIZE> aString(value);
+	std::bitset<pdp8::REGISTERSIZE> aString(value);
 	std::string binaryString = aString.to_string();
 
 	// step through entire string to get octal value
-	for (int i = 0; i < ADDRESS_SIZE; i += 3)
+	for (int i = 0; i < pdp8::REGISTERSIZE; i += 3)
 	{
 		// find matching string
 		if (binaryString.compare(i, 3, "000") == 0)
@@ -452,7 +452,7 @@ std::string intToOctal(int value)
 // return: string of ADDRESS_SIZE bits long
 std::string createBinaryString(int value)
 {
-	std::bitset<ADDRESS_SIZE> aString(value);
+	std::bitset<pdp8::REGISTERSIZE> aString(value);
 	return aString.to_string();
 }
 
@@ -464,7 +464,7 @@ std::string createBinaryString(int value)
 // return: string of NUM_OPCODE_BITS bits long
 std::string genOpcodeString(int value)
 {
-	std::bitset<NUM_OPCODE_BITS> aString(value);
+	std::bitset<pdp8::NUM_OPCODE_BITS> aString(value);
 	return aString.to_string();
 }
 
@@ -474,9 +474,9 @@ std::string genOpcodeString(int value)
 //      -1 if error occured
 int findOpcode(std::string address)
 {
-	for (int i = 0; i < pow(2, NUM_OPCODE_BITS); ++i)
+	for (int i = 0; i < pow(2, pdp8::NUM_OPCODE_BITS); ++i)
 	{
-		if (address.compare(0, NUM_OPCODE_BITS, genOpcodeString(i)) == 0)
+		if (address.compare(0, pdp8::NUM_OPCODE_BITS, genOpcodeString(i)) == 0)
 		{ // matching opcode found
 			return i;
 		}
@@ -510,7 +510,9 @@ int getOffset(std::string binaryAddress)
 {
 	// assume size of address is ADDRESS_SIZE
 	// store offset chunk of address in bitset
-	std::bitset<OFFSET_SIZE> bitString(binaryAddress.substr(NUM_OPCODE_BITS + 2, NUM_OPCODE_BITS + 1 + OFFSET_SIZE));
+	std::bitset<pdp8::OFFSET_SIZE> bitString(
+		 binaryAddress.substr(pdp8::NUM_OPCODE_BITS + 2,
+		                      pdp8::NUM_OPCODE_BITS + 1 + pdp8::OFFSET_SIZE));
 	return static_cast<int>(bitString.to_ulong());
 }
 
