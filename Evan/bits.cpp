@@ -4,11 +4,12 @@
 //-----------------------------------------------------------
 // Constructor
 //-----------------------------------------------------------
-BitTwiddle::BitTwiddle(pagetable *table)
+BitTwiddle::BitTwiddle(pagetable *table, std::ofstream *output)
 {
 	AC=0;
 	PC=128;         //PC starts at 0200o
 	link=false;
+    SR=0;
 	
 	sumInstr = 0;
 	sumClk = 0;
@@ -23,6 +24,7 @@ BitTwiddle::BitTwiddle(pagetable *table)
 	uInstr_Count=0;  //number of micro instruction 
 	
 	memory = table;
+	outputTraceFile = output;
 }
 
 
@@ -165,38 +167,7 @@ void BitTwiddle::PDP_IO(int device_num,int opcode){
 	++sumInstr;
 
 	increment_PC();
-    //IO is a NO-OP, but I'll display flags
-    //IO_verbose is #defined to be 1 or 0
-    if(device_num == 3){
-        switch(opcode){
-          case 0:
-            //clear keayboard flag
-            break;
-          case 1:
-            //skip on keyboard flag set
-            break;
-          case 2:
-            //clear keyboad flag and accumulator
-            //AC=0;
-            break;
-          case 4:
-            //read keyboard buffer static
-            //AC4-12 = AC4-12 | keyboard buffer;
-            break;
-          case 6:
-            //read keyboard buffer dynamic
-            //MEM_STORE(AC,0);
-            //clear keyboard flag
-            //AC4-12 = AC4-12 | keyboard buffer;
-            break;
-          default:
-            break;
-        }
-
-    }else if(device_num == 4){
-
-
-    }
+    //IO is a NO-OP
 	return;
 }
 
@@ -204,7 +175,7 @@ void BitTwiddle::PDP_IO(int device_num,int opcode){
 //-----------------------------------------------------------
 // Function for Micro Instructions
 //-----------------------------------------------------------
-void BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
+int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
 	// TODO: add increment_PC() to specific uInst
 	++uInstr_Count;
 	++sumInstr;
@@ -266,7 +237,7 @@ void BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
 
         }else{            //no operation
 
-            warningMessage();
+            return 0;
         }
 
     //*************GROUP 2*******************
@@ -286,17 +257,19 @@ void BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
                 cond7=!link;//is link 0?
             }
             if(cond5 && cond6 && cond7){
-                return;                 //the skip for SPA,SNA,SZL, and SKP
+                increment_PC();
+                return 0;                 //the skip for SPA,SNA,SZL, and SKP
             }
         }else{                          //OR subgroup
             if(bit5 && read_bit_x(AC, 0)){//SMA
-                return; //is the 0th bit of AC a 1?
-            }
-            if(bit6 && (AC==0)){            //SZA
-                return; //is AC 0?
-            }
-            if(bit7 && link){           //SNL
-                return; //is link 1?
+                increment_PC();
+                return 0; //is the 0th bit of AC a 1?
+            }else if(bit6 && (AC==0)){    //SZA
+                increment_PC();
+                return 0; //is AC 0?
+            }else if(bit7 && link){       //SNL
+                increment_PC();
+                return 0; //is link 1?
             }
         }
                                         //CLA OSR and HLT
@@ -304,19 +277,16 @@ void BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
             AC=0;
         }
         if(bit9){                       //OSR
-        //TODO: What is a switch register?
-        //    SR=SR|AC;
+            AC=SR|AC;
         }
         if(bit10){                      //HLT
-        //TODO: halt. What does that mean?
-        //    while(1); //a halt is the same as getting stuck on a while, right?
+            return -1;
         }
     //*************GROUP 3*******************
     }else{                              
-
-
+    //TODO: how much of group 3 do we implement? and do we print a warning?
     }
-    return;
+    return 0;
 }
 
 // display data from BitTwiddle class
@@ -340,49 +310,6 @@ void BitTwiddle::display()
 	std::cout << "| uInstructions |       " << uInstr_Count << "\n";
 	std::cout << "------------------------------------------------------\n";
 }
-
-
-//-----------------------------------------------------------
-// Function for outputing trace file
-//-----------------------------------------------------------
-int BitTwiddle::traceFile(int type, int address){
-
-   #ifndef timeStamp
-   //call timestamp function
-   time_t rawtime;
-   time (&rawtime);
-   #endif
-
-   //create an output trace file
-   std::ofstream outputTraceFile;
-   outputTraceFile.open("TraceFile.txt");
-
-   #ifndef timeStamp
-   //add time stamp as header of tracefile
-   outputTraceFile << "***** TIME STAMP *****\n";
-   outputTraceFile << "Trace file generated: " << ctime(&rawtime);
-   #endif
-
-   //use outputTraceFile like cout, but into txt file 
-   outputTraceFile << type << " " << std::oct << address << std::endl;
-
-   outputTraceFile.close();
-   std::cout << "Trace file generated.\n";
-
-   return 0;
-
-}
-
-
-//-----------------------------------------------------------
-// Function for displaying warning for a No-OP
-//-----------------------------------------------------------
-void BitTwiddle::warningMessage()
-{
-    std::cout << "Warning. A NOP (No Operation) has been encountered.\n";
-    return;
-}
-
 
 //-----------------------------------------------------------
 // Function for rotating bits (used in uInstruction Group 1)
@@ -503,6 +430,7 @@ void BitTwiddle::increment_PC(){
 // Function for reading a specific bit location
 //----------------------------------------------------------
 bool BitTwiddle::read_bit_x(int input,int x){
+
 	return 1 & (input >> (pdp8::REGISTERSIZE - (x + 1)));
 }
 
@@ -511,8 +439,13 @@ bool BitTwiddle::read_bit_x(int input,int x){
 // Function for loading from memory
 //----------------------------------------------------------
 int BitTwiddle::MEM_LOAD(int address){
-	temp = memory->load(address);
-	return temp;
+
+    //*********IMPLEMENTING TRACE FILE****************
+    int type = 0; //1 - data read (load)
+    (*outputTraceFile) << type << " " << std::oct << address << std::endl;
+    //************************************************
+
+	return memory->load(address);
 }
 
 
@@ -520,6 +453,11 @@ int BitTwiddle::MEM_LOAD(int address){
 // Function for storing to memory
 //----------------------------------------------------------
 void BitTwiddle::MEM_STORE(int address,int value){
+
+    //*********IMPLEMENTING TRACE FILE****************
+    int type = 1; //1 - data write (store)
+    (*outputTraceFile) << type << " " << std::oct << address << std::endl;
+    //************************************************
 	memory->store(address, value);
 	return;
 }

@@ -87,13 +87,12 @@ void BitTwiddle::PDP_ISZ(bool addr_bit,bool mem_page,int offset){
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
     int C_EAddr = MEM_LOAD(EAddr);
     increment_PC();
+   
+    int addc=C_EAddr + 1;
 
-    int adda=AC;   
-    int addc=adda + 1;
+	MEM_STORE(EAddr,addc & ((1 << pdp8::REGISTERSIZE) - 1));//carry and overflow are removed
 
-	AC = addc & ((1 << pdp8::REGISTERSIZE) - 1);//carry and overflow are removed
-
-	if (!((C_EAddr + 1) & ((1 << pdp8::REGISTERSIZE) - 1))){
+	if (!((addc) & ((1 << pdp8::REGISTERSIZE) - 1))){
         increment_PC(); //skip if zero
     }
 	return;
