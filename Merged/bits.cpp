@@ -9,6 +9,7 @@ BitTwiddle::BitTwiddle(pagetable *table)
 	AC=0;
 	PC=128;         //PC starts at 0200o
 	link=false;
+    SW=0;
 	
 	sumInstr = 0;
 	sumClk = 0;
@@ -286,16 +287,18 @@ int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
                 cond7=!link;//is link 0?
             }
             if(cond5 && cond6 && cond7){
+                increment_PC();
                 return 0;                 //the skip for SPA,SNA,SZL, and SKP
             }
         }else{                          //OR subgroup
             if(bit5 && read_bit_x(AC, 0)){//SMA
+                increment_PC();
                 return 0; //is the 0th bit of AC a 1?
-            }
-            if(bit6 && (AC==0)){            //SZA
+            }else if(bit6 && (AC==0)){    //SZA
+                increment_PC();
                 return 0; //is AC 0?
-            }
-            if(bit7 && link){           //SNL
+            }else if(bit7 && link){       //SNL
+                increment_PC();
                 return 0; //is link 1?
             }
         }
@@ -304,8 +307,7 @@ int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
             AC=0;
         }
         if(bit9){                       //OSR
-        //TODO: What is a switch register?
-        //    SR=SR|AC;
+            AC=SR|AC;
         }
         if(bit10){                      //HLT
             return -1;
