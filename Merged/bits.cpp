@@ -166,38 +166,7 @@ void BitTwiddle::PDP_IO(int device_num,int opcode){
 	++sumInstr;
 
 	increment_PC();
-    //IO is a NO-OP, but I'll display flags
-    //IO_verbose is #defined to be 1 or 0
-    if(device_num == 3){
-        switch(opcode){
-          case 0:
-            //clear keayboard flag
-            break;
-          case 1:
-            //skip on keyboard flag set
-            break;
-          case 2:
-            //clear keyboad flag and accumulator
-            //AC=0;
-            break;
-          case 4:
-            //read keyboard buffer static
-            //AC4-12 = AC4-12 | keyboard buffer;
-            break;
-          case 6:
-            //read keyboard buffer dynamic
-            //MEM_STORE(AC,0);
-            //clear keyboard flag
-            //AC4-12 = AC4-12 | keyboard buffer;
-            break;
-          default:
-            break;
-        }
-
-    }else if(device_num == 4){
-
-
-    }
+    //IO is a NO-OP
 	return;
 }
 
