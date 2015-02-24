@@ -9,7 +9,7 @@ BitTwiddle::BitTwiddle(pagetable *table)
 	AC=0;
 	PC=128;         //PC starts at 0200o
 	link=false;
-    SW=0;
+    SR=0;
 	
 	sumInstr = 0;
 	sumClk = 0;

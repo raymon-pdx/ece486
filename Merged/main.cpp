@@ -12,6 +12,15 @@
 #include "memory.h"
 #include "bits.h"
 #include <iomanip>
+
+//*********IMPLEMENTING TRACE FILE****************
+#include <iostream>
+#include <fstream>
+#include <stdio.h>
+#include <time.h>
+#define timeStamp /*OPTIONAL TIMESTAMP*/
+//************************************************
+
 using namespace std;
 
 
@@ -35,6 +44,24 @@ int main(int argc, char *argv[])
 	int id = 0;                 // data or instruction word
 	int ret = 0;
 	
+    //*********IMPLEMENTING TRACE FILE****************
+    #ifndef timeStamp
+    //call timestamp function
+    time_t rawtime;
+    time (&rawtime);
+    #endif
+
+    //create an output trace file
+    std::ofstream outputTraceFile;
+    outputTraceFile.open("TraceFile.txt");
+
+    #ifndef timeStamp
+    //add time stamp as header of tracefile
+    outputTraceFile << "***** TIME STAMP *****\n";
+    outputTraceFile << "Trace file generated: " << ctime(&rawtime);
+    #endif
+    //************************************************
+
 	// INITIALIZATION
 	pagetable Memory(pdp8::NUM_PAGES, pdp8::PAGE_CAPACITY);  // initialize memory
 	BitTwiddle PDP8(&Memory);  // initialize ISA class
@@ -106,6 +133,12 @@ int main(int argc, char *argv[])
 			if (id == 1)
 			{
 				loadLocation = address;
+
+                //*********IMPLEMENTING TRACE FILE****************
+                int type = 2; //2 - instruction fetch
+                outputTraceFile << type << " " << std::oct << address << std::endl;
+                //************************************************
+
 			}
 			
 			// display before data
@@ -133,6 +166,12 @@ int main(int argc, char *argv[])
 					cout << "ERROR - adding data failed\n";
 					goto EXIT;
 				}
+
+                //*********IMPLEMENTING TRACE FILE****************
+                int type = 1; //1 - data write (store)
+                outputTraceFile << type << " " << std::oct << address << std::endl;
+                //************************************************
+
 				if (pdp8::DEBUG || !SILENT)
 				{
 					// display what is in the address
@@ -143,12 +182,28 @@ int main(int argc, char *argv[])
 						cout << "ERROR - memory does not match passed data\n";
 						goto EXIT;
 					}
+
+                    //*********IMPLEMENTING TRACE FILE****************
+                    int type = 0; //1 - data read (load)
+                    outputTraceFile << type << " " << std::oct << address << std::endl;
+                    //************************************************
 					cout << "Data retrieved = " << oct << ret << endl;
 				}
 				++loadLocation;  // store data to next address
 			}
 		}  // eof?
 		
+
+
+
+
+
+
+
+
+
+
+
 		// give additional information that file is loaded
 		if (pdp8::DEBUG || !SILENT)
 		{
@@ -305,6 +360,12 @@ EXECUTION_DONE:
 		 << oct << PDP8.getAC() << endl;
 
 EXIT:
+
+    //*********IMPLEMENTING TRACE FILE****************
+    outputTraceFile.close();
+    std::cout << "Trace file generated.\n";
+    //************************************************
+
 	// close the file
 	myFile.close();
 	exitMessage();

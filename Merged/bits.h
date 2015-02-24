@@ -63,7 +63,7 @@ private:
     int AC;          //accumulator
     int PC;          //Program Counter
     bool link;       //link bit
-    int SW;          //console switch register
+    int SR;          //console switch register
 
     int sumInstr;  // count for number of total instructions
     int sumClk;    // count for number of total clocks
