@@ -11,9 +11,9 @@
 #include "parser.h"
 #include "memory.h"
 #include "bits.h"
+#include <iomanip>
 using namespace std;
 
-// TODO: display output in main as octal values where appropriate
 
 int main(int argc, char *argv[])
 {
@@ -44,13 +44,13 @@ int main(int argc, char *argv[])
 	// check for program error
 	if (argc < 1)
 	{
-		std::cout << "ERROR - program execution\n";
+		cout << "ERROR - program execution\n";
 	}
 
 	// check for trace file name
 	if (argc < 2)
 	{
-		std::cout << "Please pass object file as first argument\n";
+		cout << "Please pass object file as first argument\n";
 	}
 	else
 	{
@@ -112,14 +112,15 @@ int main(int argc, char *argv[])
 			if ((pdp8::DEBUG || !SILENT) && !myFile.eof() && (id == 0))
 			{
 				cout << "\n***LOAD DATA***\n";
-				cout << "Address = " << loadLocation << ", Data passed = " << address << endl;
+				cout << "Address = " << oct << loadLocation 
+					 << ", Data passed = " << oct << address << endl;
 			}
 
 			// display for address
 			if ((pdp8::DEBUG || !SILENT) && !myFile.eof() && (id == 1))
 			{
 				cout << "\n***NEW ADDRESS***\n";
-				cout << "Address = " << loadLocation << endl;
+				cout << "Address = " << oct << loadLocation << endl;
 			}
 		
 			// check that not end of file before loading memory
@@ -142,7 +143,7 @@ int main(int argc, char *argv[])
 						cout << "ERROR - memory does not match passed data\n";
 						goto EXIT;
 					}
-					cout << "Data retrieved = " << ret << endl;
+					cout << "Data retrieved = " << oct << ret << endl;
 				}
 				++loadLocation;  // store data to next address
 			}
@@ -174,7 +175,7 @@ int main(int argc, char *argv[])
 		address = Memory.load(PDP8.getPC());
 		if (address < 0)
 		{   // error occurred
-			cout << "ERROR - address " << PDP8.getPC() << " could not be found\n";
+			cout << "ERROR - address " << std::oct << PDP8.getPC() << " could not be found\n";
 			goto EXECUTION_DONE;
 		}
 
@@ -196,48 +197,54 @@ int main(int argc, char *argv[])
 		case 0:
 			if (pdp8::DEBUG || !SILENT)
 			{
-				cout << "[AND|" << indirect << "|" << currentPage
-                     << "|" << offset << "]\n";
+				cout << "[AND  |" << indirect << "|" << currentPage
+                     << "|" << setfill('0') << setw(4) 
+					 << oct << offset << "]\n";
 			}
 			PDP8.PDP_AND(indirect, currentPage, offset);
 			break;
 		case 1:
 			if (pdp8::DEBUG || !SILENT)
 			{
-				cout << "[TAD|" << indirect << "|" << currentPage
-					<< "|" << offset << "]\n";
+				cout << "[TAD  |" << indirect << "|" << currentPage
+					<< "|" << setfill('0') << setw(4)
+					<< oct << offset << "]\n";
 			}
 			PDP8.PDP_TAD(indirect, currentPage, offset);
 			break;
 		case 2:
 			if (pdp8::DEBUG || !SILENT)
 			{
-				cout << "[ISZ|" << indirect << "|" << currentPage
-					<< "|" << offset << "]\n";
+				cout << "[ISZ  |" << indirect << "|" << currentPage
+					 << "|" << setfill('0') << setw(4)
+					 << oct << offset << "]\n";
 			}
 			PDP8.PDP_ISZ(indirect, currentPage, offset);
 			break;
 		case 3:
 			if (pdp8::DEBUG || !SILENT)
 			{
-				cout << "[DCA|" << indirect << "|" << currentPage
-					<< "|" << offset << "]\n";
+				cout << "[DCA  |" << indirect << "|" << currentPage
+					 << "|" << setfill('0') << setw(4)
+					 << oct << offset << "]\n";
 			}
 			PDP8.PDP_DCA(indirect, currentPage, offset);
 			break;
 		case 4:
 			if (pdp8::DEBUG || !SILENT)
 			{
-				cout << "[JMS|" << indirect << "|" << currentPage
-					<< "|" << offset << "]\n";
+				cout << "[JMS  |" << indirect << "|" << currentPage
+					 << "|" << setfill('0') << setw(4)
+					 << oct << offset << "]\n";
 			}
 			PDP8.PDP_JMS(indirect, currentPage, offset);
 			break;
 		case 5:
 			if (pdp8::DEBUG || !SILENT)
 			{
-				cout << "[JMP|" << indirect << "|" << currentPage
-					<< "|" << offset << "]\n";
+				cout << "[JMP  |" << indirect << "|" << currentPage
+					 << "|" << setfill('0') << setw(4) 
+					 << oct << offset << "]\n";
 			}
 			PDP8.PDP_JMP(indirect, currentPage, offset);
 			break;
@@ -251,7 +258,9 @@ int main(int argc, char *argv[])
 
 			if (pdp8::DEBUG || !SILENT)
 			{
-				cout << "[IO|" << deviceNum << "|" << function << "]\n";
+				cout << "[IO   |" 
+					 << setfill('0') << setw(3) << oct << deviceNum << "|" 
+					 << setfill('0') << setw(4) << oct << function << "]\n";
 			}
 			PDP8.PDP_IO(deviceNum, function);
 			break;
@@ -266,7 +275,8 @@ int main(int argc, char *argv[])
 			if (pdp8::DEBUG || !SILENT)
 			{
 				cout << "[MICRO|" << groupBit << "|" << CLA
-					<< "|" << microOffset << "]\n";
+					 << "|" << setfill('0') << setw(4) 
+					 << oct << microOffset << "]\n";
 			}
 			
 			PDP8.PDP_uintructions(groupBit, CLA, microOffset);
@@ -275,7 +285,7 @@ int main(int argc, char *argv[])
 			if (pdp8::DEBUG || !SILENT)
 			{
 				cout << "[" << opcode << "|" << indirect << "|" 
-					 << currentPage	<< "|" << offset << "]\n";
+					 << currentPage	<< "|" << oct << offset << "]\n";
 				cout << "OPCODE " << opcode << " is not handled\n";
 			}
 			break;
@@ -291,7 +301,8 @@ EXECUTION_DONE:
 
 	// print statistics
 	PDP8.display();
-	cout << "AC = " << PDP8.getAC() << endl;
+	cout << "AC = " << setfill('0') << setw(4) 
+		 << oct << PDP8.getAC() << endl;
 
 EXIT:
 	// close the file
