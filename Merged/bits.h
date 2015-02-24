@@ -48,7 +48,7 @@ public:
     void PDP_IO(int device_num,int opcode);
   
 	//function for (OPCODE = 7) uinstructions
-    void PDP_uintructions(bool group, bool cla, int offset);
+    int PDP_uintructions(bool group, bool cla, int offset);
 
 	// return value of program counter
 	int getPC()	{ return PC; }

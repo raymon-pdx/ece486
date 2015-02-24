@@ -204,7 +204,7 @@ void BitTwiddle::PDP_IO(int device_num,int opcode){
 //-----------------------------------------------------------
 // Function for Micro Instructions
 //-----------------------------------------------------------
-void BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
+int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
 	// TODO: add increment_PC() to specific uInst
 	++uInstr_Count;
 	++sumInstr;
@@ -286,17 +286,17 @@ void BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
                 cond7=!link;//is link 0?
             }
             if(cond5 && cond6 && cond7){
-                return;                 //the skip for SPA,SNA,SZL, and SKP
+                return 0;                 //the skip for SPA,SNA,SZL, and SKP
             }
         }else{                          //OR subgroup
             if(bit5 && read_bit_x(AC, 0)){//SMA
-                return; //is the 0th bit of AC a 1?
+                return 0; //is the 0th bit of AC a 1?
             }
             if(bit6 && (AC==0)){            //SZA
-                return; //is AC 0?
+                return 0; //is AC 0?
             }
             if(bit7 && link){           //SNL
-                return; //is link 1?
+                return 0; //is link 1?
             }
         }
                                         //CLA OSR and HLT
@@ -315,7 +315,7 @@ void BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
 
 
     }
-    return;
+    return 0;
 }
 
 // display data from BitTwiddle class
