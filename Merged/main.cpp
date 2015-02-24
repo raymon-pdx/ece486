@@ -179,10 +179,6 @@ int main(int argc, char *argv[])
 			goto EXECUTION_DONE;
 		}
 
-		/*NOTE: PC handled by BitTwiddle class*/
-		// increment program counter
-		//PDP8.increment_PC();
-
 		// parse the address
 		ret = parseAddress(address, opcode, indirect, currentPage, offset);
 		if (ret < 0)
@@ -260,7 +256,8 @@ int main(int argc, char *argv[])
 			{
 				cout << "[IO   |" 
 					 << setfill('0') << setw(3) << oct << deviceNum << "|" 
-					 << setfill('0') << setw(4) << oct << function << "]\n";
+					 << setfill('0') << setw(4) << oct << function << "]"
+                     <<"//I/O is not implemented, NO-OP\n";
 			}
 			PDP8.PDP_IO(deviceNum, function);
 			break;

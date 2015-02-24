@@ -236,7 +236,7 @@ int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
 
         }else{            //no operation
 
-            warningMessage();
+            return 0;
         }
 
     //*************GROUP 2*******************
@@ -283,8 +283,7 @@ int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
         }
     //*************GROUP 3*******************
     }else{                              
-
-
+    //TODO: how much of group 3 do we implement? and do we print a warning?
     }
     return 0;
 }
@@ -341,16 +340,6 @@ int BitTwiddle::traceFile(int type, int address){
 
    return 0;
 
-}
-
-
-//-----------------------------------------------------------
-// Function for displaying warning for a No-OP
-//-----------------------------------------------------------
-void BitTwiddle::warningMessage()
-{
-    std::cout << "Warning. A NOP (No Operation) has been encountered.\n";
-    return;
 }
 
 
@@ -481,8 +470,7 @@ bool BitTwiddle::read_bit_x(int input,int x){
 // Function for loading from memory
 //----------------------------------------------------------
 int BitTwiddle::MEM_LOAD(int address){
-	temp = memory->load(address);
-	return temp;
+	return memory->load(address);
 }
 
 
