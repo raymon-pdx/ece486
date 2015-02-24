@@ -43,6 +43,7 @@ int main(int argc, char *argv[])
 	int function = 0;           // used for parsing address for IO instr
 	int id = 0;                 // data or instruction word
 	int ret = 0;
+	int microTemp = 0;
 	std::ofstream memoryOutput;  // used to save memory
 	
     //*********IMPLEMENTING TRACE FILE****************
@@ -310,9 +311,12 @@ int main(int argc, char *argv[])
 
 			if (pdp8::DEBUG || !SILENT)
 			{
-				cout << "[MICRO|" << groupBit << "|" << CLA
-					 << "|" << setfill('0') << setw(4) 
-					 << oct << microOffset << "]\n";
+				// combine offset
+				microTemp = (groupBit << 8) + (CLA << 7) + microOffset;
+
+
+				cout << "[MICRO|     " << setfill('0') << setw(3) 
+					 << oct << microTemp << "]\n";
 			}
 			
 			if (PDP8.PDP_uintructions(groupBit, CLA, microOffset) == -1)
