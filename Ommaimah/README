@@ -6,22 +6,23 @@ COMPLETE:
 + Added DCA instruction function
 + Added JMS instruction function
 + Added JMP instruction function
-+ Added uInstruction into summary output (extra step)
 + Added uInstruction (Group 1) function
 + Added function that converts int to octal
++ Implement correct clock cycles
++ Implement function that outputs PDP-8 summary
 
 -----------------------------------------------------------
 IN PROGRESS:
 -----------------------------------------------------------
-- Implement function that outputs PDP-8 summary
-- Implement correct clock cycles
 - Function for outputting tracefile
+- Verify all combos for uInstruction (group 1)
 
 -----------------------------------------------------------
 TO DO:
 -----------------------------------------------------------
 - put test results in file
 - finish testing all implemented code
+- IAC does it include link bit? Does it need to?
 
 -----------------------------------------------------------
 TO TEST:
