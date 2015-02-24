@@ -308,8 +308,7 @@ void BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
         //    SR=SR|AC;
         }
         if(bit10){                      //HLT
-        //TODO: halt. What does that mean?
-        //    while(1); //a halt is the same as getting stuck on a while, right?
+            return -1;
         }
     //*************GROUP 3*******************
     }else{                              

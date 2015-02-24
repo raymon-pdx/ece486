@@ -269,12 +269,7 @@ int main(int argc, char *argv[])
 					<< "|" << microOffset << "]\n";
 			}
 			
-			ret = PDP8.PDP_uintructions(groupBit, CLA, microOffset);
-	    	if (ret < 0)
-	    	{   // halt occurred
-	    		cout << "HLT - program has halted\n";
-    			running = false;
-    		}
+			PDP8.PDP_uintructions(groupBit, CLA, microOffset);
 			break;
 		default:
 			if (pdp8::DEBUG || !SILENT)

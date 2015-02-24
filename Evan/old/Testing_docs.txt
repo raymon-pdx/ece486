@@ -149,7 +149,24 @@ AC result:   206o link: 1b
 
 
 
+    cout<<"\nTesting the first 6 instuctions:\n\n";
 
+
+    cout<<"C(EAddr)=3671o AC=3701o link=0b  //1977+1985\n";
+    cout<<"AC Expected: 7572o link: 0b      //-134\n";
+    bits.temp=1977;
+    bits.AC=1985;
+    bits.link=0;
+    bits.PDP_TAD(1,0,123);
+    cout<<"AC result:   "<<bits.AC<<" link: "<<bits.link<<"\n\n";
+
+    cout<<"C(EAddr)=4107o AC=4077o link=0b  //-1977+-1985\n";
+    cout<<"AC Expected: 206o link: 1b      //134\n";
+    bits.temp=2119;
+    bits.AC=2111;
+    bits.link=0;
+    bits.PDP_TAD(1,0,123);
+    cout<<"AC result:   "<<bits.AC<<" link: "<<bits.link<<"\n\n";
 
 
 
