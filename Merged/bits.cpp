@@ -167,7 +167,7 @@ void BitTwiddle::PDP_IO(int device_num,int opcode){
 	++sumInstr;
 
 	increment_PC();
-    //IO is a NO-OP
+    std::cout << "Warning: I/O instruction encountered.\n";                
 	return;
 }
 
@@ -283,8 +283,10 @@ int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
             return -1;
         }
     //*************GROUP 3*******************
-    }else{                              
-    //TODO: how much of group 3 do we implement? and do we print a warning?
+    }else{              
+
+     std::cout << "Warning: Group 3 uInstruction encountered.\n";                
+
     }
     return 0;
 }
@@ -397,20 +399,23 @@ int BitTwiddle::find_EAddr(bool addr_bit,bool mem_page,int offset){
     if(!addr_bit){
         if(!mem_page){//bit3=0 bit4=0
             if(offset>=8 && offset<=15){ //autoindexing offset=010o-017o
+                sumClk += 2; //two additional clk cycle for autoindexing 
                 int temp = MEM_LOAD(offset)+1; //load C(AutoIndex_Register)+1
                 temp=temp & ((1<<pdp8::REGISTERSIZE)-1); //scrub it to 12 bits
                 MEM_STORE(offset , temp); //store it into C(AutoIndex_Register)
                 return temp; //C(AutoIndex_Register) is our EAddr
             }else{    
-                return offset; //00000 cat Offset is our EAddr
+                return offset; //00000 cat Offset is our EAddr (zero page addressing) 
             }
-        }else{       //bit3=0 bit4=1            
-            return ((PC & (((1<<5)-1)<<7)) + offset); //PC
+        }else{       //bit3=0 bit4=1 current page addresssing            
+            return ((PC & (((1<<5)-1)<<7)) + offset);
         }
     }else{          
-        if(!mem_page){//bit3=1 bit4=0
+        if(!mem_page){//bit3=1 bit4=0 zero page indirect addressing
+            ++sumClk; //one additional clk cycle for indirect addressing 
             return MEM_LOAD(offset);
-        }else{        //bit3=1 bit4=1
+        }else{        //bit3=1 bit4=1 current page indirect addressing
+            ++sumClk; //one additional clk cycle for indirect addressing 
             return MEM_LOAD((PC & (((1<<5)-1)<<7)) + offset);
         }
     }
