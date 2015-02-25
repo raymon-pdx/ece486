@@ -10,11 +10,11 @@ COMPLETE:
 + Added function that converts int to octal
 + Implement correct clock cycles
 + Implement function that outputs PDP-8 summary
++ Implement tracefile
 
 -----------------------------------------------------------
 IN PROGRESS:
 -----------------------------------------------------------
-- Function for outputting tracefile
 - Verify all combos for uInstruction (group 1)
 
 -----------------------------------------------------------
@@ -24,7 +24,6 @@ TO DO:
 - finish testing all implemented code
 - IAC does it include link bit? Does it need to?
 - Remove function of trace file from bits.cpp and bits.h
-
 
 -----------------------------------------------------------
 TO TEST:

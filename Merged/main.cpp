@@ -137,12 +137,6 @@ int main(int argc, char *argv[])
 			if (id == 1)
 			{
 				loadLocation = address;
-
-                //*********IMPLEMENTING TRACE FILE****************
-                int type = 2; //2 - instruction fetch
-                outputTraceFile << type << " " << std::oct << address << std::endl;
-                //************************************************
-
 			}
 			
 			// display before data
@@ -212,11 +206,17 @@ int main(int argc, char *argv[])
 	{
 		// fetch data
 		address = Memory.load(PDP8.getPC());
+
 		if (address < 0)
 		{   // error occurred
 			cout << "ERROR - address " << std::oct << PDP8.getPC() << " could not be found\n";
 			goto EXECUTION_DONE;
 		}
+
+        //*********IMPLEMENTING TRACE FILE****************
+        int type = 2; //2 - instruction fetch
+        outputTraceFile << type << " " << std::oct << PDP8.getPC() << std::endl;
+        //************************************************
 
 		// parse the address
 		ret = parseAddress(address, opcode, indirect, currentPage, offset);
