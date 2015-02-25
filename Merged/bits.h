@@ -18,7 +18,7 @@ public:
 	BitTwiddle();
 
 	// constructor
-	BitTwiddle(pagetable *passedTable);
+	BitTwiddle(pagetable *passedTable, std::ofstream *output);
 
 	//destructor
 	~BitTwiddle();
@@ -78,6 +78,7 @@ private:
     int uInstr_Count; //number of micro instruction 
 
     pagetable *memory;  // memory
+	std::ofstream *outputTraceFile; // used to create tracefile
 
     //function for rotating bits
     void rotateBits(int accumulator, int link, char dir);	

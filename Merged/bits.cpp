@@ -4,7 +4,7 @@
 //-----------------------------------------------------------
 // Constructor
 //-----------------------------------------------------------
-BitTwiddle::BitTwiddle(pagetable *table)
+BitTwiddle::BitTwiddle(pagetable *table, std::ofstream *output)
 {
 	AC=0;
 	PC=128;         //PC starts at 0200o
@@ -24,6 +24,7 @@ BitTwiddle::BitTwiddle(pagetable *table)
 	uInstr_Count=0;  //number of micro instruction 
 	
 	memory = table;
+	outputTraceFile = output;
 }
 
 

@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 
 	// INITIALIZATION
 	pagetable Memory(pdp8::NUM_PAGES, pdp8::PAGE_CAPACITY);  // initialize memory
-	BitTwiddle PDP8(&Memory);  // initialize ISA class
+	BitTwiddle PDP8(&Memory, &outputTraceFile);  // initialize ISA class
 
 	// LOAD FILE INTO MEMORY
 	
