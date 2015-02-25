@@ -311,39 +311,6 @@ void BitTwiddle::display()
 	std::cout << "------------------------------------------------------\n";
 }
 
-
-//-----------------------------------------------------------
-// Function for outputing trace file
-//-----------------------------------------------------------
-int BitTwiddle::traceFile(int type, int address){
-
-   #ifndef timeStamp
-   //call timestamp function
-   time_t rawtime;
-   time (&rawtime);
-   #endif
-
-   //create an output trace file
-   std::ofstream outputTraceFile;
-   outputTraceFile.open("TraceFile.txt");
-
-   #ifndef timeStamp
-   //add time stamp as header of tracefile
-   outputTraceFile << "***** TIME STAMP *****\n";
-   outputTraceFile << "Trace file generated: " << ctime(&rawtime);
-   #endif
-
-   //use outputTraceFile like cout, but into txt file 
-   outputTraceFile << type << " " << std::oct << address << std::endl;
-
-   outputTraceFile.close();
-   std::cout << "Trace file generated.\n";
-
-   return 0;
-
-}
-
-
 //-----------------------------------------------------------
 // Function for rotating bits (used in uInstruction Group 1)
 //-----------------------------------------------------------
@@ -463,6 +430,7 @@ void BitTwiddle::increment_PC(){
 // Function for reading a specific bit location
 //----------------------------------------------------------
 bool BitTwiddle::read_bit_x(int input,int x){
+
 	return 1 & (input >> (pdp8::REGISTERSIZE - (x + 1)));
 }
 
@@ -471,6 +439,12 @@ bool BitTwiddle::read_bit_x(int input,int x){
 // Function for loading from memory
 //----------------------------------------------------------
 int BitTwiddle::MEM_LOAD(int address){
+
+    //*********IMPLEMENTING TRACE FILE****************
+    int type = 0; //1 - data read (load)
+    (*outputTraceFile) << type << " " << std::oct << address << std::endl;
+    //************************************************
+
 	return memory->load(address);
 }
 
@@ -479,6 +453,11 @@ int BitTwiddle::MEM_LOAD(int address){
 // Function for storing to memory
 //----------------------------------------------------------
 void BitTwiddle::MEM_STORE(int address,int value){
+
+    //*********IMPLEMENTING TRACE FILE****************
+    int type = 1; //1 - data write (store)
+    (*outputTraceFile) << type << " " << std::oct << address << std::endl;
+    //************************************************
 	memory->store(address, value);
 	return;
 }

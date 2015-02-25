@@ -23,6 +23,8 @@ TO DO:
 - put test results in file
 - finish testing all implemented code
 - IAC does it include link bit? Does it need to?
+- Remove function of trace file from bits.cpp and bits.h
+
 
 -----------------------------------------------------------
 TO TEST:

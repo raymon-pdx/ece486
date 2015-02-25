@@ -167,11 +167,6 @@ int main(int argc, char *argv[])
 					goto EXIT;
 				}
 
-                //*********IMPLEMENTING TRACE FILE****************
-                int type = 1; //1 - data write (store)
-                outputTraceFile << type << " " << std::oct << address << std::endl;
-                //************************************************
-
 				if (pdp8::DEBUG || !SILENT)
 				{
 					// display what is in the address
@@ -183,26 +178,11 @@ int main(int argc, char *argv[])
 						goto EXIT;
 					}
 
-                    //*********IMPLEMENTING TRACE FILE****************
-                    int type = 0; //1 - data read (load)
-                    outputTraceFile << type << " " << std::oct << address << std::endl;
-                    //************************************************
 					cout << "Data retrieved = " << oct << ret << endl;
 				}
 				++loadLocation;  // store data to next address
 			}
 		}  // eof?
-		
-
-
-
-
-
-
-
-
-
-
 
 		// give additional information that file is loaded
 		if (pdp8::DEBUG || !SILENT)

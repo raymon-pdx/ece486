@@ -52,9 +52,6 @@ public:
 
 	// return value of accumulator
 	int getAC() { return AC; }
-
-    //function for trace file output
-    int traceFile(int type, int address); 
 	
 	// display data from BitTwiddle class
 	void display();
