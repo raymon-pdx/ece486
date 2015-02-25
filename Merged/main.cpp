@@ -340,8 +340,6 @@ EXECUTION_DONE:
 
 	// print statistics
 	PDP8.display();
-	cout << "AC = " << setfill('0') << setw(4) 
-		 << oct << PDP8.getAC() << endl;
 
 EXIT:
 
