@@ -295,7 +295,7 @@ int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
 void BitTwiddle::display()
 {
 	//print out brief summary 
-	std::cout << "-----------PDP-8 ISA Simulation Summary---------------\n\n";
+	std::cout << "\n-----------PDP-8 ISA Simulation Summary---------------\n\n";
 	std::cout << "Total number of Instructions executed: " << sumInstr << "\n";
 	std::cout << "Total number of clock cycles consumed: " << sumClk << "\n\n";
 	std::cout << "**Number of times each instruction type was executed**\n";
