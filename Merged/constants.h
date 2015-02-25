@@ -10,6 +10,7 @@ namespace pdp8
 	// memory constants
 	const int PAGESIZE = 5;
 	const int LINESIZE = 7;
+	#define MEMORY_FILE "MEMORY_IMAGE.txt"
 
 	// BitTwiddle class constants
 	const bool IO_verbose = 0;

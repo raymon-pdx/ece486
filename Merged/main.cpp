@@ -43,6 +43,7 @@ int main(int argc, char *argv[])
 	int function = 0;           // used for parsing address for IO instr
 	int id = 0;                 // data or instruction word
 	int ret = 0;
+	std::ofstream memoryOutput;  // used to save memory
 	
     //*********IMPLEMENTING TRACE FILE****************
     #ifndef timeStamp
@@ -61,6 +62,9 @@ int main(int argc, char *argv[])
     outputTraceFile << "Trace file generated: " << ctime(&rawtime);
     #endif
     //************************************************
+
+	// create file to store memory in
+	memoryOutput.open(MEMORY_FILE, fstream::out);
 
 	// INITIALIZATION
 	pagetable Memory(pdp8::NUM_PAGES, pdp8::PAGE_CAPACITY);  // initialize memory
@@ -346,8 +350,30 @@ EXIT:
     std::cout << "Trace file generated.\n";
     //************************************************
 
+
+	// output memory file
+	if (memoryOutput.is_open())
+	{
+		// output stream re-direction
+		std::streambuf *oldbuf = std::cout.rdbuf(); //save 
+		std::cout.rdbuf(memoryOutput.rdbuf());
+
+		Memory.display_all(); // Contents to cout will be written to text.txt
+
+		//reset back to standard input
+		std::cout.rdbuf(oldbuf);
+	}
+	else
+	{
+		if (pdp8::DEBUG || !SILENT)
+		{
+			cout << "ERROR - memory file not found\n";
+		}
+	}
+
 	// close the file
 	myFile.close();
+	memoryOutput.close();
 	exitMessage();
 	return 0;
 }	
