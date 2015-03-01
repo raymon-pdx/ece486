@@ -8,6 +8,11 @@
 
 // TODO: dca may not be storing correct value back to memory
 
+// TODO: CMA - ac acting like a 32 bit register instead of 12 bits
+//       cma ac when ac=0 results in 37777777777o
+
+// TODO: look at output3.txt for help, LOCATION: merged/test_files
+
 //-----------------------------------------------------------
 // Constructor
 //-----------------------------------------------------------

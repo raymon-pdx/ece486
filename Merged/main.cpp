@@ -334,9 +334,12 @@ int main(int argc, char *argv[])
 			break;
 		}
 		// display registers and memory after execution
-		if (pdp8::DEBUG > 1)
+		if (pdp8::DEBUG > 2)
 		{
 			Memory.display_all();
+		}
+		if (pdp8::DEBUG > 1)
+		{
 			PDP8.displayRegisters();
 		}
 	} // end of RUNNING loop

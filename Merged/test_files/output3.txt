@@ -1,0 +1,300 @@
+rm *o pdp8
+g++ -c -Wall main.cpp
+g++ -c -Wall memory.cpp
+g++ -c -Wall bits.cpp
+g++ -c -Wall parser.cpp
+g++ main.o memory.o bits.o parser.o -o pdp8
+
+***LOADING FILE INTO MEMORY***
+file found
+
+***NEW ADDRESS***
+Address = 200
+file found
+
+***LOAD DATA***
+Address = 200, Data passed = 7300
+Page: 1
+Offset: 0
+Data word: 7300
+Data retrieved = 7300
+file found
+
+***LOAD DATA***
+Address = 201, Data passed = 1250
+Page: 1
+Offset: 1
+Data word: 1250
+Data retrieved = 1250
+file found
+
+***LOAD DATA***
+Address = 202, Data passed = 1251
+Page: 1
+Offset: 2
+Data word: 1251
+Data retrieved = 1251
+file found
+
+***LOAD DATA***
+Address = 203, Data passed = 3252
+Page: 1
+Offset: 3
+Data word: 3252
+Data retrieved = 3252
+file found
+
+***LOAD DATA***
+Address = 204, Data passed = 7300
+Page: 1
+Offset: 4
+Data word: 7300
+Data retrieved = 7300
+file found
+
+***LOAD DATA***
+Address = 205, Data passed = 1253
+Page: 1
+Offset: 5
+Data word: 1253
+Data retrieved = 1253
+file found
+
+***LOAD DATA***
+Address = 206, Data passed = 251
+Page: 1
+Offset: 6
+Data word: 251
+Data retrieved = 251
+file found
+
+***LOAD DATA***
+Address = 207, Data passed = 3250
+Page: 1
+Offset: 7
+Data word: 3250
+Data retrieved = 3250
+file found
+
+***LOAD DATA***
+Address = 210, Data passed = 4214
+Page: 1
+Offset: 10
+Data word: 4214
+Data retrieved = 4214
+file found
+
+***LOAD DATA***
+Address = 211, Data passed = 1252
+Page: 1
+Offset: 11
+Data word: 1252
+Data retrieved = 1252
+file found
+
+***LOAD DATA***
+Address = 212, Data passed = 7402
+Page: 1
+Offset: 12
+Data word: 7402
+Data retrieved = 7402
+file found
+
+***LOAD DATA***
+Address = 213, Data passed = 5200
+Page: 1
+Offset: 13
+Data word: 5200
+Data retrieved = 5200
+file found
+
+***LOAD DATA***
+Address = 214, Data passed = 0
+Page: 1
+Offset: 14
+Data word: 0
+Data retrieved = 0
+file found
+
+***LOAD DATA***
+Address = 215, Data passed = 7040
+Page: 1
+Offset: 15
+Data word: 7040
+Data retrieved = 7040
+file found
+
+***LOAD DATA***
+Address = 216, Data passed = 7001
+Page: 1
+Offset: 16
+Data word: 7001
+Data retrieved = 7001
+file found
+
+***LOAD DATA***
+Address = 217, Data passed = 7500
+Page: 1
+Offset: 17
+Data word: 7500
+Data retrieved = 7500
+file found
+
+***LOAD DATA***
+Address = 220, Data passed = 1251
+Page: 1
+Offset: 20
+Data word: 1251
+Data retrieved = 1251
+file found
+
+***LOAD DATA***
+Address = 221, Data passed = 1252
+Page: 1
+Offset: 21
+Data word: 1252
+Data retrieved = 1252
+file found
+
+***LOAD DATA***
+Address = 222, Data passed = 7010
+Page: 1
+Offset: 22
+Data word: 7010
+Data retrieved = 7010
+file found
+
+***LOAD DATA***
+Address = 223, Data passed = 7004
+Page: 1
+Offset: 23
+Data word: 7004
+Data retrieved = 7004
+file found
+
+***LOAD DATA***
+Address = 224, Data passed = 7041
+Page: 1
+Offset: 24
+Data word: 7041
+Data retrieved = 7041
+file found
+
+***LOAD DATA***
+Address = 225, Data passed = 5614
+Page: 1
+Offset: 25
+Data word: 5614
+Data retrieved = 5614
+file found
+
+***NEW ADDRESS***
+Address = 250
+file found
+
+***LOAD DATA***
+Address = 250, Data passed = 2
+Page: 1
+Offset: 50
+Data word: 2
+Data retrieved = 2
+file found
+
+***LOAD DATA***
+Address = 251, Data passed = 3
+Page: 1
+Offset: 51
+Data word: 3
+Data retrieved = 3
+file found
+
+***LOAD DATA***
+Address = 252, Data passed = 0
+Page: 1
+Offset: 52
+Data word: 0
+Data retrieved = 0
+file found
+
+***LOAD DATA***
+Address = 253, Data passed = 15
+Page: 1
+Offset: 53
+Data word: 15
+Data retrieved = 15
+file found
+line71, line has no numbers
+
+************************
+* END OF FILE DETECTED *
+************************
+
+both parts of address not found
+
+***FINISHED LOADING FILE***
+
+***BEGIN PROGRAM EXECUTION***
+[MICRO|     300]
+pc=201, ac=0, link=0
+[TAD  |0|1|0050]
+pc=202, ac=2, link=0
+[TAD  |0|1|0051]
+pc=203, ac=5, link=0
+[DCA  |0|1|0052]
+pc=204, ac=0, link=0
+[MICRO|     300]
+pc=205, ac=0, link=0
+[TAD  |0|1|0053]
+pc=206, ac=15, link=0
+[AND  |0|1|0051]
+pc=207, ac=1, link=0
+[DCA  |0|1|0050]
+pc=210, ac=0, link=0
+[JMS  |0|1|0014]
+pc=215, ac=0, link=0
+[MICRO|     040]
+pc=216, ac=37777777777, link=0
+[MICRO|     001]
+pc=217, ac=0, link=0
+[MICRO|     500]
+pc=220, ac=0, link=0
+[TAD  |0|1|0051]
+pc=221, ac=3, link=0
+[TAD  |0|1|0052]
+pc=222, ac=10, link=0
+[MICRO|     010]
+pc=223, ac=10, link=0
+[MICRO|     004]
+Error in reading direction of rotation.
+pc=224, ac=10, link=0
+[MICRO|     041]
+pc=225, ac=37777777767, link=0
+[JMP  |1|1|0014]
+pc=211, ac=37777777767, link=0
+[TAD  |0|1|0052]
+pc=212, ac=7774, link=1
+[MICRO|     402]
+pc=213, ac=7774, link=1
+
+***FINISHED EXECUTING PROGRAM***
+
+-----------PDP-8 ISA Simulation Summary---------------
+
+Total number of Instructions executed: 24
+Total number of clock cycles consumed: 37
+
+**Number of times each instruction type was executed**
+|-----------------------------------------------------
+|    Mnemonic   | Number of times executed            
+|-----------------------------------------------------
+|      AND      |       1
+|      TAD      |       6
+|      ISZ      |       0
+|      DCA      |       2
+|      JMS      |       1
+|      JMP      |       1
+|     <IO>      |       0
+| uInstructions |       11
+------------------------------------------------------
+Trace file generated.
+Press ENTER to end program
