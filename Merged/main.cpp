@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
 	
 	if(myFile.is_open())
 	{	
-		if (pdp8::DEBUG || !SILENT)
+		if ((pdp8::DEBUG > 0) || !SILENT)
 		{
 			cout << "\n***LOADING FILE INTO MEMORY***\n";
 		}
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
 			}
 			
 			// display before data
-			if ((pdp8::DEBUG || !SILENT) && !myFile.eof() && (id == 0))
+			if (((pdp8::DEBUG > 1) || !SILENT) && !myFile.eof() && (id == 0))
 			{
 				cout << "\n***LOAD DATA***\n";
 				cout << "Address = " << oct << loadLocation 
@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
 			}
 
 			// display for address
-			if ((pdp8::DEBUG || !SILENT) && !myFile.eof() && (id == 1))
+			if (((pdp8::DEBUG > 1) || !SILENT) && !myFile.eof() && (id == 1))
 			{
 				cout << "\n***NEW ADDRESS***\n";
 				cout << "Address = " << oct << loadLocation << endl;
@@ -166,7 +166,7 @@ int main(int argc, char *argv[])
 					goto EXIT;
 				}
 
-				if (pdp8::DEBUG || !SILENT)
+				if ((pdp8::DEBUG > 1) || !SILENT)
 				{
 					// display what is in the address
 					Memory.display(loadLocation);
@@ -184,7 +184,7 @@ int main(int argc, char *argv[])
 		}  // eof?
 
 		// give additional information that file is loaded
-		if (pdp8::DEBUG || !SILENT)
+		if ((pdp8::DEBUG > 0) || !SILENT)
 		{
 			cout << "\n***FINISHED LOADING FILE***\n";
 		}
@@ -196,7 +196,7 @@ int main(int argc, char *argv[])
     }
 
 	/* BEGIN PROGRAM EXECUTION */
-	if (pdp8::DEBUG || !SILENT)
+	if ((pdp8::DEBUG > 0) || !SILENT)
 	{
 		cout << "\n***BEGIN PROGRAM EXECUTION***\n";
 	}
@@ -231,7 +231,7 @@ int main(int argc, char *argv[])
 		switch (opcode)
 		{
 		case 0:
-			if (pdp8::DEBUG || !SILENT)
+			if ((pdp8::DEBUG > 0) || !SILENT)
 			{
 				cout << "[AND  |" << indirect << "|" << currentPage
                      << "|" << setfill('0') << setw(4) 
@@ -240,7 +240,7 @@ int main(int argc, char *argv[])
 			PDP8.PDP_AND(indirect, currentPage, offset);
 			break;
 		case 1:
-			if (pdp8::DEBUG || !SILENT)
+			if ((pdp8::DEBUG > 0) || !SILENT)
 			{
 				cout << "[TAD  |" << indirect << "|" << currentPage
 					<< "|" << setfill('0') << setw(4)
@@ -249,7 +249,7 @@ int main(int argc, char *argv[])
 			PDP8.PDP_TAD(indirect, currentPage, offset);
 			break;
 		case 2:
-			if (pdp8::DEBUG || !SILENT)
+			if ((pdp8::DEBUG > 0) || !SILENT)
 			{
 				cout << "[ISZ  |" << indirect << "|" << currentPage
 					 << "|" << setfill('0') << setw(4)
@@ -258,7 +258,7 @@ int main(int argc, char *argv[])
 			PDP8.PDP_ISZ(indirect, currentPage, offset);
 			break;
 		case 3:
-			if (pdp8::DEBUG || !SILENT)
+			if ((pdp8::DEBUG > 0) || !SILENT)
 			{
 				cout << "[DCA  |" << indirect << "|" << currentPage
 					 << "|" << setfill('0') << setw(4)
@@ -267,7 +267,7 @@ int main(int argc, char *argv[])
 			PDP8.PDP_DCA(indirect, currentPage, offset);
 			break;
 		case 4:
-			if (pdp8::DEBUG || !SILENT)
+			if ((pdp8::DEBUG > 0) || !SILENT)
 			{
 				cout << "[JMS  |" << indirect << "|" << currentPage
 					 << "|" << setfill('0') << setw(4)
@@ -276,7 +276,7 @@ int main(int argc, char *argv[])
 			PDP8.PDP_JMS(indirect, currentPage, offset);
 			break;
 		case 5:
-			if (pdp8::DEBUG || !SILENT)
+			if ((pdp8::DEBUG > 0) || !SILENT)
 			{
 				cout << "[JMP  |" << indirect << "|" << currentPage
 					 << "|" << setfill('0') << setw(4) 
@@ -292,7 +292,7 @@ int main(int argc, char *argv[])
 				goto EXIT;
 			}
 
-			if (pdp8::DEBUG || !SILENT)
+			if ((pdp8::DEBUG > 0) || !SILENT)
 			{
 				cout << "[IO   |" 
 					 << setfill('0') << setw(3) << oct << deviceNum << "|" 
@@ -309,7 +309,7 @@ int main(int argc, char *argv[])
 				goto EXIT;
 			}
 
-			if (pdp8::DEBUG || !SILENT)
+			if ((pdp8::DEBUG > 0) || !SILENT)
 			{
 				// combine offset
 				microTemp = (groupBit << 8) + (CLA << 7) + microOffset;
@@ -325,7 +325,7 @@ int main(int argc, char *argv[])
 			}
 			break;
 		default:
-			if (pdp8::DEBUG || !SILENT)
+			if ((pdp8::DEBUG > 0) || !SILENT)
 			{
 				cout << "[" << opcode << "|" << indirect << "|" 
 					 << currentPage	<< "|" << oct << offset << "]\n";
@@ -333,11 +333,17 @@ int main(int argc, char *argv[])
 			}
 			break;
 		}
+		// display registers and memory after execution
+		if (pdp8::DEBUG > 1)
+		{
+			Memory.display_all();
+			PDP8.displayRegisters();
+		}
 	} // end of RUNNING loop
 
 EXECUTION_DONE:
 	// end of program execution
-	if (pdp8::DEBUG || !SILENT)
+	if ((pdp8::DEBUG > 0) || !SILENT)
 	{
 		cout << "\n***FINISHED EXECUTING PROGRAM***\n";
 	}
@@ -367,7 +373,7 @@ EXIT:
 	}
 	else
 	{
-		if (pdp8::DEBUG || !SILENT)
+		if ((pdp8::DEBUG > 0) || !SILENT)
 		{
 			cout << "ERROR - memory file not found\n";
 		}

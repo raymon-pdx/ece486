@@ -56,6 +56,9 @@ public:
 	// display data from BitTwiddle class
 	void display();
 
+	// display register image
+	void displayRegisters();
+
 private:
     int AC;          //accumulator
     int PC;          //Program Counter

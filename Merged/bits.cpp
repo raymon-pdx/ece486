@@ -1,6 +1,13 @@
 //Evan Sprecher & Ommaimah Hussein
 #include "bits.h"
 
+// TODO: ral (rotate left returns error ) after this code:
+//  tad C         / C = 5
+//  rar
+//  ral
+
+// TODO: dca may not be storing correct value back to memory
+
 //-----------------------------------------------------------
 // Constructor
 //-----------------------------------------------------------
@@ -384,6 +391,15 @@ void BitTwiddle::rotateBits(int accumulator, int link, char dir){
         std::cout << "Error in reading direction of rotation.\n";
     }
     return;
+}
+
+
+//-----------------------------------------------------------
+// Function for displaying registers
+//----------------------------------------------------------
+void BitTwiddle::displayRegisters()
+{
+	std::cout << "pc=" << PC << ", ac=" << AC << ", link=" << link << std::endl;
 }
 
 
