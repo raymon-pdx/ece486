@@ -3,6 +3,9 @@
 
 // TODO: dca may not be storing correct value back to memory
 
+// TODO: CMA - ac acting like a 32 bit register instead of 12 bits
+//       cma ac when ac=0 results in 37777777777o
+
 // TODO: look at output3.txt for help, LOCATION: merged/test_files
 
 //-----------------------------------------------------------
@@ -206,7 +209,7 @@ int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
 
         }else if(bit6){   //complement accumulator
 
-            AC = (~AC) & ((1<<pdp8::REGISTERSIZE)-1);
+            AC = ~AC;
 
         }else if(bit7){   //complement link
 
@@ -214,7 +217,7 @@ int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
 
         }else if(bit11){  //increment accumulator
 
-            AC = (AC + 1) & ((1<<pdp8::REGISTERSIZE)-1);
+            ++AC;
 
         }else if(bit8){   //rotate accumulator, link right
 
