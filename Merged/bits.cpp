@@ -1,11 +1,6 @@
 //Evan Sprecher & Ommaimah Hussein
 #include "bits.h"
 
-// TODO: ral (rotate left returns error ) after this code:
-//  tad C         / C = 5
-//  rar
-//  ral
-
 // TODO: dca may not be storing correct value back to memory
 
 // TODO: CMA - ac acting like a 32 bit register instead of 12 bits
@@ -226,7 +221,7 @@ int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
 
         }else if(bit8){   //rotate accumulator, link right
 
-           char direction = 'R';
+           int direction = 0; //0 indicates right direction
            rotateBits(AC, link, direction);
 
            if(bit10){ //rotate accumulator, link right twice (rotate once more)
@@ -237,7 +232,7 @@ int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
 
         }else if(bit9){   //rotate accumulator, link left
 
-           char direction = 'L';
+           int direction = 1; //1 indicates left direction
            rotateBits(AC, link, direction);
 
            if(bit10){ //rotate accumulator, link left twice (rotate once more)
@@ -332,7 +327,6 @@ void BitTwiddle::rotateBits(int accumulator, int link, char dir){
     int lsb = 0; //value of lsb from accumulator
     int msb = 0; //value of msb from accumulator
     int templink = 0; //temporarily holds value of link
-	char direction = ' ';  // temporarily holds value of dir
 
     #ifndef rotatebit_DEBUG
     std::cout << "Current accumulator value: " << (bitset<12>) accumulator << "\n";
@@ -340,11 +334,11 @@ void BitTwiddle::rotateBits(int accumulator, int link, char dir){
     std::cout << "Current direction: " << dir << "\n\n";
     #endif
 
-    if(dir == 'R'){ //ROTATE RIGHT
+    if(dir == 0){ //ROTATE RIGHT
 
         lsb = accumulator & 1; //save lsb of accumulator
         #ifndef rotatebit_DEBUG
-        std::cout << "Value of lsb is:" << lsb << "\n\n";
+        std::cout << "Value of lsb is: " << lsb << "\n";
         #endif
 
         accumulator = accumulator >> 1; //shift accumulator to right by 1
@@ -364,11 +358,11 @@ void BitTwiddle::rotateBits(int accumulator, int link, char dir){
 		std::cout << "New value of accumulator: " << (bitset<12>)accumulator << "\n"; 
         #endif
 
-    }else if(direction == 'L'){ //ROTATE LEFT
+    }else if(dir == 1){ //ROTATE LEFT
 
         msb = (accumulator>>11) & 1; //save msb of accumulator
         #ifndef rotatebit_DEBUG
-		std::cout << "Value of msb is:" << msb << "\n\n";
+		std::cout << "Value of msb is: " << msb << "\n";
         #endif
 
         accumulator = accumulator << 1; //shift accumulator to left by 1
@@ -393,7 +387,7 @@ void BitTwiddle::rotateBits(int accumulator, int link, char dir){
 
     }else{
 
-        std::cout << "Error in reading direction of rotation.\n";
+        std::cout << "Error rotating bits in uInstruction.\n";
     }
     return;
 }

@@ -423,7 +423,7 @@ int BitTwiddle::rotateBits(int accumulator, int link, char dir){
         cout << "New value of accumulator: " << (bitset<12>)accumulator << "\n"; 
         #endif
 
-    }else if(direction == 'L'){ //ROTATE LEFT
+    }else if(dir == 'L'){ //ROTATE LEFT
 
         msb = (accumulator>>11) & 1; //save msb of accumulator
         #ifndef rotatebit_DEBUG
