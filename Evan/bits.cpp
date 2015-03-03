@@ -1,6 +1,10 @@
 //Evan Sprecher & Ommaimah Hussein
 #include "bits.h"
 
+// TODO: dca may not be storing correct value back to memory
+
+// TODO: look at output3.txt for help, LOCATION: merged/test_files
+
 //-----------------------------------------------------------
 // Constructor
 //-----------------------------------------------------------
@@ -87,13 +91,12 @@ void BitTwiddle::PDP_ISZ(bool addr_bit,bool mem_page,int offset){
     int EAddr = find_EAddr(addr_bit,mem_page,offset);
     int C_EAddr = MEM_LOAD(EAddr);
     increment_PC();
+   
+    int addc=C_EAddr + 1;
 
-    int adda=AC;   
-    int addc=adda + 1;
+	MEM_STORE(EAddr,addc & ((1 << pdp8::REGISTERSIZE) - 1));//carry and overflow are removed
 
-	AC = addc & ((1 << pdp8::REGISTERSIZE) - 1);//carry and overflow are removed
-
-	if (!((C_EAddr + 1) & ((1 << pdp8::REGISTERSIZE) - 1))){
+	if (!((addc) & ((1 << pdp8::REGISTERSIZE) - 1))){
         increment_PC(); //skip if zero
     }
 	return;
@@ -167,7 +170,7 @@ void BitTwiddle::PDP_IO(int device_num,int opcode){
 	++sumInstr;
 
 	increment_PC();
-    //IO is a NO-OP
+    std::cout << "Warning: I/O instruction encountered.\n";                
 	return;
 }
 
@@ -203,7 +206,7 @@ int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
 
         }else if(bit6){   //complement accumulator
 
-            AC = ~AC;
+            AC = (~AC) & ((1<<pdp8::REGISTERSIZE)-1);
 
         }else if(bit7){   //complement link
 
@@ -211,11 +214,11 @@ int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
 
         }else if(bit11){  //increment accumulator
 
-            ++AC;
+            AC = (AC + 1) & ((1<<pdp8::REGISTERSIZE)-1);
 
         }else if(bit8){   //rotate accumulator, link right
 
-           char direction = 'R';
+           int direction = 0; //0 indicates right direction
            rotateBits(AC, link, direction);
 
            if(bit10){ //rotate accumulator, link right twice (rotate once more)
@@ -226,7 +229,7 @@ int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
 
         }else if(bit9){   //rotate accumulator, link left
 
-           char direction = 'L';
+           int direction = 1; //1 indicates left direction
            rotateBits(AC, link, direction);
 
            if(bit10){ //rotate accumulator, link left twice (rotate once more)
@@ -283,8 +286,10 @@ int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
             return -1;
         }
     //*************GROUP 3*******************
-    }else{                              
-    //TODO: how much of group 3 do we implement? and do we print a warning?
+    }else{              
+
+     std::cout << "Warning: Group 3 uInstruction encountered.\n";                
+
     }
     return 0;
 }
@@ -293,7 +298,7 @@ int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
 void BitTwiddle::display()
 {
 	//print out brief summary 
-	std::cout << "-----------PDP-8 ISA Simulation Summary---------------\n\n";
+	std::cout << "\n-----------PDP-8 ISA Simulation Summary---------------\n\n";
 	std::cout << "Total number of Instructions executed: " << sumInstr << "\n";
 	std::cout << "Total number of clock cycles consumed: " << sumClk << "\n\n";
 	std::cout << "**Number of times each instruction type was executed**\n";
@@ -319,7 +324,6 @@ void BitTwiddle::rotateBits(int accumulator, int link, char dir){
     int lsb = 0; //value of lsb from accumulator
     int msb = 0; //value of msb from accumulator
     int templink = 0; //temporarily holds value of link
-	char direction = ' ';  // temporarily holds value of dir
 
     #ifndef rotatebit_DEBUG
     std::cout << "Current accumulator value: " << (bitset<12>) accumulator << "\n";
@@ -327,11 +331,11 @@ void BitTwiddle::rotateBits(int accumulator, int link, char dir){
     std::cout << "Current direction: " << dir << "\n\n";
     #endif
 
-    if(dir == 'R'){ //ROTATE RIGHT
+    if(dir == 0){ //ROTATE RIGHT
 
         lsb = accumulator & 1; //save lsb of accumulator
         #ifndef rotatebit_DEBUG
-        std::cout << "Value of lsb is:" << lsb << "\n\n";
+        std::cout << "Value of lsb is: " << lsb << "\n";
         #endif
 
         accumulator = accumulator >> 1; //shift accumulator to right by 1
@@ -351,11 +355,11 @@ void BitTwiddle::rotateBits(int accumulator, int link, char dir){
 		std::cout << "New value of accumulator: " << (bitset<12>)accumulator << "\n"; 
         #endif
 
-    }else if(direction == 'L'){ //ROTATE LEFT
+    }else if(dir == 1){ //ROTATE LEFT
 
         msb = (accumulator>>11) & 1; //save msb of accumulator
         #ifndef rotatebit_DEBUG
-		std::cout << "Value of msb is:" << msb << "\n\n";
+		std::cout << "Value of msb is: " << msb << "\n";
         #endif
 
         accumulator = accumulator << 1; //shift accumulator to left by 1
@@ -380,9 +384,18 @@ void BitTwiddle::rotateBits(int accumulator, int link, char dir){
 
     }else{
 
-        std::cout << "Error in reading direction of rotation.\n";
+        std::cout << "Error rotating bits in uInstruction.\n";
     }
     return;
+}
+
+
+//-----------------------------------------------------------
+// Function for displaying registers
+//----------------------------------------------------------
+void BitTwiddle::displayRegisters()
+{
+	std::cout << "pc=" << PC << ", ac=" << AC << ", link=" << link << std::endl;
 }
 
 
@@ -397,20 +410,23 @@ int BitTwiddle::find_EAddr(bool addr_bit,bool mem_page,int offset){
     if(!addr_bit){
         if(!mem_page){//bit3=0 bit4=0
             if(offset>=8 && offset<=15){ //autoindexing offset=010o-017o
+                sumClk += 2; //two additional clk cycle for autoindexing 
                 int temp = MEM_LOAD(offset)+1; //load C(AutoIndex_Register)+1
                 temp=temp & ((1<<pdp8::REGISTERSIZE)-1); //scrub it to 12 bits
                 MEM_STORE(offset , temp); //store it into C(AutoIndex_Register)
                 return temp; //C(AutoIndex_Register) is our EAddr
             }else{    
-                return offset; //00000 cat Offset is our EAddr
+                return offset; //00000 cat Offset is our EAddr (zero page addressing) 
             }
-        }else{       //bit3=0 bit4=1            
-            return ((PC & (((1<<5)-1)<<7)) + offset); //PC
+        }else{       //bit3=0 bit4=1 current page addresssing            
+            return ((PC & (((1<<5)-1)<<7)) + offset);
         }
     }else{          
-        if(!mem_page){//bit3=1 bit4=0
+        if(!mem_page){//bit3=1 bit4=0 zero page indirect addressing
+            ++sumClk; //one additional clk cycle for indirect addressing 
             return MEM_LOAD(offset);
-        }else{        //bit3=1 bit4=1
+        }else{        //bit3=1 bit4=1 current page indirect addressing
+            ++sumClk; //one additional clk cycle for indirect addressing 
             return MEM_LOAD((PC & (((1<<5)-1)<<7)) + offset);
         }
     }

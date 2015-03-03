@@ -140,6 +140,39 @@ C(EAddr)=4107o AC=4077o link=0b  //-1977+-1985
 AC Expected: 206o link: 1b       //134
 AC result:   206o link: 1b
 
+ISZ Testing:
+C(EAddr)=0000o
+C(EAddr) Expected: 0001o
+C(EAddr) result:   0001o
+C(EAddr)=0001o
+C(EAddr) Expected: 0002o
+C(EAddr) result:   0002o
+C(EAddr)=7776o
+C(EAddr) Expected: 7777o
+C(EAddr) result:   7777o
+C(EAddr)=7777o
+C(EAddr) Expected: 0000o
+C(EAddr) result:   0000o
+
+
+
+
+
+
+
+Testing group 2 uinstructions:
+
+Testing SMA:
+instuction=7500o AC=0000o
+Expected: [nothing]
+result:   
+instuction=7500o AC=7777o
+Expected: SKIP!
+result:   SKIP!
+instuction=7500o AC=4000o
+Expected: SKIP!
+result:   SKIP!
+
 
 
 
