@@ -1,0 +1,143 @@
+   1            / Program : testInstr2.as
+   2            / Date : March 2, 2015
+   3            /
+   4            / Desc : This program will test instructions
+   5            /        for a PDP8 ISA
+   6            /
+   7            /-------------------------------------------
+   8            /
+   9            / Code Section
+  10            /
+  11            *0200			/ start at address 0200
+  12 00200 7300 Main, 	cla cll 	/ clear AC and Link
+  13            	/TEST AND
+  14 00201 1005 	tad REGMAX      / set 0xFFF in AC
+  15 00202 0001 	and B           / and with 0x002
+  16 00203 3004 	dca BIN         / store 2 in BIN
+  17 00204 7300 	cla cll         
+  18 00205 0001 	and B           / 0x000 AND 0x002
+  19 00206 3004 	dca BIN         / store 0 in BIN
+  20            	
+  21                / TEST TAD
+  22 00207 7300 	cla cll         / clear link and AC
+  23 00210 1005 	tad REGMAX 		/ add MAX to AC
+  24 00211 1000 	tad A 		    / add 1 to overflow AC, link=1
+  25 00212 1006 	tad REGOFL      / overflow AC, link=0
+  26 00213 3004 	dca BIN         / store AC in BIN
+  27            	
+  28            	/ TEST ISZ  
+  29 00214 7300 	cla cll         / clear link and AC
+  30 00215 1000 	tad A           / AC=1
+  31 00216 2005 	isz REGMAX      / cause skip
+  32 00217 1001     tad B           / AC=2 should be skipped
+  33 00220 3004 	dca BIN         / BIN=1
+  34            	                / test second case
+  35 00221 7300 	cla cll         / clear link and AC
+  36 00222 1000 	tad A           / AC=1
+  37 00223 2002 	isz C           / do not skip
+  38 00224 1001     tad B           / AC=2+1 should be skipped
+  39 00225 3004 	dca BIN         / BIN=3
+  40            	
+  41            	/ TEST JMS and LMP
+  42 00226 7300 	cla cll         / clear link and AC
+  43 00227 1006 	tad REGOFL      / overflow AC to set LINK
+  44 00230 7500 	SMA             / skip next instruction
+  45 00231 4240 	jms JUMP2       / skip this instruction
+  46 00232 4234 	jms JUMP1       / jump to this subroutine
+  47 00233 5244 	jmp CONTINUE1   / skip over subroutines
+  48            	
+  49 00234 0000 JUMP1, 0
+  50 00235 0000 	and A           / store 1 in BIN of JUMP1 taken
+  51 00236 7204 	cla BIN
+  52 00237 5634 	jmp i JUMP1     / return from subroutine
+  53            
+  54 00240 0000 JUMP2, 0	
+  55 00241 0001 	and B           / store 2 in BIN of JUMP2 taken
+  56 00242 7204 	cla BIN
+  57 00243 5640 	jmp i JUMP2     / return from subroutine
+  58            	
+  59 00244 7300 CONTINUE1, cla cll  / clear link and AC
+  60            	/ TEST CMA
+  61 00245 1005 	tad REGMAX      / set AC to 0xFFF
+  62 00246 7040 	cma             / AC should be 0x000
+  63 00247 1006 	tad REGOFL      / overflow AC to set LINK
+  64 00250 7040 	cma             / AC should be 0x000, LINK=1
+  65            	
+  66            	/ TEST CML
+  67 00251 7300 	cla cll         / clear link and AC
+  68 00252 7020 	cml             / set LINK=1
+  69 00253 7020 	cml             / set LINK=0
+  70            	
+  71            	/ TEST IAC
+  72 00254 7001 	iac             / increment AC from 0 to 1
+  73 00255 7200 	cla             / clear AC
+  74 00256 1005 	tad REGMAX      / AC=0xFFF
+  75 00257 7001 	iac             / AC should = 0x000, LINK = 0
+  76 00260 7300 	cla cll
+  77 00261 1006 	tad REGOFL      / AC=0xFFF, LINK=1
+  78 00262 7001 	iac             / increment AC, should be AC=0x000, LINK=1
+  79            	
+  80            	/ TEST ROTATING
+  81 00263 7300 	cla cll			/ clear link and AC
+  82 00264 1003 	tad D           / set AC=0x004
+  83 00265 7010 	rar             / rotate right 1 bit, AC=0x002
+  84 00266 7004 	ral             / rotate left 1 bit,  AC=0x004
+  85 00267 7012 	rtr             / rotate right 2 bits,AC=0x001
+  86 00270 7006 	rtl             / rotate left 2 bits, AC=0x004
+  87 00271 7200 	cla             / clear AC
+  88 00272 1005 	tad REGMAX      / set AC=0xFFF
+  89 00273 0011 	and HIGH        / set AC=0xF00
+  90 00274 7004 	ral             / rotate left, AC=0xE00, LN=1
+  91 00275 7012 	rtr             / right twice, AC=0x780, LN=0
+  92 00276 7006 	rtl             / left twice,  AC=0xE00, LN=1
+  93 00277 7010 	rar             / rotate right,AC=0xF00, LN=0
+  94            	
+  95            	/ TEST SMA, SZA, SNL SKIPPING INSTRUCTIONS
+  96 00300 7300 	cla cll			/ clear link and AC
+  97 00301 1012 	tad NEG         / set most significant bit to 1
+  98 00302 7500 	sma             / skip next instruction since AC is NEGATIVE
+  99 00303 1000 	tad A           / AC=1 if not skipped
+ 100 00304 7200 	cla             / set AC=0
+ 101 00305 7440 	sza             / AC=0 so skip next instruction
+ 102 00306 1001 	tad B           / AC=2 if not skipped
+ 103 00307 1005 	tad REGMAX      / set AC to 0xFFF, note: this is negative
+ 104 00310 7020 	cml             / set link to 1
+ 105 00311 7420 	snl             / skip next instruction since link != 0
+ 106 00312 0002 	and C           / AC=3 if not skipped
+ 107            	
+ 108            	/ TEST SPA, SNA, SZL SKIPPING INSTRUCTIONS
+ 109 00313 7300 	cla cll			/ clear link and AC
+ 110 00314 1003 	tad D           / AC=4
+ 111 00315 7510 	spa             / skip next instruction since AC positive
+ 112 00316 1000 	tad A           / AC=4+1=5 if not skipped
+ 113 00317 7450 	sna             / skip next instruction since AC non-zero
+ 114 00320 1001 	tad B           / AC=4+2=6 if not skipped
+ 115 00321 7430 	szl             / skip next instruction since link=0
+ 116 00322 1002 	tad C           / AC=4+3=7 if not skipped
+ 117            	
+ 118            	/ TEST SKP
+ 119 00323 7410 	skp             / skip next instruction
+ 120 00324 1003 	tad D           / AC=4+4=8 if not skipped
+ 121            	
+ 122            	/ TEST OSR?
+ 123            	
+ 124            	// END PROGRAM
+ 125 00325 7402 	hlt 		    / Halt program
+ 126 00326 5200 	jmp Main	    / To continue - goto Main
+ 127            	
+ 128            /
+ 129            / Data Section
+ 130            /
+ 131            *0000 			/ place data at address 0000
+ 132 00000 0001 A, 1 		    / A equals 1
+ 133 00001 0002 B, 2 		    / B equals 2
+ 134 00002 0003 C, 3            / C equals 3
+ 135 00003 0004 D, 4            / D equals 4
+ 136 00004 0000 BIN, 0          / used for storing results
+ 137 00005 7777 REGMAX, 7777    / max storage of 12 bit reg
+ 138 00006 7777 REGOFL, 17777   / overflow 12 bit reg
+ 139 00007 0017 LOW, 17         / low byte mask for 12 bits
+ 140 00010 0360 MID, 360        / mid byte mask for 12 bits
+ 141 00011 7400 HIGH, 7400      / high byte mask for 12 bits
+ 142 00012 4000 NEG, 4000       / set most significant bit
+ 143            $Main 			/ End of Program; Main is entry point

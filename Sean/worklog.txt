@@ -283,3 +283,18 @@ level 3: function internals and verbose output
 
 wrote down list of all instructions and checking off
 which ones were tested.
+
+RUNNING TEST FOR testInstr2.as
+FILE: testInstr2_output.txt
+  ERRORS: line 834, due to overflow link should become 0
+          line 858, link did not set after overflow added
+		  line 872, PC off after LMS to line with ACL CLL instructions
+		            AC should equal 7777 with LINK=1.  instead AC=0.
+					PC is incremented by 1 throughout the program but
+					execution of instructions continues correctly.
+		  line 886, CML command is setting link instead of complementing
+		  
+		  NOTE: looking at MEMORY_IMAGE I see REGOFL = 7777, instead of 17777
+		        this makes sense since 17777 cannot be held by 12 bit memory
+		  NOTE: REGMAX gets set to 0 at some point, this shows I need to re-look
+                at my test program before assuming the code is completely at fault.		  

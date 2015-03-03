@@ -1,0 +1,981 @@
+rm *o pdp8
+g++ -c -Wall main.cpp
+g++ -c -Wall memory.cpp
+g++ -c -Wall bits.cpp
+g++ -c -Wall parser.cpp
+g++ main.o memory.o bits.o parser.o -o pdp8
+
+***LOADING FILE INTO MEMORY***
+file found
+
+***NEW ADDRESS***
+Address = 200
+file found
+
+***LOAD DATA***
+Address = 200, Data passed = 7300
+Page: 1
+Offset: 0
+Data word: 7300
+Data retrieved = 7300
+file found
+
+***LOAD DATA***
+Address = 201, Data passed = 1005
+Page: 1
+Offset: 1
+Data word: 1005
+Data retrieved = 1005
+file found
+
+***LOAD DATA***
+Address = 202, Data passed = 1
+Page: 1
+Offset: 2
+Data word: 1
+Data retrieved = 1
+file found
+
+***LOAD DATA***
+Address = 203, Data passed = 3004
+Page: 1
+Offset: 3
+Data word: 3004
+Data retrieved = 3004
+file found
+
+***LOAD DATA***
+Address = 204, Data passed = 7300
+Page: 1
+Offset: 4
+Data word: 7300
+Data retrieved = 7300
+file found
+
+***LOAD DATA***
+Address = 205, Data passed = 1
+Page: 1
+Offset: 5
+Data word: 1
+Data retrieved = 1
+file found
+
+***LOAD DATA***
+Address = 206, Data passed = 3004
+Page: 1
+Offset: 6
+Data word: 3004
+Data retrieved = 3004
+file found
+
+***LOAD DATA***
+Address = 207, Data passed = 7300
+Page: 1
+Offset: 7
+Data word: 7300
+Data retrieved = 7300
+file found
+
+***LOAD DATA***
+Address = 210, Data passed = 1005
+Page: 1
+Offset: 10
+Data word: 1005
+Data retrieved = 1005
+file found
+
+***LOAD DATA***
+Address = 211, Data passed = 1000
+Page: 1
+Offset: 11
+Data word: 1000
+Data retrieved = 1000
+file found
+
+***LOAD DATA***
+Address = 212, Data passed = 1006
+Page: 1
+Offset: 12
+Data word: 1006
+Data retrieved = 1006
+file found
+
+***LOAD DATA***
+Address = 213, Data passed = 3004
+Page: 1
+Offset: 13
+Data word: 3004
+Data retrieved = 3004
+file found
+
+***LOAD DATA***
+Address = 214, Data passed = 7300
+Page: 1
+Offset: 14
+Data word: 7300
+Data retrieved = 7300
+file found
+
+***LOAD DATA***
+Address = 215, Data passed = 1000
+Page: 1
+Offset: 15
+Data word: 1000
+Data retrieved = 1000
+file found
+
+***LOAD DATA***
+Address = 216, Data passed = 2005
+Page: 1
+Offset: 16
+Data word: 2005
+Data retrieved = 2005
+file found
+
+***LOAD DATA***
+Address = 217, Data passed = 1001
+Page: 1
+Offset: 17
+Data word: 1001
+Data retrieved = 1001
+file found
+
+***LOAD DATA***
+Address = 220, Data passed = 3004
+Page: 1
+Offset: 20
+Data word: 3004
+Data retrieved = 3004
+file found
+
+***LOAD DATA***
+Address = 221, Data passed = 7300
+Page: 1
+Offset: 21
+Data word: 7300
+Data retrieved = 7300
+file found
+
+***LOAD DATA***
+Address = 222, Data passed = 1000
+Page: 1
+Offset: 22
+Data word: 1000
+Data retrieved = 1000
+file found
+
+***LOAD DATA***
+Address = 223, Data passed = 2002
+Page: 1
+Offset: 23
+Data word: 2002
+Data retrieved = 2002
+file found
+
+***LOAD DATA***
+Address = 224, Data passed = 1001
+Page: 1
+Offset: 24
+Data word: 1001
+Data retrieved = 1001
+file found
+
+***LOAD DATA***
+Address = 225, Data passed = 3004
+Page: 1
+Offset: 25
+Data word: 3004
+Data retrieved = 3004
+file found
+
+***LOAD DATA***
+Address = 226, Data passed = 7300
+Page: 1
+Offset: 26
+Data word: 7300
+Data retrieved = 7300
+file found
+
+***LOAD DATA***
+Address = 227, Data passed = 1006
+Page: 1
+Offset: 27
+Data word: 1006
+Data retrieved = 1006
+file found
+
+***LOAD DATA***
+Address = 230, Data passed = 7500
+Page: 1
+Offset: 30
+Data word: 7500
+Data retrieved = 7500
+file found
+
+***LOAD DATA***
+Address = 231, Data passed = 4240
+Page: 1
+Offset: 31
+Data word: 4240
+Data retrieved = 4240
+file found
+
+***LOAD DATA***
+Address = 232, Data passed = 4234
+Page: 1
+Offset: 32
+Data word: 4234
+Data retrieved = 4234
+file found
+
+***LOAD DATA***
+Address = 233, Data passed = 5244
+Page: 1
+Offset: 33
+Data word: 5244
+Data retrieved = 5244
+file found
+
+***LOAD DATA***
+Address = 234, Data passed = 0
+Page: 1
+Offset: 34
+Data word: 0
+Data retrieved = 0
+file found
+
+***LOAD DATA***
+Address = 235, Data passed = 0
+Page: 1
+Offset: 35
+Data word: 0
+Data retrieved = 0
+file found
+
+***LOAD DATA***
+Address = 236, Data passed = 7204
+Page: 1
+Offset: 36
+Data word: 7204
+Data retrieved = 7204
+file found
+
+***LOAD DATA***
+Address = 237, Data passed = 5634
+Page: 1
+Offset: 37
+Data word: 5634
+Data retrieved = 5634
+file found
+
+***LOAD DATA***
+Address = 240, Data passed = 0
+Page: 1
+Offset: 40
+Data word: 0
+Data retrieved = 0
+file found
+
+***LOAD DATA***
+Address = 241, Data passed = 1
+Page: 1
+Offset: 41
+Data word: 1
+Data retrieved = 1
+file found
+
+***LOAD DATA***
+Address = 242, Data passed = 7204
+Page: 1
+Offset: 42
+Data word: 7204
+Data retrieved = 7204
+file found
+
+***LOAD DATA***
+Address = 243, Data passed = 5640
+Page: 1
+Offset: 43
+Data word: 5640
+Data retrieved = 5640
+file found
+
+***LOAD DATA***
+Address = 244, Data passed = 7300
+Page: 1
+Offset: 44
+Data word: 7300
+Data retrieved = 7300
+file found
+
+***LOAD DATA***
+Address = 245, Data passed = 1005
+Page: 1
+Offset: 45
+Data word: 1005
+Data retrieved = 1005
+file found
+
+***LOAD DATA***
+Address = 246, Data passed = 7040
+Page: 1
+Offset: 46
+Data word: 7040
+Data retrieved = 7040
+file found
+
+***LOAD DATA***
+Address = 247, Data passed = 1006
+Page: 1
+Offset: 47
+Data word: 1006
+Data retrieved = 1006
+file found
+
+***LOAD DATA***
+Address = 250, Data passed = 7040
+Page: 1
+Offset: 50
+Data word: 7040
+Data retrieved = 7040
+file found
+
+***LOAD DATA***
+Address = 251, Data passed = 7300
+Page: 1
+Offset: 51
+Data word: 7300
+Data retrieved = 7300
+file found
+
+***LOAD DATA***
+Address = 252, Data passed = 7020
+Page: 1
+Offset: 52
+Data word: 7020
+Data retrieved = 7020
+file found
+
+***LOAD DATA***
+Address = 253, Data passed = 7020
+Page: 1
+Offset: 53
+Data word: 7020
+Data retrieved = 7020
+file found
+
+***LOAD DATA***
+Address = 254, Data passed = 7001
+Page: 1
+Offset: 54
+Data word: 7001
+Data retrieved = 7001
+file found
+
+***LOAD DATA***
+Address = 255, Data passed = 7200
+Page: 1
+Offset: 55
+Data word: 7200
+Data retrieved = 7200
+file found
+
+***LOAD DATA***
+Address = 256, Data passed = 1005
+Page: 1
+Offset: 56
+Data word: 1005
+Data retrieved = 1005
+file found
+
+***LOAD DATA***
+Address = 257, Data passed = 7001
+Page: 1
+Offset: 57
+Data word: 7001
+Data retrieved = 7001
+file found
+
+***LOAD DATA***
+Address = 260, Data passed = 7300
+Page: 1
+Offset: 60
+Data word: 7300
+Data retrieved = 7300
+file found
+
+***LOAD DATA***
+Address = 261, Data passed = 1006
+Page: 1
+Offset: 61
+Data word: 1006
+Data retrieved = 1006
+file found
+
+***LOAD DATA***
+Address = 262, Data passed = 7001
+Page: 1
+Offset: 62
+Data word: 7001
+Data retrieved = 7001
+file found
+
+***LOAD DATA***
+Address = 263, Data passed = 7300
+Page: 1
+Offset: 63
+Data word: 7300
+Data retrieved = 7300
+file found
+
+***LOAD DATA***
+Address = 264, Data passed = 1003
+Page: 1
+Offset: 64
+Data word: 1003
+Data retrieved = 1003
+file found
+
+***LOAD DATA***
+Address = 265, Data passed = 7010
+Page: 1
+Offset: 65
+Data word: 7010
+Data retrieved = 7010
+file found
+
+***LOAD DATA***
+Address = 266, Data passed = 7004
+Page: 1
+Offset: 66
+Data word: 7004
+Data retrieved = 7004
+file found
+
+***LOAD DATA***
+Address = 267, Data passed = 7012
+Page: 1
+Offset: 67
+Data word: 7012
+Data retrieved = 7012
+file found
+
+***LOAD DATA***
+Address = 270, Data passed = 7006
+Page: 1
+Offset: 70
+Data word: 7006
+Data retrieved = 7006
+file found
+
+***LOAD DATA***
+Address = 271, Data passed = 7200
+Page: 1
+Offset: 71
+Data word: 7200
+Data retrieved = 7200
+file found
+
+***LOAD DATA***
+Address = 272, Data passed = 1005
+Page: 1
+Offset: 72
+Data word: 1005
+Data retrieved = 1005
+file found
+
+***LOAD DATA***
+Address = 273, Data passed = 11
+Page: 1
+Offset: 73
+Data word: 11
+Data retrieved = 11
+file found
+
+***LOAD DATA***
+Address = 274, Data passed = 7004
+Page: 1
+Offset: 74
+Data word: 7004
+Data retrieved = 7004
+file found
+
+***LOAD DATA***
+Address = 275, Data passed = 7012
+Page: 1
+Offset: 75
+Data word: 7012
+Data retrieved = 7012
+file found
+
+***LOAD DATA***
+Address = 276, Data passed = 7006
+Page: 1
+Offset: 76
+Data word: 7006
+Data retrieved = 7006
+file found
+
+***LOAD DATA***
+Address = 277, Data passed = 7010
+Page: 1
+Offset: 77
+Data word: 7010
+Data retrieved = 7010
+file found
+
+***LOAD DATA***
+Address = 300, Data passed = 7300
+Page: 1
+Offset: 100
+Data word: 7300
+Data retrieved = 7300
+file found
+
+***LOAD DATA***
+Address = 301, Data passed = 1012
+Page: 1
+Offset: 101
+Data word: 1012
+Data retrieved = 1012
+file found
+
+***LOAD DATA***
+Address = 302, Data passed = 7500
+Page: 1
+Offset: 102
+Data word: 7500
+Data retrieved = 7500
+file found
+
+***LOAD DATA***
+Address = 303, Data passed = 1000
+Page: 1
+Offset: 103
+Data word: 1000
+Data retrieved = 1000
+file found
+
+***LOAD DATA***
+Address = 304, Data passed = 7200
+Page: 1
+Offset: 104
+Data word: 7200
+Data retrieved = 7200
+file found
+
+***LOAD DATA***
+Address = 305, Data passed = 7440
+Page: 1
+Offset: 105
+Data word: 7440
+Data retrieved = 7440
+file found
+
+***LOAD DATA***
+Address = 306, Data passed = 1001
+Page: 1
+Offset: 106
+Data word: 1001
+Data retrieved = 1001
+file found
+
+***LOAD DATA***
+Address = 307, Data passed = 1005
+Page: 1
+Offset: 107
+Data word: 1005
+Data retrieved = 1005
+file found
+
+***LOAD DATA***
+Address = 310, Data passed = 7020
+Page: 1
+Offset: 110
+Data word: 7020
+Data retrieved = 7020
+file found
+
+***LOAD DATA***
+Address = 311, Data passed = 7420
+Page: 1
+Offset: 111
+Data word: 7420
+Data retrieved = 7420
+file found
+
+***LOAD DATA***
+Address = 312, Data passed = 2
+Page: 1
+Offset: 112
+Data word: 2
+Data retrieved = 2
+file found
+
+***LOAD DATA***
+Address = 313, Data passed = 7300
+Page: 1
+Offset: 113
+Data word: 7300
+Data retrieved = 7300
+file found
+
+***LOAD DATA***
+Address = 314, Data passed = 1003
+Page: 1
+Offset: 114
+Data word: 1003
+Data retrieved = 1003
+file found
+
+***LOAD DATA***
+Address = 315, Data passed = 7510
+Page: 1
+Offset: 115
+Data word: 7510
+Data retrieved = 7510
+file found
+
+***LOAD DATA***
+Address = 316, Data passed = 1000
+Page: 1
+Offset: 116
+Data word: 1000
+Data retrieved = 1000
+file found
+
+***LOAD DATA***
+Address = 317, Data passed = 7450
+Page: 1
+Offset: 117
+Data word: 7450
+Data retrieved = 7450
+file found
+
+***LOAD DATA***
+Address = 320, Data passed = 1001
+Page: 1
+Offset: 120
+Data word: 1001
+Data retrieved = 1001
+file found
+
+***LOAD DATA***
+Address = 321, Data passed = 7430
+Page: 1
+Offset: 121
+Data word: 7430
+Data retrieved = 7430
+file found
+
+***LOAD DATA***
+Address = 322, Data passed = 1002
+Page: 1
+Offset: 122
+Data word: 1002
+Data retrieved = 1002
+file found
+
+***LOAD DATA***
+Address = 323, Data passed = 7410
+Page: 1
+Offset: 123
+Data word: 7410
+Data retrieved = 7410
+file found
+
+***LOAD DATA***
+Address = 324, Data passed = 1003
+Page: 1
+Offset: 124
+Data word: 1003
+Data retrieved = 1003
+file found
+
+***LOAD DATA***
+Address = 325, Data passed = 7402
+Page: 1
+Offset: 125
+Data word: 7402
+Data retrieved = 7402
+file found
+
+***LOAD DATA***
+Address = 326, Data passed = 5200
+Page: 1
+Offset: 126
+Data word: 5200
+Data retrieved = 5200
+file found
+
+***NEW ADDRESS***
+Address = 0
+file found
+
+***LOAD DATA***
+Address = 0, Data passed = 1
+Page: 0
+Offset: 0
+Data word: 1
+Data retrieved = 1
+file found
+
+***LOAD DATA***
+Address = 1, Data passed = 2
+Page: 0
+Offset: 1
+Data word: 2
+Data retrieved = 2
+file found
+
+***LOAD DATA***
+Address = 2, Data passed = 3
+Page: 0
+Offset: 2
+Data word: 3
+Data retrieved = 3
+file found
+
+***LOAD DATA***
+Address = 3, Data passed = 4
+Page: 0
+Offset: 3
+Data word: 4
+Data retrieved = 4
+file found
+
+***LOAD DATA***
+Address = 4, Data passed = 0
+Page: 0
+Offset: 4
+Data word: 0
+Data retrieved = 0
+file found
+
+***LOAD DATA***
+Address = 5, Data passed = 7777
+Page: 0
+Offset: 5
+Data word: 7777
+Data retrieved = 7777
+file found
+
+***LOAD DATA***
+Address = 6, Data passed = 7777
+Page: 0
+Offset: 6
+Data word: 7777
+Data retrieved = 7777
+file found
+
+***LOAD DATA***
+Address = 7, Data passed = 17
+Page: 0
+Offset: 7
+Data word: 17
+Data retrieved = 17
+file found
+
+***LOAD DATA***
+Address = 10, Data passed = 360
+Page: 0
+Offset: 10
+Data word: 360
+Data retrieved = 360
+file found
+
+***LOAD DATA***
+Address = 11, Data passed = 7400
+Page: 0
+Offset: 11
+Data word: 7400
+Data retrieved = 7400
+file found
+
+***LOAD DATA***
+Address = 12, Data passed = 4000
+Page: 0
+Offset: 12
+Data word: 4000
+Data retrieved = 4000
+file found
+line311, line has no numbers
+
+************************
+* END OF FILE DETECTED *
+************************
+
+both parts of address not found
+
+***FINISHED LOADING FILE***
+
+***BEGIN PROGRAM EXECUTION***
+[MICRO|     300]
+pc=201, ac=0, link=0
+[TAD  |0|0|0005]
+pc=202, ac=7777, link=0
+[AND  |0|0|0001]
+pc=203, ac=2, link=0
+[DCA  |0|0|0004]
+pc=204, ac=0, link=0
+[MICRO|     300]
+pc=205, ac=0, link=0
+[AND  |0|0|0001]
+pc=206, ac=0, link=0
+[DCA  |0|0|0004]
+pc=207, ac=0, link=0
+[MICRO|     300]
+pc=210, ac=0, link=0
+[TAD  |0|0|0005]
+pc=211, ac=7777, link=0
+[TAD  |0|0|0000]
+pc=212, ac=0, link=1
+[TAD  |0|0|0006]
+pc=213, ac=7777, link=1
+[DCA  |0|0|0004]
+pc=214, ac=0, link=1
+[MICRO|     300]
+pc=215, ac=0, link=0
+[TAD  |0|0|0000]
+pc=216, ac=1, link=0
+[ISZ  |0|0|0005]
+pc=220, ac=1, link=0
+[DCA  |0|0|0004]
+pc=221, ac=0, link=0
+[MICRO|     300]
+pc=222, ac=0, link=0
+[TAD  |0|0|0000]
+pc=223, ac=1, link=0
+[ISZ  |0|0|0002]
+pc=224, ac=1, link=0
+[TAD  |0|0|0001]
+pc=225, ac=3, link=0
+[DCA  |0|0|0004]
+pc=226, ac=0, link=0
+[MICRO|     300]
+pc=227, ac=0, link=0
+[TAD  |0|0|0006]
+pc=230, ac=7777, link=0
+[MICRO|     500]
+pc=232, ac=7777, link=0
+[JMS  |0|1|0034]
+pc=235, ac=7777, link=0
+[AND  |0|0|0000]
+pc=236, ac=1, link=0
+[MICRO|     204]
+pc=237, ac=0, link=0
+[JMP  |1|1|0034]
+pc=233, ac=0, link=0
+[JMP  |0|1|0044]
+pc=244, ac=0, link=0
+[MICRO|     300]
+pc=245, ac=0, link=0
+[TAD  |0|0|0005]
+pc=246, ac=0, link=0
+[MICRO|     040]
+pc=247, ac=7777, link=0
+[TAD  |0|0|0006]
+pc=250, ac=7776, link=1
+[MICRO|     040]
+pc=251, ac=1, link=1
+[MICRO|     300]
+pc=252, ac=0, link=0
+[MICRO|     020]
+pc=253, ac=0, link=1
+[MICRO|     020]
+pc=254, ac=0, link=1
+[MICRO|     001]
+pc=255, ac=1, link=1
+[MICRO|     200]
+pc=256, ac=0, link=1
+[TAD  |0|0|0005]
+pc=257, ac=0, link=1
+[MICRO|     001]
+pc=260, ac=1, link=1
+[MICRO|     300]
+pc=261, ac=0, link=0
+[TAD  |0|0|0006]
+pc=262, ac=7777, link=0
+[MICRO|     001]
+pc=263, ac=0, link=0
+[MICRO|     300]
+pc=264, ac=0, link=0
+[TAD  |0|0|0003]
+pc=265, ac=4, link=0
+[MICRO|     010]
+pc=266, ac=4, link=0
+[MICRO|     004]
+pc=267, ac=4, link=0
+[MICRO|     012]
+pc=270, ac=4, link=0
+[MICRO|     006]
+pc=271, ac=4, link=0
+[MICRO|     200]
+pc=272, ac=0, link=0
+[TAD  |0|0|0005]
+pc=273, ac=0, link=0
+[AND  |0|0|0011]
+Address non-existent
+pc=274, ac=0, link=0
+[MICRO|     004]
+pc=275, ac=0, link=0
+[MICRO|     012]
+pc=276, ac=0, link=0
+[MICRO|     006]
+pc=277, ac=0, link=0
+[MICRO|     010]
+pc=300, ac=0, link=0
+[MICRO|     300]
+pc=301, ac=0, link=0
+[TAD  |0|0|0012]
+Address non-existent
+pc=302, ac=7777, link=1
+[MICRO|     500]
+pc=304, ac=7777, link=1
+[MICRO|     200]
+pc=305, ac=0, link=1
+[MICRO|     440]
+pc=307, ac=0, link=1
+[TAD  |0|0|0005]
+pc=310, ac=0, link=1
+[MICRO|     020]
+pc=311, ac=0, link=1
+[MICRO|     420]
+pc=313, ac=0, link=1
+[MICRO|     300]
+pc=314, ac=0, link=0
+[TAD  |0|0|0003]
+pc=315, ac=4, link=0
+[MICRO|     510]
+pc=317, ac=4, link=0
+[MICRO|     450]
+pc=321, ac=4, link=0
+[MICRO|     430]
+pc=323, ac=4, link=0
+[MICRO|     410]
+pc=325, ac=4, link=0
+[MICRO|     402]
+pc=326, ac=4, link=0
+
+***FINISHED EXECUTING PROGRAM***
+
+-----------PDP-8 ISA Simulation Summary---------------
+
+Total number of Instructions executed: 72
+Total number of clock cycles consumed: 106
+
+**Number of times each instruction type was executed**
+|-----------------------------------------------------
+|    Mnemonic   | Number of times executed            
+|-----------------------------------------------------
+|      AND      |       4
+|      TAD      |       17
+|      ISZ      |       2
+|      DCA      |       5
+|      JMS      |       1
+|      JMP      |       2
+|     <IO>      |       0
+| uInstructions |       41
+------------------------------------------------------
+Trace file generated.
+Press ENTER to end program
