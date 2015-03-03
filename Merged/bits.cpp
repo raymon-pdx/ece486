@@ -287,20 +287,20 @@ void BitTwiddle::display()
 {
 	//print out brief summary 
 	std::cout << "\n-----------PDP-8 ISA Simulation Summary---------------\n\n";
-	std::cout << "Total number of Instructions executed: " << sumInstr << "\n";
-	std::cout << "Total number of clock cycles consumed: " << sumClk << "\n\n";
+	std::cout << "Total number of Instructions executed: " << std::dec<< sumInstr << "\n";
+	std::cout << "Total number of clock cycles consumed: " << std::dec<< sumClk << "\n\n";
 	std::cout << "**Number of times each instruction type was executed**\n";
 	std::cout << "|-----------------------------------------------------\n";
 	std::cout << "|    Mnemonic   | Number of times executed            \n";
 	std::cout << "|-----------------------------------------------------\n";
-	std::cout << "|      AND      |       " << AND_Count << "\n";
-	std::cout << "|      TAD      |       " << TAD_Count << "\n";
-	std::cout << "|      ISZ      |       " << ISZ_Count << "\n";
-	std::cout << "|      DCA      |       " << DCA_Count << "\n";
-	std::cout << "|      JMS      |       " << JMS_Count << "\n";
-	std::cout << "|      JMP      |       " << JMP_Count << "\n";
-	std::cout << "|     <IO>      |       " << IO_Count << "\n";
-	std::cout << "| uInstructions |       " << uInstr_Count << "\n";
+	std::cout << "|      AND      |       " << std::dec<< AND_Count << "\n";
+	std::cout << "|      TAD      |       " << std::dec<< TAD_Count << "\n";
+	std::cout << "|      ISZ      |       " << std::dec<< ISZ_Count << "\n";
+	std::cout << "|      DCA      |       " << std::dec<< DCA_Count << "\n";
+	std::cout << "|      JMS      |       " << std::dec<< JMS_Count << "\n";
+	std::cout << "|      JMP      |       " << std::dec<< JMP_Count << "\n";
+	std::cout << "|     <IO>      |       " << std::dec<< IO_Count << "\n";
+	std::cout << "| uInstructions |       " << std::dec<< uInstr_Count << "\n";
 	std::cout << "------------------------------------------------------\n";
 }
 
@@ -383,7 +383,7 @@ void BitTwiddle::rotateBits(int accumulator, int link, char dir){
 //----------------------------------------------------------
 void BitTwiddle::displayRegisters()
 {
-	std::cout << "pc=" << PC << ", ac=" << AC << ", link=" << link << std::endl;
+	std::cout << "pc=" << std::oct << PC << ", ac=" << AC << ", link=" << link << std::endl;
 }
 
 
