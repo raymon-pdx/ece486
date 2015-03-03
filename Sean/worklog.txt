@@ -157,3 +157,129 @@ created test3.txt for next set of tests
 [LOAD STUFF INTO MEMORY]
   int MEM_LOAD(int)
   void MEM_STORE(int addr, int data)
+  
+I will now rework the code into a library of functions so it 
+can easily be merged with everyone else's code.
+
+Program steps for my code:
+1. Parse line
+2. place parsed line in memory
+3. read memory and parse information into parts
+  
+  Placed functions in parser.h and parser.cpp
+  
+DEPENDENCIES LIST FOR CURRENT FUNCTIONS
+1) getAddress()
+     isOctal()
+     exitMessage()
+     octalToInt() 
+2) parseAddress()
+     createBinaryString()
+	 findOpcode()
+	   genOpcodeString()
+	 getOffset()
+3) octalToBinary()
+4) octalToInt()
+5) intToOctal()
+5) createBinaryString()
+6) genOpcodeString()
+7) findOpcode()
+     genOpcodeString()
+8) isOctal()	
+9) getOffset() 
+
+
+[2/16/2015]
+
+created a new project called ECE486_PDP8
+this project will contain are merged code we
+all built separately.  Meng worked on memory, Omi
+and Even worked in bits, and I worked on parser.
+
+cleaned up main.cpp to only read a file and add its
+  data to memory.
+  
+added ability to display additional debugging information
+through the command line by passing 1 as argument 2.
+
+
+[2/18/2015]
+
+ALGORITHM: program execution
+  Begin running program
+  set PC to 200 octal
+  WHILE (program running) DO
+    fetch data at PC
+    increment PC
+	decode data
+	execute data
+    print statistics
+  END WHILE
+END ALGORITHM
+
+I am now coding in the execution part of the code after
+the the file is loaded.  This happens in main.cpp
+
+NOTE: I just learned that the address given by 01 is 
+      used to store the data initially.
+      
+ALGORITHM: load input into memory
+  WHILE(not end of file)
+    IF(id is 1) THEN
+      is address so save address
+	  set memoryOffset to 0
+	  get next address
+	  WHILE(still data)
+	    IF (id is 0) THEN
+	      store data to memory at ADDRESS + OFFSET
+		  get next piece of data
+		ENDIF
+	  ENDWHILE
+	ELSE
+		return error since address must be before data
+	ENDIF
+  ENDWHILE
+END ALGORITHM
+
+[2/19/2015]
+
+implemented the algorithm seen above in main.cpp
+I am continuing to flesh out the program and even 
+alter the BitTwiddle class.  I will continue working on
+this while Even merges the older code together. 
+Hopefully this results in two working programs.
+
+[2/22/2015]
+
+wrote out on a piece of paper how to parse data for 
+micro and io instructions.  Added constants.h with
+constants stored in a namespace called pdp8.  This
+will make it easier to change constants values if need
+be.  I also added new parser functions.  Each function
+uses masks and bit shifting since Evan pointed out
+how inefficient my previous parser function is.
+
+[2/23/2015]
+
+convert output in main.cpp to octal rather than decimal.
+
+to compile code using assembler type:
+~faustm\bin\pal -o add01.as
+
+[2/24/2015]
+
+decided to save the state of memory to a text file at 
+the end of program execution.
+
+ADDED DEGUB LEVELS: DESCRIPTION
+level 0: standard program output
+level 1: prints output for program flow
+level 2: prints info specific too simulation operation (non-verbose)
+level 3: function internals and verbose output
+!SILENT: prints pretty yet informative information
+         
+
+[3/2/2015]
+
+wrote down list of all instructions and checking off
+which ones were tested.
