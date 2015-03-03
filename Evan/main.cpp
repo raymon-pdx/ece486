@@ -38,32 +38,22 @@ int main(){
 
     cout<<"\nTesting group 2 uinstructions:\n\n";
 
-    cout<<"Testing OR subgroup:\n";
-    cout<<"instuction=7420o link=1b\n";
+    cout<<"Testing SPA:\n";
+    cout<<"instuction=7410o\n";
     cout<<"Expected: SKIP!\n";
-    link=1;
     cout<<"result:   ";
-    PDP_uintructions(1,0,272);   
+    PDP_uintructions(1,0,264);   
     cout<<"\n\n";
-
-    cout<<"instuction=7420o link=0b\n";
-    cout<<"Expected: [nothing]\n";
-    link=0;
-    cout<<"result:   ";
-    PDP_uintructions(1,0,272);   
-    cout<<"\n\n";
-
 }
 
 
 
-int PDP_uintructions(bool bit3, bool bit4, int offset){
-	// TODO: add increment_PC() to specific uInst
+int PDP_uintructions(bool bit3, bool bit4, int offset)
+{
 	++uInstr_Count;
 	++sumInstr;
     sumClk = sumClk + 1; //takes 1 clk cycles
 	
-	//increment_PC();
     bool bit5  = read_bit_x(offset, 5);
     bool bit6  = read_bit_x(offset, 6);
     bool bit7  = read_bit_x(offset, 7);
@@ -131,19 +121,18 @@ int PDP_uintructions(bool bit3, bool bit4, int offset){
                 cond7=!link;//is link 0?
             }
             if(cond5 && cond6 && cond7){
-                increment_PC();
-                return 0;                 //the skip for SPA,SNA,SZL, and SKP
+                increment_PC();		//the skip for SPA,SNA,SZL, and SKP             
             }
         }else{                          //OR subgroup
             if(bit5 && read_bit_x(AC, 0)){//SMA
-                increment_PC();
-                return 0; //is the 0th bit of AC a 1?
+
+                increment_PC(); //is the 0th bit of AC a 1? 
             }else if(bit6 && (AC==0)){    //SZA
-                increment_PC();
-                return 0; //is AC 0?
+
+                increment_PC(); //is AC 0? 
             }else if(bit7 && link){       //SNL
-                increment_PC();
-                return 0; //is link 1?
+
+                increment_PC(); //is link 1?
             }
         }
                                         //CLA OSR and HLT
@@ -164,7 +153,6 @@ int PDP_uintructions(bool bit3, bool bit4, int offset){
     }
     return 0;
 }
-
 
 
 

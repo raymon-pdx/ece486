@@ -173,6 +173,37 @@ instuction=7500o AC=4000o
 Expected: SKIP!
 result:   SKIP!
 
+Testing SZA:
+instuction=7440o AC=0000o
+Expected: SKIP!
+result:   SKIP!
+instuction=7440o AC=7777o
+Expected: [nothing]
+result:   
+instuction=7440o AC=0001o
+Expected: [nothing]
+result:
+
+Testing SNL:
+instuction=7420o link=1b
+Expected: SKIP!
+result:   SKIP!
+instuction=7420o link=0b
+Expected: [nothing]
+result:  
+
+Testing OR subgroup:
+instuction=7420o link=1b AC=0000o
+Expected: SKIP!
+result:   SKIP!
+instuction=7460o link=0b AC=0001o
+Expected: [nothing]
+result:   
+
+Testing SKP:
+instuction=7410o
+Expected: SKIP!
+result:   SKIP!
 
 
 
