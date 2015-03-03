@@ -196,51 +196,43 @@ int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
 //*************GROUP 1*******************
     if(!bit3){
 
-        if(bit4){         //clear accumulator
-
+        if(bit4){   //clear accumulator (CLA)
             AC = 0; 
+        }
 
-        }else if(bit5){   //clear link
-
+        if(bit5){   //clear link (CLL)
             link = 0;
+        }
 
-        }else if(bit6){   //complement accumulator
-
+        if(bit6){   //complement accumulator (CMA)
             AC = (~AC) & ((1<<pdp8::REGISTERSIZE)-1);
+        }
 
-        }else if(bit7){   //complement link
-
+        if(bit7){   //complement link (CML)
             link = ~link;
+        }
 
-        }else if(bit11){  //increment accumulator
-
+        if(bit11){  //increment accumulator (IAC)
             AC = (AC + 1) & ((1<<pdp8::REGISTERSIZE)-1);
+        }
 
-        }else if(bit8){   //rotate accumulator, link right
+        if(bit8){   //rotate accumulator and link right (RAR)
 
            int direction = 0; //0 indicates right direction
            rotateBits(AC, link, direction);
 
-           if(bit10){ //rotate accumulator, link right twice (rotate once more)
-
-            rotateBits(AC, link, direction);
-
+           if(bit10){ //rotate accumulator, link right twice (RTL)
+                rotateBits(AC, link, direction);
            }
 
-        }else if(bit9){   //rotate accumulator, link left
+        }else if(bit9){   //rotate accumulator and link left (RAL)
 
            int direction = 1; //1 indicates left direction
            rotateBits(AC, link, direction);
 
-           if(bit10){ //rotate accumulator, link left twice (rotate once more)
-
-           rotateBits(AC, link, direction);
-
+           if(bit10){ //rotate accumulator, link left twice (RTL)
+                rotateBits(AC, link, direction);
            }
-
-        }else{            //no operation
-
-            return 0;
         }
 
     //*************GROUP 2*******************
@@ -288,7 +280,7 @@ int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset){
     //*************GROUP 3*******************
     }else{              
 
-     std::cout << "Warning: Group 3 uInstruction encountered.\n";                
+     std::cout << "Warning: Group 3 uInstruction encountered. No Op.\n";                
 
     }
     return 0;
