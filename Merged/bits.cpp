@@ -409,7 +409,8 @@ int BitTwiddle::find_EAddr(bool addr_bit,bool mem_page,int offset){
         }else{       //bit3=0 bit4=1 current page addresssing            
             return ((PC & (((1<<5)-1)<<7)) + offset);
         }
-    }else{          
+    }else{ 
+        sumClk += 1; //one additional clk cycle for indirect addressing        
         if(!mem_page){//bit3=1 bit4=0 zero page indirect addressing
             ++sumClk; //one additional clk cycle for indirect addressing 
             return MEM_LOAD(offset);
