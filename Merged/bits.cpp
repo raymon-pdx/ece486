@@ -209,7 +209,7 @@ int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset)
         }
 
         if(bit7){   //complement link (CML)
-            link = ~link;
+            link = !link;
         }
 
         if(bit11){  //increment accumulator (IAC)
