@@ -38,12 +38,21 @@ int main(){
 
     cout<<"\nTesting group 2 uinstructions:\n\n";
 
-    cout<<"Testing SPA:\n";
-    cout<<"instuction=7410o\n";
+    cout<<"Testing SZL:\n";
+    cout<<"instuction=7430o link=1b\n";
+    link=1;
+    cout<<"Expected: [nothing]\n";
+    cout<<"result:   ";
+    PDP_uintructions(1,0,24);   
+    cout<<"\n\n";
+
+    cout<<"instuction=7430o link=0b\n";
+    link=0;
     cout<<"Expected: SKIP!\n";
     cout<<"result:   ";
-    PDP_uintructions(1,0,264);   
+    PDP_uintructions(1,0,24);   
     cout<<"\n\n";
+
 }
 
 
@@ -78,7 +87,7 @@ int PDP_uintructions(bool bit3, bool bit4, int offset)
         }
 
         if(bit7){   //complement link (CML)
-            link = ~link;
+            link = !link;
         }
 
         if(bit11){  //increment accumulator (IAC)

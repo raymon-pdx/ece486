@@ -65,16 +65,16 @@ EAddress result:   C(0177o)
 
 
 Testing Autoindexing:
-Bit3=0 Bit4=0 offset=0007o
+Bit3=1 Bit4=0 offset=0007o
 EAddress expected: 0007o
 EAddress result:   0007o
-Bit3=0 Bit4=0 offset=0010o
+Bit3=1 Bit4=0 offset=0010o
 EAddress expected: C(0010o)+1
 EAddress result:   C(0010o)+1
-Bit3=0 Bit4=0 offset=0017o
+Bit3=1 Bit4=0 offset=0017o
 EAddress expected: C(0017o)+1
 EAddress result:   C(0017o)+1
-Bit3=0 Bit4=0 offset=0020o
+Bit3=1 Bit4=0 offset=0020o
 EAddress expected: 0020o
 EAddress result:   0020o
 
@@ -204,6 +204,40 @@ Testing SKP:
 instuction=7410o
 Expected: SKIP!
 result:   SKIP!
+
+Testing SPA:
+instuction=7510o AC=0001o
+Expected: SKIP!
+result:   SKIP!
+instuction=7510o AC=7777o
+Expected: [nothing]
+result:   
+instuction=7510o AC=4000o
+Expected: [nothing]
+result: 
+
+Testing SNA:
+instuction=7450o AC=0000o
+Expected: [nothing]
+result:   
+instuction=7450o AC=0001o
+Expected: SKIP!
+result:   SKIP!
+instuction=7450o AC=7777o
+Expected: SKIP!
+result:   SKIP!
+
+Testing SZL:
+instuction=7430o link=1b
+Expected: [nothing]
+result:   
+instuction=7430o link=0b
+Expected: SKIP!
+result:   SKIP!
+
+
+
+
 
 
 
