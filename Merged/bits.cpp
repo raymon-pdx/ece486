@@ -396,24 +396,24 @@ void BitTwiddle::displayRegisters()
 //-----------------------------------------------------------
 int BitTwiddle::find_EAddr(bool addr_bit,bool mem_page,int offset){
     if(!addr_bit){
-        if(!mem_page){//bit3=0 bit4=0
-            if(offset>=8 && offset<=15){ //autoindexing offset=010o-017o
-                sumClk += 2; //two additional clk cycle for autoindexing 
-                int temp = MEM_LOAD(offset)+1; //load C(AutoIndex_Register)+1
-                temp=temp & ((1<<pdp8::REGISTERSIZE)-1); //scrub it to 12 bits
-                MEM_STORE(offset , temp); //store it into C(AutoIndex_Register)
-                return temp; //C(AutoIndex_Register) is our EAddr
-            }else{    
-                return offset; //00000 cat Offset is our EAddr (zero page addressing) 
-            }
+        if(!mem_page){//bit3=0 bit4=0   
+            return offset; //00000 cat Offset is our EAddr (zero page addressing) 
         }else{       //bit3=0 bit4=1 current page addresssing            
             return ((PC & (((1<<5)-1)<<7)) + offset);
         }
     }else{ 
         sumClk += 1; //one additional clk cycle for indirect addressing        
         if(!mem_page){//bit3=1 bit4=0 zero page indirect addressing
-            ++sumClk; //one additional clk cycle for indirect addressing 
-            return MEM_LOAD(offset);
+            if(offset>=8 && offset<=15){ //autoindexing offset=010o-017o
+                sumClk += 2; //two additional clk cycle for autoindexing 
+                int temp = MEM_LOAD(offset)+1; //load C(AutoIndex_Register)+1
+                temp=temp & ((1<<pdp8::REGISTERSIZE)-1); //scrub it to 12 bits
+                MEM_STORE(offset , temp); //store it into C(AutoIndex_Register)
+                return temp; //C(AutoIndex_Register) is our EAddr
+            }else{ 
+                ++sumClk; //one additional clk cycle for indirect addressing 
+                return MEM_LOAD(offset);
+            }
         }else{        //bit3=1 bit4=1 current page indirect addressing
             ++sumClk; //one additional clk cycle for indirect addressing 
             return MEM_LOAD((PC & (((1<<5)-1)<<7)) + offset);
