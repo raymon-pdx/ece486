@@ -8,7 +8,7 @@
 #include <cctype>
 #include <cmath>
 #include <bitset>
-#include "memory.cpp"
+#include "memory.h"
 
 using namespace std;
 
@@ -23,7 +23,7 @@ int main()
 	// so pagenumber goes as high as 32 and offset goes as high as 128
 
 	// To test display_all, we need to store a bunch of values into page table
-	test.store(0, 0);
+/*	test.store(0, 0);
 	test.store(1, 1);
 	test.store(2, 2);
 	test.store(3, 3);
@@ -100,6 +100,84 @@ int main()
 		cout << "Delete successful\n";
 	cout << "Display address again\n";
 	test.display(address);
+
+*/
+/*	cout << "Test 1 Store\n\n"
+		<< "1.1 Store a 12-bit value 1 to address 1\n";
+	if (test.store(1, 1))
+		cout << "Stored 1 to address 1\n"
+		<< "Now display address 1:\n";
+	if (test.display(1));
+	cout << "Display finished.\n\n\n";
+
+	cout << "1.2 Store an invalid value (larger than 12 bits) to address 2\n";
+	if (test.store(2, 4098))
+		cout << "Stored 4098 to address 2\n"
+		<< "Now display address 2:\n";
+	if (test.display(2));
+	cout << "Display finished.\n\n\n";
+
+	cout << "1.3.1 Store a 12 bit value 3 to address 1 to overwrite\n";
+	if (test.store(1, 3))
+		cout << "Store complete\n"
+		<< "Now display address 1:\n";
+	if(test.display(1));
+	cout << "Display finished.\n\n\n";
+
+	cout << "1.3.2 Store an invalid value (larger than 12 bits) to address 2 to overwrite\n";
+	if (test.store(2, 4100))
+		cout << "Store complete\n"
+		<< "Now display address 2:\n";
+	if (test.display(2));
+	cout << "Display finished.\n\n\n";
+*/
+
+/*	cout << "Test 2 Load\n\n"
+		<< "Store value 1 to address 1\n";
+	if (test.store(1, 1))
+		cout << "Store complete\n"
+		<< "Now load it back;\n";
+	int temp = test.load(1);
+	if (temp >= 0)
+		cout << "Loaded value: " << temp << "\n\n";
+
+	cout << "Now we try to load a value from empry address 2\n";
+	int temp2 = test.load(2);
+	if (temp2 >= 0)
+		cout << "Loaded value: " << temp << "\n\n";
+
+*/
+
+	cout << "Test 3 Page Table Integrity\n\n";
+
+	// To test display_all, we need to store a bunch of values into page table
+	if (test.store(0, 0))
+		cout << "Page 0 Offset 0 Value 0\n";
+	if (test.store(1, 1))
+		cout << "Page 0 Offset 1 Value 1\n";
+	if (test.store(2, 2))
+		cout << "Page 0 Offset 2 Value 2\n";
+	if (test.store(3, 3))
+		cout << "Page 0 Offset 3 Value 3\n";
+	if (test.store(5, 4))
+		cout << "Page 0 Offset 5 Value 4\n";
+	if (test.store(6, 5))
+		cout << "Page 0 Offset 6 Value 5\n";
+	if (test.store(7, 6))
+		cout << "Page 0 Offset 7 Value 6\n";
+	if (test.store(129, 7))
+		cout << "Page 1 Offset 1 Value 7\n";
+	if (test.store(130, 8))
+		cout << "Page 1 Offset 2 Value 8\n";
+	if (test.store(258, 9))
+		cout << "Page 2 Offset 2 Value 9\n";
+	if (test.store(259, 10))
+		cout << "Page 2 Offset 3 Value 10\n";
+	if (test.store(261, 11))
+		cout << "Page 2 Offset 5 Value 11\n";
+
+	cout << "\nFull page table in octal:\n";
+	test.display_all();
 
 	cin.get();
 
