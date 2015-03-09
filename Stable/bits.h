@@ -1,6 +1,7 @@
-//--------------------------------------------------------------------------------------
-// Class to hold functions for implementing the PDP-8 Instructions
-//--------------------------------------------------------------------------------------
+// Evan Sprecher & Ommaimah Hussein
+// Class to hold functions for implementing the PDP-8 Instruction
+// bits.h
+
 #pragma once
 #include "constants.h"
 #include "memory.h"
@@ -8,7 +9,6 @@
 #include <fstream>
 #include <time.h>
 #include <bitset>
-
 
 class BitTwiddle{
 
@@ -60,10 +60,10 @@ public:
 	void displayRegisters();
 
 private:
-    int AC;          //accumulator
-    int PC;          //Program Counter
-    bool link;       //link bit
-    int SR;          //console switch register
+    int AC;        //accumulator
+    int PC;        //Program Counter
+    bool link;     //link bit
+    int SR;        //console switch register
 
     int sumInstr;  // count for number of total instructions
     int sumClk;    // count for number of total clocks
@@ -77,8 +77,8 @@ private:
     int IO_Count;  //number of IO instruction 
     int uInstr_Count; //number of micro instruction 
 
-    pagetable *memory;  // memory
-	std::ofstream *outputTraceFile; // used to create tracefile
+    pagetable *memory;  //memory
+	std::ofstream *outputTraceFile; //used to create tracefile
 
     //function for rotating bits
     void rotateBits(int accumulator, int link, char dir);	

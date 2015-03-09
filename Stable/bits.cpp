@@ -1,22 +1,23 @@
-//Evan Sprecher & Ommaimah Hussein
+// Evan Sprecher & Ommaimah Hussein
+// PDP-8 Instruction Implementation
+// bits.cpp
+
+
 #include "bits.h"
 
-// TODO: dca may not be storing correct value back to memory
-
-// TODO: look at output3.txt for help, LOCATION: merged/test_files
 
 //-----------------------------------------------------------
 // Constructor
 //-----------------------------------------------------------
 BitTwiddle::BitTwiddle(pagetable *table, std::ofstream *output)
 {
-	AC=0;
-	PC=128;         //PC starts at 0200o
-	link=false;
-    SR=0;
+	AC=0;            //accumulator
+	PC=128;          //program counter (starts at 0200o)
+	link=false;      //link bit
+    SR=0;            //switch register
 	
-	sumInstr = 0;
-	sumClk = 0;
+	sumInstr = 0;    //total number of instructions
+	sumClk = 0;      //total number of clock cycles
 
 	AND_Count=0;     //number of AND instruction
 	TAD_Count=0;     //number of TAD instruction
@@ -72,9 +73,10 @@ void BitTwiddle::PDP_TAD(bool addr_bit,bool mem_page,int offset){
     int addb = MEM_LOAD(EAddr);    
     int addc = adda + addb;
 
-	AC = addc & ((1 << pdp8::REGISTERSIZE) - 1);//carry and overflow are removed
+	AC = addc & ((1 << pdp8::REGISTERSIZE) - 1); //carry and overflow are removed
 
-	if ((1 << pdp8::REGISTERSIZE) == (addc&(1 << pdp8::REGISTERSIZE))) link = !link;//compliment link if carry out
+    //compliment link if carry out
+	if ((1 << pdp8::REGISTERSIZE) == (addc&(1 << pdp8::REGISTERSIZE))) link = !link;
 	return;
 }
 
@@ -94,7 +96,8 @@ void BitTwiddle::PDP_ISZ(bool addr_bit,bool mem_page,int offset){
    
     int addc=C_EAddr + 1;
 
-	MEM_STORE(EAddr,addc & ((1 << pdp8::REGISTERSIZE) - 1));//carry and overflow are removed
+    //carry and overflow are removed
+	MEM_STORE(EAddr,addc & ((1 << pdp8::REGISTERSIZE) - 1));
 
 	if (!((addc) & ((1 << pdp8::REGISTERSIZE) - 1))){
         increment_PC(); //skip if zero
@@ -119,6 +122,7 @@ void BitTwiddle::PDP_DCA(bool addr_bit,bool mem_page,int offset)
     MEM_STORE(EAddr,AC);
     // store 0 into AC (clear AC)
     AC = 0;
+
 	return;
 }
 
@@ -170,7 +174,7 @@ void BitTwiddle::PDP_IO(int device_num,int opcode){
 	++sumInstr;
 
 	increment_PC();
-    std::cout << "Warning: I/O instruction encountered.\n";                
+    std::cout << "Warning: I/O instruction not implemented.\n";                
 	return;
 }
 
@@ -193,7 +197,7 @@ int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset)
     bool bit10 = read_bit_x(offset,10);
     bool bit11 = read_bit_x(offset,11);
 
-//*************GROUP 1*******************
+    //*************GROUP 1*******************
     if(!bit3){
 
         if(bit4){   //clear accumulator (CLA)
@@ -278,13 +282,16 @@ int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset)
     //*************GROUP 3*******************
     }else{              
 
-     std::cout << "Warning: Group 3 uInstruction encountered. No Op.\n";                
+     std::cout << "Warning: Group 3 uInstruction not implemented. No Op.\n";                
 
     }
     return 0;
 }
 
-// display data from BitTwiddle class
+
+//-----------------------------------------------------------
+// Function for displaying data from BitTwiddle class
+//-----------------------------------------------------------
 void BitTwiddle::display()
 {
 	//print out brief summary 
@@ -426,6 +433,7 @@ int BitTwiddle::find_EAddr(bool addr_bit,bool mem_page,int offset){
             }else{
                 ++sumClk; //one additional clk cycle for indirect addressing 
                 return MEM_LOAD((PC & (((1<<5)-1)<<7)) + offset);
+                }
         }
     }
 }
@@ -472,6 +480,7 @@ void BitTwiddle::MEM_STORE(int address,int value){
     int type = 1; //1 - data write (store)
     (*outputTraceFile) << type << " " << std::oct << address << std::endl;
     //************************************************
+
 	memory->store(address, value);
 	return;
 }

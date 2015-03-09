@@ -7,6 +7,7 @@
 * LAST MODIFIED: 2/21/2015
 * DESCRIPTION: a program that simulates the PDP8 instruction set
 */
+
 #include "constants.h"
 #include "parser.h"
 #include "memory.h"
@@ -408,5 +409,4 @@ EXIT:
       print statistics
 	  close files
 */
-
 
