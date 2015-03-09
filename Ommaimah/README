@@ -8,38 +8,40 @@ COMPLETE:
 + Added JMP instruction function
 + Added uInstruction (Group 1) function
 + Added function that converts int to octal
-+ Implement correct clock cycles
-+ Implement function that outputs PDP-8 summary
-+ Implement tracefile
++ Implemented correct clock cycles
++ Implemented correct count of instructions
++ Implemented function that outputs PDP-8 summary
++ Implemented tracefile
++ Implemented all combos for uInstruction (Group 1)
 
 -----------------------------------------------------------
-IN PROGRESS:
+IN PROGRESS (TESTING):
 -----------------------------------------------------------
-- Verify all combos for uInstruction (group 1)
+- DCA function                                  [ ]
+- JMS function                                  [ ]
+- JMP function                                  [ ]
+- uInstruction (group 1) function:
+  - CLA                                         [ ]
+  - CLL                                         [ ]
+  - CMA                                         [ ]
+  - CML                                         [ ]
+  - IAC                                         [ ]
+  - RAR                                         [DONE]
+  - RTR                                         [DONE]
+  - RAL                                         [DONE]
+  - RTL                                         [DONE]
+  - No Op                                       [ ]
+  - Combos                                      [ ]
+- Output Summary                                [ ]
+- Correct Instruction Count                     [ ]
+- Correct clock cycles                          [ ]
+- Final trace file output                       [ ]
 
 -----------------------------------------------------------
 TO DO:
 -----------------------------------------------------------
 - put test results in file
-- finish testing all implemented code
 - IAC does it include link bit? Does it need to?
-- Remove function of trace file from bits.cpp and bits.h
-
------------------------------------------------------------
-TO TEST:
------------------------------------------------------------
-- DCA function
-- JMS function
-- JMP function
-- uInstruction (group 1) function
-- Output summary
-- int to octal function
-- final trace file
-- correct clock cycles
-- correct response to No-OP
-- test if wrong size was put in (>12 bits)
-- double check that 4 values of octal gets printed
-  - including 0000
 
 -----------------------------------------------------------
 Project Report:
