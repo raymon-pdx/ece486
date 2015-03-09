@@ -297,4 +297,17 @@ FILE: testInstr2_output.txt
 		  NOTE: looking at MEMORY_IMAGE I see REGOFL = 7777, instead of 17777
 		        this makes sense since 17777 cannot be held by 12 bit memory
 		  NOTE: REGMAX gets set to 0 at some point, this shows I need to re-look
-                at my test program before assuming the code is completely at fault.		  
+                at my test program before assuming the code is completely at fault.		
+
+RUNNING TEST FOR testInstr2.as [after modification]
+FILE: testInstr2_output2.txt
+  ERRORS: line 872, REXMAX in page 0 offset 4 has had its value altered,
+                    should be 7777o but is 0000o
+					PRINTING DETAILED OUTPUT
+		  line 855, REGMAX set to 0 because of ISZ. Q: should ISZ be writing
+		            back too memory? or just reading?
+		  line 863, C overwritten by ISZ.
+		  
+[3/9/2015]
+
+Writing tests to Project Report
