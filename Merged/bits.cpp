@@ -417,8 +417,15 @@ int BitTwiddle::find_EAddr(bool addr_bit,bool mem_page,int offset){
                 return MEM_LOAD(offset);
             }
         }else{        //bit3=1 bit4=1 current page indirect addressing
-            ++sumClk; //one additional clk cycle for indirect addressing 
-            return MEM_LOAD((PC & (((1<<5)-1)<<7)) + offset);
+            if((PC & (((1<<5)-1)<<7))==0 && offset>=8 && offset<=15){ //autoindexing offset=010o-017o
+                sumClk += 2; //two additional clk cycle for autoindexing 
+                int temp = MEM_LOAD(offset)+1; //load C(AutoIndex_Register)+1
+                temp=temp & ((1<<pdp8::REGISTERSIZE)-1); //scrub it to 12 bits
+                MEM_STORE(offset , temp); //store it into C(AutoIndex_Register)
+                return temp; //C(AutoIndex_Register) is our EAddr
+            }else{
+                ++sumClk; //one additional clk cycle for indirect addressing 
+                return MEM_LOAD((PC & (((1<<5)-1)<<7)) + offset);
         }
     }
 }
