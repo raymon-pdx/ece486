@@ -2,83 +2,81 @@ TEST 1:
 Effective Address Testing:
 
 Testing Zero Page Addressing:
-Bit3=0 Bit4=0 offset=0177o
+Bit3=0 Bit4=0 offset=0177o                          //testing 000001111111b
 EAddress expected: 0177o
 EAddress result:   0177o
-Bit3=0 Bit4=0 offset=0000o
+Bit3=0 Bit4=0 offset=0000o                          //testing 000000000000
 EAddress expected: 0000o
 EAddress result:   0000o
 
 
 Testing Current Page Addressing:
-Bit3=0 Bit4=1 offset=0177o oldpc=7600o
+Bit3=0 Bit4=1 offset=0177o oldpc=7600o              //testing 111110000000 and 000001111111
 EAddress expected: 7777o
 EAddress result:   7777o
-Bit3=0 Bit4=1 offset=0177o oldpc=7400o
+Bit3=0 Bit4=1 offset=0177o oldpc=7400o              //testing 111100000000 and 000001111111
 EAddress expected: 7577o
 EAddress result:   7577o
-Bit3=0 Bit4=1 offset=0000o oldpc=7600o
+Bit3=0 Bit4=1 offset=0000o oldpc=7600o              //testing 111110000000 and 000000000000
 EAddress expected: 3968o
 EAddress result:   3968o
-Bit3=0 Bit4=1 offset=0000o oldpc=7400o
+Bit3=0 Bit4=1 offset=0000o oldpc=7400o              //testing 111100000000 and 000000000000
 EAddress expected: 3840o
 EAddress result:   3840o
-Bit3=0 Bit4=1 offset=0000o oldpc=0200o
+Bit3=0 Bit4=1 offset=0000o oldpc=0200o              //testing 000010000000 and 000000000000
 EAddress expected: 0200o
 EAddress result:   0200o
-Bit3=0 Bit4=1 offset=0000o oldpc=0000o
+Bit3=0 Bit4=1 offset=0000o oldpc=0000o              //testing 000000000000 and 000000000000
 EAddress expected: 0000o
 EAddress result:   0000o
-Bit3=0 Bit4=1 offset=0177o oldpc=0200o
+Bit3=0 Bit4=1 offset=0177o oldpc=0200o              //testing 000010000000 and 000001111111
 EAddress expected: 0377o
 EAddress result:   0377o
-Bit3=0 Bit4=1 offset=0177o oldpc=0000o
+Bit3=0 Bit4=1 offset=0177o oldpc=0000o              //testing 000000000000 and 000001111111
 EAddress expected: 0177o
 EAddress result:   0177o
 
 
 Testing Indirect Addressing:
-Bit3=1 Bit4=0 offset=0177o
+Bit3=1 Bit4=0 offset=0177o                          //testing 000001111111
 EAddress expected: C(0177o)
 EAddress result:   C(0177o)
-Bit3=1 Bit4=0 offset=0000o
+Bit3=1 Bit4=0 offset=0000o                          //testing 000000000000
 EAddress expected: C(0000o)
 EAddress result:   C(0000o)
-Bit3=1 Bit4=1 offset=0000o oldpc=7600o
+Bit3=1 Bit4=1 offset=0000o oldpc=7600o              //testing  111110000000 and 000000000000
 EAddress expected: C(3968o)
 EAddress result:   C(3968o)
-Bit3=1 Bit4=1 offset=0000o oldpc=7400o
+Bit3=1 Bit4=1 offset=0000o oldpc=7400o              //testing  111100000000 and 000000000000
 EAddress expected: C(3840o)
 EAddress result:   C(3840o)
-Bit3=1 Bit4=1 offset=0000o oldpc=0200o
+Bit3=1 Bit4=1 offset=0000o oldpc=0200o              //testing  000010000000 and 000000000000
 EAddress expected: C(0200o)
 EAddress result:   C(0200o)
-Bit3=1 Bit4=1 offset=0000o oldpc=0000o
+Bit3=1 Bit4=1 offset=0000o oldpc=0000o              //testing  000000000000 and 000000000000
 EAddress expected: C(0000o)
 EAddress result:   C(0000o)
-Bit3=1 Bit4=1 offset=0177o oldpc=0200o
+Bit3=1 Bit4=1 offset=0177o oldpc=0200o              //testing  000010000000 and 000001111111
 EAddress expected: C(0377o)
 EAddress result:   C(0377o)
-Bit3=1 Bit4=1 offset=0177o oldpc=0000o
+Bit3=1 Bit4=1 offset=0177o oldpc=0000o              //testing  000000000000 and 000001111111
 EAddress expected: C(0177o)
 EAddress result:   C(0177o)
 
 
 Testing Autoindexing:
-Bit3=1 Bit4=0 offset=0007o
+Bit3=1 Bit4=0 offset=0007o                          //the regerster before autoindexing
 EAddress expected: 0007o
 EAddress result:   0007o
-Bit3=1 Bit4=0 offset=0010o
+Bit3=1 Bit4=0 offset=0010o                          //the first autoindexing register
 EAddress expected: C(0010o)+1
 EAddress result:   C(0010o)+1
-Bit3=1 Bit4=0 offset=0017o
+Bit3=1 Bit4=0 offset=0017o                          //the last autoindexing register
 EAddress expected: C(0017o)+1
 EAddress result:   C(0017o)+1
-Bit3=1 Bit4=0 offset=0020o
+Bit3=1 Bit4=0 offset=0020o                          //the register after autoindexing
 EAddress expected: 0020o
 EAddress result:   0020o
-
-
 
 
 
@@ -86,76 +84,73 @@ TEST 2:
 Testing the first 6 instuctions:
 
 AND testing:
-C(EAddr)=0000o AC=0000o
+C(EAddr)=0000o AC=0000o                             //0 AND 0 = 0
 AC Expected: 0000o
 AC result:   0000o
-C(EAddr)=0000o AC=7777o
+C(EAddr)=0000o AC=7777o                             //0 AND 1 = 0
 AC Expected: 0000o
 AC result:   0000o
-C(EAddr)=7777o AC=0000o
+C(EAddr)=7777o AC=0000o                             //1 AND 0 = 0
 AC Expected: 0000o
 AC result:   0000o
-C(EAddr)=7777o AC=7777o
+C(EAddr)=7777o AC=7777o                             //1 AND 1 = 1
 AC Expected: 7777o
 AC result:   7777o
-C(EAddr)=0707o AC=0077o
+C(EAddr)=0707o AC=0077o                             //0101 AND 0011 = 0001
 AC Expected: 0007o
 AC result:   0007o
 
 TAD testing:
-C(EAddr)=0000o AC=0000o link=0b
+C(EAddr)=0000o AC=0000o link=0b                     //0 + 0 = 0
 AC Expected: 0000o link: 0b
 AC result:   0000o link: 0b
-C(EAddr)=0001o AC=0000o link=0b
+C(EAddr)=0001o AC=0000o link=0b                     //1 + 0 = 1
 AC Expected: 0001o link: 0b
 AC result:   0001o link: 0b
-C(EAddr)=0000o AC=0001o link=0b
+C(EAddr)=0000o AC=0001o link=0b                     //0 + 1 = 1
 AC Expected: 0001o link: 0b
 AC result:   0001o link: 0b
-C(EAddr)=7777o AC=0001o link=0b
+C(EAddr)=7777o AC=0001o link=0b                     //7777 + 1 = 0 + link
 AC Expected: 0000o link: 1b
 AC result:   0000o link: 1b
-C(EAddr)=0001o AC=7777o link=0b
+C(EAddr)=0001o AC=7777o link=0b                     //1 + 7777 = 0 + link
 AC Expected: 0000o link: 1b
 AC result:   0000o link: 1b
-C(EAddr)=0001o AC=7777o link=1b
-AC Expected: 0000o link: 1b
-AC result:   0000o link: 1b
-C(EAddr)=0030o AC=0057o link=0b  //24+47
-AC Expected: 0107o link: 0b      //71
+C(EAddr)=0001o AC=7777o link=1b                     //1 + 7777 + link = 0
+AC Expected: 0000o link: 0b
+AC result:   0000o link: 0b
+C(EAddr)=0030o AC=0057o link=0b                     //24+ 47 = 71
+AC Expected: 0107o link: 0b
 AC result:   0107o link: 0b
-C(EAddr)=7750o AC=0057o link=0b  //-24+47
-AC Expected: 0027o link: 1b      //23
+C(EAddr)=7750o AC=0057o link=0b                     //-24 + 47 = 23 + link
+AC Expected: 0027o link: 1b
 AC result:   0027o link: 1b
-C(EAddr)=0030o AC=7721o link=0b  //24+-47
-AC Expected: 7751o link: 0b      //-23
+C(EAddr)=0030o AC=7721o link=0b                     //24 + -47 = -23
+AC Expected: 7751o link: 0b
 AC result:   7751o link: 0b
-C(EAddr)=7750o AC=7721o link=0b  //-24+-47
-AC Expected: 7671o link: 1b      //-71
+C(EAddr)=7750o AC=7721o link=0b                     //-24 + -47 = -71 + link
+AC Expected: 7671o link: 1b
 AC result:   7671o link: 1b
-C(EAddr)=3671o AC=3701o link=0b  //1977+1985
-AC Expected: 7572o link: 0b      //-134
+C(EAddr)=3671o AC=3701o link=0b                     //1977 + 1985 = -134
+AC Expected: 7572o link: 0b
 AC result:   7572o link: 0b
-C(EAddr)=4107o AC=4077o link=0b  //-1977+-1985
-AC Expected: 206o link: 1b       //134
+C(EAddr)=4107o AC=4077o link=0b                     //-1977 + -1985 = 134 + link
+AC Expected: 206o link: 1b
 AC result:   206o link: 1b
 
 ISZ Testing:
-C(EAddr)=0000o
+C(EAddr)=0000o                                      //0 + 1 = 1
 C(EAddr) Expected: 0001o
 C(EAddr) result:   0001o
-C(EAddr)=0001o
+C(EAddr)=0001o                                      //1 + 1 = 2
 C(EAddr) Expected: 0002o
 C(EAddr) result:   0002o
-C(EAddr)=7776o
+C(EAddr)=7776o                                      //7776 + 1 = 7777
 C(EAddr) Expected: 7777o
 C(EAddr) result:   7777o
 C(EAddr)=7777o
-C(EAddr) Expected: 0000o
+C(EAddr) Expected: 0000o                            //7777 + 1 = 0
 C(EAddr) result:   0000o
-
-
-
 
 
 
@@ -163,123 +158,74 @@ C(EAddr) result:   0000o
 Testing group 2 uinstructions:
 
 Testing SMA:
-instuction=7500o AC=0000o
+Instuction=7500o AC=0000o                           //is 0 negative?
 Expected: [nothing]
-result:   
-instuction=7500o AC=7777o
+Result:   
+Instuction=7500o AC=7777o                           //is -1 negative?
 Expected: SKIP!
-result:   SKIP!
-instuction=7500o AC=4000o
+Result:   SKIP!
+Instuction=7500o AC=4000o                           //is the lowest number negative?
 Expected: SKIP!
-result:   SKIP!
+Result:   SKIP!
 
 Testing SZA:
-instuction=7440o AC=0000o
+Instuction=7440o AC=0000o                           //is 0 = 0?
 Expected: SKIP!
-result:   SKIP!
-instuction=7440o AC=7777o
+Result:   SKIP!
+Instuction=7440o AC=7777o                           //is 7777 = 0?
 Expected: [nothing]
-result:   
-instuction=7440o AC=0001o
+Result:   
+Instuction=7440o AC=0001o                           //is 1 = 0?
 Expected: [nothing]
-result:
+Result:
 
 Testing SNL:
-instuction=7420o link=1b
+Instuction=7420o link=1b                            //is 1 = 1?
 Expected: SKIP!
-result:   SKIP!
-instuction=7420o link=0b
+Result:   SKIP!
+Instuction=7420o link=0b                            //is 0 = 1?
 Expected: [nothing]
-result:  
+Result:  
 
 Testing OR subgroup:
-instuction=7420o link=1b AC=0000o
+Instuction=7460o link=1b AC=0000o                   //is 1 = 1 and 0 = 0?
 Expected: SKIP!
-result:   SKIP!
-instuction=7460o link=0b AC=0001o
+Result:   SKIP!
+Instuction=7460o link=0b AC=0001o                   //is 0 = 1 and 1 = 0?
 Expected: [nothing]
-result:   
+Result:   
 
 Testing SKP:
-instuction=7410o
+Instuction=7410o                                    //skip skips.
 Expected: SKIP!
-result:   SKIP!
+Result:   SKIP!
 
 Testing SPA:
-instuction=7510o AC=0001o
+Instuction=7510o AC=0001o                           //is 1 positive?
 Expected: SKIP!
-result:   SKIP!
-instuction=7510o AC=7777o
+Result:   SKIP!
+Instuction=7510o AC=7777o                           //is lowest number positive?
 Expected: [nothing]
-result:   
-instuction=7510o AC=4000o
+Result:   
+Instuction=7510o AC=4000o                           //is -1 positive?
 Expected: [nothing]
-result: 
+Result: 
 
 Testing SNA:
-instuction=7450o AC=0000o
+Instuction=7450o AC=0000o                           //is 0 not 0 ?
 Expected: [nothing]
-result:   
-instuction=7450o AC=0001o
+Result:   
+Instuction=7450o AC=0001o                           //is 1 not 0?
 Expected: SKIP!
-result:   SKIP!
-instuction=7450o AC=7777o
+Result:   SKIP!
+Instuction=7450o AC=7777o                           //is 7777 not 0?
 Expected: SKIP!
-result:   SKIP!
+Result:   SKIP!
 
 Testing SZL:
-instuction=7430o link=1b
+Instuction=7430o link=1b                            //is 1 = 0?
 Expected: [nothing]
-result:   
-instuction=7430o link=0b
+Result:   
+Instuction=7430o link=0b                            //is 0 = 0?
 Expected: SKIP!
-result:   SKIP!
-
-
-
-
-
-
-
-
-
-
-
-
-
-    cout<<"\nTesting the first 6 instuctions:\n\n";
-
-
-    cout<<"C(EAddr)=3671o AC=3701o link=0b  //1977+1985\n";
-    cout<<"AC Expected: 7572o link: 0b      //-134\n";
-    bits.temp=1977;
-    bits.AC=1985;
-    bits.link=0;
-    bits.PDP_TAD(1,0,123);
-    cout<<"AC result:   "<<bits.AC<<" link: "<<bits.link<<"\n\n";
-
-    cout<<"C(EAddr)=4107o AC=4077o link=0b  //-1977+-1985\n";
-    cout<<"AC Expected: 206o link: 1b      //134\n";
-    bits.temp=2119;
-    bits.AC=2111;
-    bits.link=0;
-    bits.PDP_TAD(1,0,123);
-    cout<<"AC result:   "<<bits.AC<<" link: "<<bits.link<<"\n\n";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Result:   SKIP!

@@ -5,6 +5,8 @@ using namespace std;
 
 
 
+
+void PDP_TAD(bool addr_bit,bool mem_page,int offset);
 int PDP_uintructions(bool bit3, bool bit4, int offset);
 void rotateBits(int accumulator, int link, char dir);
 int find_EAddr(bool addr_bit,bool mem_page,int offset);
@@ -38,6 +40,22 @@ int main(){
 
     cout<<"\nTesting group 2 uinstructions:\n\n";
 
+
+
+
+    cout<<"C(EAddr)=3671o AC=3701o link=1b  //1977+1985\n";
+    cout<<"AC Expected: 0000o link: 1b      //-134\n";
+    temp=1;
+    AC=4095;
+    link=1;
+    PDP_TAD(1,0,123);
+    cout<<"AC result:   "<<AC<<" link: "<<link<<"\n\n";
+
+
+
+
+
+
     cout<<"Testing SZL:\n";
     cout<<"instuction=7430o link=1b\n";
     link=1;
@@ -53,6 +71,27 @@ int main(){
     PDP_uintructions(1,0,24);   
     cout<<"\n\n";
 
+}
+
+
+
+void PDP_TAD(bool addr_bit,bool mem_page,int offset){
+
+    ++TAD_Count;
+	++sumInstr;
+    sumClk = sumClk + 2; //takes 2 clk cycles
+
+    int EAddr = find_EAddr(addr_bit,mem_page,offset);
+    increment_PC();
+
+    int adda = AC;
+    int addb = MEM_LOAD(EAddr);    
+    int addc = adda + addb;
+
+	AC = addc & ((1 << pdp8::REGISTERSIZE) - 1);//carry and overflow are removed
+
+	if ((1 << pdp8::REGISTERSIZE) == (addc&(1 << pdp8::REGISTERSIZE))) link = !link;//compliment link if carry out
+	return;
 }
 
 
