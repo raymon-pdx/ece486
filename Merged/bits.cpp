@@ -213,7 +213,9 @@ int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset)
         }
 
         if(bit11){  //increment accumulator (IAC)
-            AC = (AC + 1) & ((1<<pdp8::REGISTERSIZE)-1);
+            int addc= AC + 1;
+            AC = addc & ((1<<pdp8::REGISTERSIZE)-1);
+            if ((1 << pdp8::REGISTERSIZE) == (addc&(1 << pdp8::REGISTERSIZE))) link = !link;
         }
 
         if(bit8){   //rotate accumulator and link right (RAR)
