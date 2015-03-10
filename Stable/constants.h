@@ -5,9 +5,9 @@ namespace pdp8
 {
 	// general constants
 	const int DEBUG = 2;           // 0 = no debugging information
-								   // 1 = everything
-								   // 2 = less detailed
-								   // 3 = critical only
+								   // 1 = less detailed
+								   // 2 = more detailed
+								   // 3 = everything
 	const int REGISTERSIZE = 12;
 
 	// memory constants
