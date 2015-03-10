@@ -80,9 +80,6 @@ private:
     pagetable *memory;  //memory
 	std::ofstream *outputTraceFile; //used to create tracefile
 
-    //function for rotating bits
-    void rotateBits(int accumulator, int link, char dir);	
-
     //function for finding the effective address
     int find_EAddr(bool addr_bit,bool mem_page,int offset);
 

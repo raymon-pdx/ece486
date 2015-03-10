@@ -224,20 +224,130 @@ int BitTwiddle::PDP_uintructions(bool bit3, bool bit4, int offset)
 
         if(bit8){   //rotate accumulator and link right (RAR)
 
-           int direction = 0; //0 indicates right direction
-           rotateBits(AC, link, direction);
+            int lsb = 0; //value of lsb from accumulator
+            int templink = 0; //temporarily holds value of link
 
-           if(bit10){ //rotate accumulator, link right twice (RTL)
-                rotateBits(AC, link, direction);
+            #ifndef rotatebit_DEBUG
+            std::cout << "Current accumulator value: " << (bitset<12>) AC << "\n";
+	        std::cout << "Current link bit: " << link << "\n";
+            std::cout << "Current direction: " << dir << "\n\n";
+            #endif
+
+            lsb = AC & 1; //save lsb of accumulator
+            #ifndef rotatebit_DEBUG
+            std::cout << "Value of lsb is: " << lsb << "\n";
+            #endif
+
+            AC = AC >> 1; //shift accumulator to right by 1
+            #ifndef rotatebit_DEBUG
+	        std::cout << "Value of shifted accumulator: " << (bitset<12>)AC << "\n";
+            #endif
+
+            templink = link; //save value of link before we change it
+            link = lsb; //lsb will be shifted into the link
+            #ifndef rotatebit_DEBUG
+	        std::cout << "New value of link: " << link << "\n";
+            #endif
+
+            templink = templink << 11; //put old value of link into accumulator MSB
+            AC = ((AC & ((1<<pdp8::REGISTERSIZE)-1)) | templink); //put MSB into the accumulator
+            #ifndef rotatebit_DEBUG
+	        std::cout << "New value of accumulator: " << (bitset<12>)AC << "\n"; 
+            #endif
+ 
+            if(bit10){ //rotate accumulator, link right twice (RTL)
+
+                int lsb = 0; //value of lsb from accumulator
+                int templink = 0; //temporarily holds value of link
+
+                #ifndef rotatebit_DEBUG
+                std::cout << "Current accumulator value: " << (bitset<12>) AC << "\n";
+                std::cout << "Current link bit: " << link << "\n";
+                std::cout << "Current direction: " << dir << "\n\n";
+                #endif
+
+                lsb = AC & 1; //save lsb of accumulator
+                #ifndef rotatebit_DEBUG
+                std::cout << "Value of lsb is: " << lsb << "\n";
+                #endif
+
+                AC = AC >> 1; //shift accumulator to right by 1
+                #ifndef rotatebit_DEBUG
+                std::cout << "Value of shifted accumulator: " << (bitset<12>)AC << "\n";
+                #endif
+
+                templink = link; //save value of link before we change it
+                link = lsb; //lsb will be shifted into the link
+                #ifndef rotatebit_DEBUG
+                std::cout << "New value of link: " << link << "\n";
+                #endif
+
+                templink = templink << 11; //put old value of link into accumulator MSB
+                AC = ((AC & ((1<<pdp8::REGISTERSIZE)-1)) | templink); //put MSB into the accumulator
+                #ifndef rotatebit_DEBUG
+                std::cout << "New value of accumulator: " << (bitset<12>)AC << "\n"; 
+                #endif
+
            }
-
         }else if(bit9){   //rotate accumulator and link left (RAL)
 
-           int direction = 1; //1 indicates left direction
-           rotateBits(AC, link, direction);
+            int msb = 0; //value of msb from accumulator
+            int templink = 0; //temporarily holds value of link
 
-           if(bit10){ //rotate accumulator, link left twice (RTL)
-                rotateBits(AC, link, direction);
+            msb = (AC>>11) & 1; //save msb of accumulator
+            #ifndef rotatebit_DEBUG
+		    std::cout << "Value of msb is: " << msb << "\n";
+            #endif
+
+            AC = AC << 1; //shift accumulator to left by 1
+            #ifndef rotatebit_DEBUG
+		    std::cout << "Value of shifted accumulator: " << (bitset<12>)AC << "\n";
+            #endif
+         
+            templink = link; //save value of link before we change it
+            #ifndef rotatebit_DEBUG
+		    std::cout << "Value of templink: " << templink << "\n";
+            #endif
+
+            link = msb; //lsb will be shifted into the link
+            #ifndef rotatebit_DEBUG
+		    std::cout << "New value of link: " << link << "\n";
+            #endif
+
+            AC = ((AC & ((1<<pdp8::REGISTERSIZE)-1))| templink); //put MSB into the accumulator as MSB
+            #ifndef rotatebit_DEBUG
+		    std::cout << "New value of accumulator: " << (bitset<12>)AC << "\n"; 
+            #endif
+
+            if(bit10){ //rotate accumulator, link left twice (RTL)
+
+                int msb = 0; //value of msb from accumulator
+                int templink = 0; //temporarily holds value of link
+
+                msb = (AC>>11) & 1; //save msb of accumulator
+                #ifndef rotatebit_DEBUG
+		        std::cout << "Value of msb is: " << msb << "\n";
+                #endif
+
+                AC = AC << 1; //shift accumulator to left by 1
+                #ifndef rotatebit_DEBUG
+		        std::cout << "Value of shifted accumulator: " << (bitset<12>)AC << "\n";
+                #endif
+             
+                templink = link; //save value of link before we change it
+                #ifndef rotatebit_DEBUG
+		        std::cout << "Value of templink: " << templink << "\n";
+                #endif
+
+                link = msb; //lsb will be shifted into the link
+                #ifndef rotatebit_DEBUG
+		        std::cout << "New value of link: " << link << "\n";
+                #endif
+
+                AC = ((AC & ((1<<pdp8::REGISTERSIZE)-1)) | templink); //put MSB into the accumulator as MSB
+                #ifndef rotatebit_DEBUG
+		        std::cout << "New value of accumulator: " << (bitset<12>)AC << "\n"; 
+                #endif
            }
         }
 
@@ -312,80 +422,6 @@ void BitTwiddle::display()
 	std::cout << "| uInstructions |       " << std::dec<< uInstr_Count << "\n";
 	std::cout << "------------------------------------------------------\n";
 }
-
-//-----------------------------------------------------------
-// Function for rotating bits (used in uInstruction Group 1)
-//-----------------------------------------------------------
-void BitTwiddle::rotateBits(int accumulator, int link, char dir){
-
-    int lsb = 0; //value of lsb from accumulator
-    int msb = 0; //value of msb from accumulator
-    int templink = 0; //temporarily holds value of link
-
-    #ifndef rotatebit_DEBUG
-    std::cout << "Current accumulator value: " << (bitset<12>) accumulator << "\n";
-	std::cout << "Current link bit: " << link << "\n";
-    std::cout << "Current direction: " << dir << "\n\n";
-    #endif
-
-    if(dir == 0){ //ROTATE RIGHT
-
-        lsb = accumulator & 1; //save lsb of accumulator
-        #ifndef rotatebit_DEBUG
-        std::cout << "Value of lsb is: " << lsb << "\n";
-        #endif
-
-        accumulator = accumulator >> 1; //shift accumulator to right by 1
-        #ifndef rotatebit_DEBUG
-		std::cout << "Value of shifted accumulator: " << (bitset<12>)accumulator << "\n";
-        #endif
-
-        templink = link; //save value of link before we change it
-        link = lsb; //lsb will be shifted into the link
-        #ifndef rotatebit_DEBUG
-		std::cout << "New value of link: " << link << "\n";
-        #endif
-
-        templink = templink << 11; //put old value of link into accumulator MSB
-        accumulator = (accumulator | templink); //put MSB into the accumulator
-        #ifndef rotatebit_DEBUG
-		std::cout << "New value of accumulator: " << (bitset<12>)accumulator << "\n"; 
-        #endif
-
-    }else if(dir == 1){ //ROTATE LEFT
-
-        msb = (accumulator>>11) & 1; //save msb of accumulator
-        #ifndef rotatebit_DEBUG
-		std::cout << "Value of msb is: " << msb << "\n";
-        #endif
-
-        accumulator = accumulator << 1; //shift accumulator to left by 1
-        #ifndef rotatebit_DEBUG
-		std::cout << "Value of shifted accumulator: " << (bitset<12>)accumulator << "\n";
-        #endif
-     
-        templink = link; //save value of link before we change it
-        #ifndef rotatebit_DEBUG
-		std::cout << "Value of templink: " << templink << "\n";
-        #endif
-
-        link = msb; //lsb will be shifted into the link
-        #ifndef rotatebit_DEBUG
-		std::cout << "New value of link: " << link << "\n";
-        #endif
-
-        accumulator = (accumulator | templink); //put MSB into the accumulator as MSB
-        #ifndef rotatebit_DEBUG
-		std::cout << "New value of accumulator: " << (bitset<12>)accumulator << "\n"; 
-        #endif
-
-    }else{
-
-        std::cout << "Error rotating bits in uInstruction.\n";
-    }
-    return;
-}
-
 
 //-----------------------------------------------------------
 // Function for displaying registers
