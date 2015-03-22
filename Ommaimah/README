@@ -1,50 +1,28 @@
 Author: Ommaimah Hussein Mohammed
 
 -----------------------------------------------------------
-COMPLETE:
+COMPLETED:
 -----------------------------------------------------------
 + Added DCA instruction function
 + Added JMS instruction function
 + Added JMP instruction function
 + Added uInstruction (Group 1) function
 + Added function that converts int to octal
-+ Implemented correct clock cycles
-+ Implemented correct count of instructions
++ Implemented clock cycles
++ Implemented count of instructions
 + Implemented function that outputs PDP-8 summary
 + Implemented tracefile
 + Implemented all combos for uInstruction (Group 1)
-
------------------------------------------------------------
-IN PROGRESS (TESTING):
------------------------------------------------------------
-- DCA function                                  [ ]
-- JMS function                                  [ ]
-- JMP function                                  [ ]
-- uInstruction (group 1) function:
-  - CLA                                         [ ]
-  - CLL                                         [ ]
-  - CMA                                         [ ]
-  - CML                                         [ ]
-  - IAC                                         [ ]
-  - RAR                                         [DONE]
-  - RTR                                         [DONE]
-  - RAL                                         [DONE]
-  - RTL                                         [DONE]
-  - No Op                                       [ ]
-  - Combos                                      [ ]
-- Output Summary                                [ ]
-- Correct Instruction Count                     [ ]
-- Correct clock cycles                          [ ]
-- Final trace file output                       [ ]
-
------------------------------------------------------------
-TO DO:
------------------------------------------------------------
-- put test results in file
-- IAC does it include link bit? Does it need to?
++ Finished all testing
 
 -----------------------------------------------------------
 Project Report:
 -----------------------------------------------------------
 + Started "Draft 1"
++ Finished Project Report (found in Stable folder)
+
+-----------------------------------------------------------
+Final Presenation Feedback:
+-----------------------------------------------------------
+- Final output of clock cycle was incorrect.
 
